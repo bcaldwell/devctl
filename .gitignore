@@ -1,3 +1,9 @@
+### VisualStudioCode.gitignore
+.vscode
+debug
+
+
+### Go.gitignore
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
 *.a
@@ -22,3 +28,5 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+vendor

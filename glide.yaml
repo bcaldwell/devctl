@@ -1,0 +1,6 @@
+package: github.com/benjamincaldwell/devctl
+import:
+- package: github.com/codeskyblue/go-sh
+- package: github.com/spf13/cobra
+  subpackages:
+  - cobra
