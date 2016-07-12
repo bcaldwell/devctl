@@ -1,14 +1,14 @@
-hash: 2fd4642314556569938196f90474869da5e3192b8348be2bacf548b382dd77bc
-updated: 2016-07-09T17:57:27.738938525-04:00
+hash: 459b636bac3293262d80c28949486674f7988565e34923cec2fa54dc9161209e
+updated: 2016-07-12T17:36:59.739449542-04:00
 imports:
 - name: github.com/BurntSushi/toml
-  version: ffaa107fbd880f6d18cd6fec9b511668dcad8639
+  version: bec2dacf4b590d26237cfebff4471e21ce543494
 - name: github.com/codeskyblue/go-sh
   version: ceb46ec4630a726eeed51d0a70066c9e1102c48f
 - name: github.com/fsnotify/fsnotify
   version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
 - name: github.com/hashicorp/hcl
-  version: 364df430845abef160a0bfb3a59979f746bf4956
+  version: d8c773c4cba11b11539e3d45f93daeaa5dcf1fa1
   subpackages:
   - hcl/ast
   - hcl/parser

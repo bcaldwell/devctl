@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // cloneCmd represents the clone command
@@ -33,11 +34,12 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Work your own magic here
 		fmt.Println("clone called")
+		fmt.Println(viper.Get("github_user"))
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(cloneCmd)
+	devctlCmd.AddCommand(cloneCmd)
 
 	// Here you will define your flags and configuration settings.
 

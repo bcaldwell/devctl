@@ -4,3 +4,4 @@ import:
 - package: github.com/spf13/cobra
   subpackages:
   - cobra
+- package: github.com/spf13/viper
