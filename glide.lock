@@ -1,10 +1,14 @@
-hash: 459b636bac3293262d80c28949486674f7988565e34923cec2fa54dc9161209e
-updated: 2016-07-12T17:36:59.739449542-04:00
+hash: 788a744745ba96f8428a5b61cd0afc96c7a11b90bbd47f50d87157430daff312
+updated: 2016-07-13T10:27:12.504035712-04:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bec2dacf4b590d26237cfebff4471e21ce543494
+- name: github.com/codegangsta/inject
+  version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
 - name: github.com/codeskyblue/go-sh
   version: ceb46ec4630a726eeed51d0a70066c9e1102c48f
+- name: github.com/fatih/color
+  version: 87d4004f2ab62d0d255e0a38f1680aa534549fe3
 - name: github.com/fsnotify/fsnotify
   version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
 - name: github.com/hashicorp/hcl
@@ -22,8 +26,12 @@ imports:
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/magiconair/properties
   version: e2f061ecfdaca9f35b2e2c12346ffc526f138137
+- name: github.com/mattn/go-colorable
+  version: 9056b7a9f2d1f2d96498d6d146acd1f9d5ed3d59
+- name: github.com/mattn/go-isatty
+  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
 - name: github.com/mitchellh/mapstructure
-  version: d2dd0262208475919e1a362f675cfc0e7c10e905
+  version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
 - name: github.com/spf13/cast
   version: 27b586b42e29bec072fe7379259cc719e1289da6
 - name: github.com/spf13/cobra
@@ -37,7 +45,7 @@ imports:
 - name: github.com/spf13/viper
   version: c1ccc378a054ea8d4e38d8c67f6938d4760b53dd
 - name: golang.org/x/sys
-  version: a408501be4d17ee978c04a618e7a1b22af058c0e
+  version: b518c298ac9dc94b6ac0757394f50d10c5dfa25a
   subpackages:
   - unix
 - name: gopkg.in/yaml.v2

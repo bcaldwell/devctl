@@ -17,8 +17,10 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/codeskyblue/go-sh"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -31,9 +33,12 @@ var cloneCmd = &cobra.Command{
 	Run:   clone,
 }
 
+var gitlab bool
+
 func init() {
 	devctlCmd.AddCommand(cloneCmd)
-	//cloneCmd.Flags().StringVarP(&gitUser, "gitUser", "u", "", "Non default git user")
+
+	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
 
 	// Here you will define your flags and configuration settings.
 
@@ -48,39 +53,83 @@ func init() {
 }
 
 func clone(cmd *cobra.Command, args []string) {
-	repo, user := parseArgs(args)
-	if user == "" {
-		usrStr, _ := viper.Get("github_user").(string)
-		// Handle Err
-		user = usrStr
+
+	if len(args) == 0 {
+		errorWithHelp(cmd, "\nMinimum of one argument is required\n ")
+	}
+
+	var gitRepo string
+	hostURL := "github.com"
+
+	repo, user, url := parseArgs(args)
+
+	if gitlab {
+		hostURL = viper.Get("gitlab_url").(string)
+		if hostURL == "" {
+			errorWithHelp(cmd, "\nGitlab url not provided in devctlconfig\n ")
+		}
+		if user == "" {
+			user = viper.Get("gitlab_user").(string)
+		}
+		if user == "" {
+			color.Yellow("Gitlab user not specified, falling back to github user")
+		}
+	}
+
+	if url != "" {
+		gitRepo = url
+	} else {
+		if user == "" {
+			user = viper.Get("github_user").(string)
+		}
+		gitRepo = fmt.Sprintf("git@%s:%s/%s", hostURL, user, repo)
 	}
 
 	sourceDir := viper.Get("source_dir")
 
-	gitRepo := fmt.Sprintf("git@github.com:%s/%s", user, repo)
 	session := sh.NewSession()
 	session.SetDir(sourceDir.(string))
 	fmt.Printf("Cloning %s/%s to %s\n", user, repo, sourceDir)
 	session.ShowCMD = true
-	out, err := session.Command("git", "clone", gitRepo).Output()
+	err := session.Command("git", "clone", gitRepo).Run()
 	if err != nil {
 		fmt.Print(err)
 	} else {
-		fmt.Print(out)
+		// fmt.Print(out)
+		color.Green("Clone was successful")
 	}
 }
 
-func parseArgs(args []string) (string, string) {
+func parseArgs(args []string) (string, string, string) {
+
+	if isFullURL(args[0]) {
+		return "", "", args[0]
+	}
+
+	args = strings.Split(args[0], "/")
+
 	repo := ""
 	user := ""
-	if len(args) == 0 {
-		fmt.Println("Minimum of one argument is required")
-		os.Exit(-1)
-	} else if len(args) == 1 {
+	if len(args) == 1 {
 		repo = args[0]
 	} else if len(args) == 2 {
 		user = args[0]
 		repo = args[1]
 	}
-	return repo, user
+	return repo, user, ""
+}
+
+func isFullURL(s string) bool {
+	if len(strings.Split(s, ":")) == 2 {
+		return true
+	} else if strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://") {
+		return true
+	}
+	return false
+}
+
+func errorWithHelp(cmd *cobra.Command, message string) {
+	color.Red(message)
+	cmd.Help()
+	os.Exit(1)
 }
