@@ -56,7 +56,7 @@ func init() {
 	// Cobra supports Persistent Flags, which, if defined here,
 	// will be global for your application.
 
-	devctlCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.devctl.yaml)")
+	devctlCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.devctlconfig)")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	devctlCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
@@ -64,24 +64,24 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	fmt.Println("a")
-
 	if cfgFile != "" { // enable ability to specify config file via flag
 		fmt.Print(cfgFile)
 		viper.SetConfigFile(cfgFile)
 	} else {
-		cfgFile := os.Getenv("HOME") + "/.devctl"
+		cfgFile := os.Getenv("HOME") + "/.devctlconfig"
 		viper.SetConfigFile(cfgFile)
 	}
 
 	viper.SetConfigType("yaml")
-	viper.SetConfigName(".devctl") // name of config file (without extension)
-	viper.AddConfigPath("$HOME")   // adding home directory as first search path
-	viper.AutomaticEnv()           // read in environment variables that match
+	viper.SetConfigName(".devctlconfig") // name of config file (without extension)
+	viper.AddConfigPath("$HOME")         // adding home directory as first search path
+	viper.AutomaticEnv()                 // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-		fmt.Print(viper.Get("github_user"))
+		// fmt.Println("Using config file:", viper.ConfigFileUsed())
+	} else {
+		fmt.Println("Error reading config " + cfgFile + " :")
+		fmt.Print(err)
 	}
 }
