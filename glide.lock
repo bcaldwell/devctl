@@ -1,5 +1,5 @@
 hash: 788a744745ba96f8428a5b61cd0afc96c7a11b90bbd47f50d87157430daff312
-updated: 2016-07-13T10:27:12.504035712-04:00
+updated: 2016-07-16T12:00:18.415846985-04:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bec2dacf4b590d26237cfebff4471e21ce543494
@@ -50,4 +50,4 @@ imports:
   - unix
 - name: gopkg.in/yaml.v2
   version: a83829b6f1293c91addabc89d0571c246397bbf4
-testImports: []
+devImports: []
