@@ -16,9 +16,9 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/codeskyblue/go-sh"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -55,7 +55,7 @@ func init() {
 func clone(cmd *cobra.Command, args []string) {
 
 	if len(args) == 0 {
-		errorWithHelp(cmd, "\nMinimum of one argument is required\n ")
+		utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
 	}
 
 	var gitRepo string
@@ -66,7 +66,7 @@ func clone(cmd *cobra.Command, args []string) {
 	if gitlab {
 		hostURL = viper.Get("gitlab_url").(string)
 		if hostURL == "" {
-			errorWithHelp(cmd, "\nGitlab url not provided in devctlconfig\n ")
+			utilities.ErrorWithHelp(cmd, "\nGitlab url not provided in devctlconfig\n ")
 		}
 		if user == "" {
 			user = viper.Get("gitlab_user").(string)
@@ -126,10 +126,4 @@ func isFullURL(s string) bool {
 		return true
 	}
 	return false
-}
-
-func errorWithHelp(cmd *cobra.Command, message string) {
-	color.Red(message)
-	cmd.Help()
-	os.Exit(1)
 }
