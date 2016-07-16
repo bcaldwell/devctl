@@ -20,7 +20,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/codeskyblue/go-sh"
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -56,7 +56,7 @@ func init() {
 
 func cd(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
-		errorWithHelp(cmd, "\nMinimum of one argument is required\n ")
+		utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
 	}
 
 	query := args[0]
@@ -76,7 +76,10 @@ func cd(cmd *cobra.Command, args []string) {
 		dir = path.Join(sourceDir, match)
 	}
 
-	sh.Command("cd", dir).Run()
+	post := new(utilities.PostCommand)
+	post.ChangeDir(dir)
+	post.Write()
+
 }
 
 func filterDir(files []os.FileInfo) []os.FileInfo {
@@ -91,7 +94,7 @@ func filterDir(files []os.FileInfo) []os.FileInfo {
 
 func findMatch(query string, files []os.FileInfo) string {
 	for _, i := range files {
-		if strings.Contains(i.Name(), query) {
+		if strings.Contains(strings.ToLower(i.Name()), strings.ToLower(query)) {
 			return i.Name()
 		}
 	}
