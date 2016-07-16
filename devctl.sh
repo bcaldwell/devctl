@@ -7,8 +7,6 @@ devctl() {
 
   go run "${devctl_dir}"/main.go "$@" 8>"${fd}"
 
-  cat "${fd}"
-
   while read -r line
   do
     cd "${line}"

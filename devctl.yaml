@@ -1,0 +1,49 @@
+
+
+node:
+  version: 4
+
+ruby:
+  version: 2
+
+python:
+  version: 3
+
+install:
+  - brew:
+    -  openssl
+  - apt-get:
+    - openssl
+  - custom:
+      name: bower
+      desc: install bower dep
+      installed?: which dev
+      install: bower install
+
+# default installs
+# node (npm)
+# ruby (bundler)
+# golang (glide)
+# python (pip)
+
+commands:
+  console:
+    desc: blah
+    command: bin/rails console
+
+ # import from package.json as well
+
+ services:
+  web:
+    image: nginx
+    port: 3000
+
+
+# devctl install
+# devctl stop
+# devctl restart
+# devctl start
+# - install
+# - docker start
+
+# devctl services start

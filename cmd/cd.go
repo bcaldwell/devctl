@@ -20,10 +20,10 @@ import (
 	"path"
 	"strings"
 
+	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // cdCmd represents the cd command
@@ -61,7 +61,7 @@ func cd(cmd *cobra.Command, args []string) {
 
 	query := args[0]
 
-	sourceDir := viper.Get("source_dir").(string)
+	sourceDir := parser.GetString("source_dir")
 
 	files, _ := ioutil.ReadDir(sourceDir)
 	files = filterDir(files)
@@ -72,9 +72,9 @@ func cd(cmd *cobra.Command, args []string) {
 
 	if match == "" {
 		color.Yellow("%s could not be found", query)
-	} else {
-		dir = path.Join(sourceDir, match)
 	}
+
+	dir = path.Join(sourceDir, match)
 
 	post := new(utilities.PostCommand)
 	post.ChangeDir(dir)
