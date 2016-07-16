@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -79,9 +80,11 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		// fmt.Println("Using config file:", viper.ConfigFileUsed())
+		// 	// fmt.Println("Using config file:", viper.ConfigFileUsed())
+		// } else {
+		// 	// fmt.Println("Error reading config " + cfgFile + " :")
+		// 	// fmt.Print(err)
 	} else {
-		fmt.Println("Error reading config " + cfgFile + " :")
-		fmt.Print(err)
+		color.Yellow("Warning: devctl config was found")
 	}
 }
