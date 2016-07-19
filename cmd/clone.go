@@ -16,6 +16,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
@@ -34,11 +36,13 @@ var cloneCmd = &cobra.Command{
 }
 
 var gitlab bool
+var tag string
 
 func init() {
 	devctlCmd.AddCommand(cloneCmd)
 
 	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
+	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "Clone from gitlab url")
 
 	// Here you will define your flags and configuration settings.
 
@@ -55,6 +59,7 @@ func init() {
 type cloneConfig struct {
 	repo      string
 	user      string
+	host      string
 	url       string
 	sourceDir string
 	command   *cobra.Command
@@ -66,7 +71,6 @@ func clone(cmd *cobra.Command, args []string) {
 	}
 
 	cfg := new(cloneConfig)
-	cfg.sourceDir = parser.GetString("source_dir")
 	cfg.command = cmd
 
 	cfg.github()
@@ -75,6 +79,7 @@ func clone(cmd *cobra.Command, args []string) {
 	}
 	cfg.parseArgs(args)
 
+	cfg.setSourceDir()
 	// validate(cfg)
 
 	cfg.clone()
@@ -109,7 +114,7 @@ func isFullURL(s string) bool {
 
 func (cfg *cloneConfig) github() {
 	cfg.url = "github.com"
-
+	cfg.host = "github.com"
 	user := parser.GetString("github_user")
 	if user != "" {
 		cfg.user = user
@@ -118,6 +123,7 @@ func (cfg *cloneConfig) github() {
 
 func (cfg *cloneConfig) gitlab() {
 	cfg.url = parser.GetString("gitlab_url")
+	cfg.host = parser.GetString("gitlab_url")
 	if cfg.url == "" {
 		utilities.ErrorWithHelp(cfg.command, "\nGitlab url not provided in devctlconfig\n ")
 	}
@@ -129,18 +135,24 @@ func (cfg *cloneConfig) gitlab() {
 
 }
 
+func (cfg *cloneConfig) setSourceDir() {
+	sourceDir := parser.GetString("source_dir")
+	cfg.sourceDir = path.Join(sourceDir, "src", cfg.host, cfg.user, tag)
+	os.MkdirAll(cfg.sourceDir, 0755)
+}
+
 func (cfg *cloneConfig) clone() {
-	var cloneUrl string
+	var cloneURL string
 	if cfg.user == "" && cfg.repo == "" {
-		cloneUrl = cfg.url
+		cloneURL = cfg.url
 	} else {
-		cloneUrl = fmt.Sprintf("git@%s:%s/%s", cfg.url, cfg.user, cfg.repo)
+		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.url, cfg.user, cfg.repo)
 	}
 
 	session := sh.NewSession()
 	session.SetDir(cfg.sourceDir)
 	session.ShowCMD = true
-	err := session.Command("git", "clone", cloneUrl).Run()
+	err := session.Command("git", "clone", cloneURL).Run()
 	if err != nil {
 		fmt.Print(err)
 	} else {

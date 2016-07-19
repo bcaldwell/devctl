@@ -9,6 +9,6 @@ before_install:
 - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update
 - sudo apt-get install glide -y
 install: glide install
-script: go test -v
+script: go test -v $(glide novendor)
 after_success: 
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sh deploy.sh
