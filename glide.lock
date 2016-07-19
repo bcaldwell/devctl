@@ -1,5 +1,5 @@
-hash: 788a744745ba96f8428a5b61cd0afc96c7a11b90bbd47f50d87157430daff312
-updated: 2016-07-16T12:00:18.415846985-04:00
+hash: 4793de2df63faabd23c65ee8da6bb31b8d79b8d64471a31bda59725b7fbd9905
+updated: 2016-07-19T17:10:02.198310055-04:00
 imports:
 - name: github.com/BurntSushi/toml
   version: bec2dacf4b590d26237cfebff4471e21ce543494
@@ -32,6 +32,10 @@ imports:
   version: 56b76bdf51f7708750eac80fa38b952bb9f32639
 - name: github.com/mitchellh/mapstructure
   version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
+- name: github.com/renstrom/fuzzysearch
+  version: d4ca9dfccd55dc6b076f9880d49c35315922c1f4
+  subpackages:
+  - fuzzy
 - name: github.com/spf13/cast
   version: 27b586b42e29bec072fe7379259cc719e1289da6
 - name: github.com/spf13/cobra
@@ -50,4 +54,4 @@ imports:
   - unix
 - name: gopkg.in/yaml.v2
   version: a83829b6f1293c91addabc89d0571c246397bbf4
-devImports: []
+testImports: []
