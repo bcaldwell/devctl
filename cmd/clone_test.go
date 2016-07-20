@@ -100,6 +100,93 @@ func TestCdGitlabConfigured(t *testing.T) {
 
 }
 
+func TestCdFullUrl(t *testing.T) {
+
+	viper.SetDefault("github_user", "github_user")
+	viper.SetDefault("source_dir", "/")
+	viper.SetDefault("gitlab_url", "gitlab.somwhere.com")
+	viper.SetDefault("gitlab_user", "gitlab_user")
+
+	testStructs := []testStruct{
+		{
+			[]string{"https://github.com/user1/project1.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project1",
+				User:      "user1",
+				Host:      "github.com",
+				Url:       "https://github.com/user1/project1.git",
+				SourceDir: "/src/github.com/user1",
+			},
+		},
+		{
+			[]string{"git@github.com:user1/project1.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project1",
+				User:      "user1",
+				Host:      "github.com",
+				Url:       "git@github.com:user1/project1.git",
+				SourceDir: "/src/github.com/user1",
+			},
+		},
+		{
+			[]string{"git@gitlab.somewhere.com:user2/project3.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project3",
+				User:      "user2",
+				Host:      "gitlab.somewhere.com",
+				Url:       "git@gitlab.somewhere.com:user2/project3.git",
+				SourceDir: "/src/gitlab.somewhere.com/user2",
+			},
+		},
+		{
+			[]string{"http://gitlab.somewhere.com/user3/project.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project",
+				User:      "user3",
+				Host:      "gitlab.somewhere.com",
+				Url:       "http://gitlab.somewhere.com/user3/project.git",
+				SourceDir: "/src/gitlab.somewhere.com/user3",
+			},
+		},
+		{
+			[]string{"git@github.com:user1/project1.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project1",
+				User:      "user1",
+				Host:      "github.com",
+				Url:       "git@github.com:user1/project1.git",
+				SourceDir: "/src/github.com/user1",
+			},
+		},
+		{
+			[]string{"git@github.com:user1/project1.git"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project1",
+				User:      "user1",
+				Host:      "github.com",
+				Url:       "git@github.com:user1/project1.git",
+				SourceDir: "/src/github.com/user1",
+			},
+		},
+	}
+
+	for _, i := range testStructs {
+		i.config.github()
+		i.config.gitlab()
+		i.config.parseArgs(i.args)
+		i.config.setSourceDir()
+
+		checkStruct(t, &i)
+	}
+
+}
+
 // ya this doesnt work....
 // func TestCdGitlabPartlyConfigured(t *testing.T) {
 

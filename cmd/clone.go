@@ -87,9 +87,7 @@ func clone(cmd *cobra.Command, args []string) {
 
 func (cfg *cloneConfig) parseArgs(args []string) {
 	if isFullURL(args[0]) {
-		cfg.Url = args[0]
-		cfg.User = ""
-		cfg.Repo = ""
+		cfg.parseFullURL(args[0])
 		return
 	}
 
@@ -104,12 +102,34 @@ func (cfg *cloneConfig) parseArgs(args []string) {
 }
 
 func isFullURL(s string) bool {
-	if len(strings.Split(s, ":")) == 2 {
-		return true
-	} else if strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://") {
+	if strings.Contains(s, ":") {
 		return true
 	}
 	return false
+}
+
+func (cfg *cloneConfig) parseFullURL(url string) {
+	// if ssh
+	parts := strings.Split(url, ":")
+	if strings.HasPrefix(url, "git@") {
+		// parse hostname from git@github.com
+		cfg.Host = strings.Split(parts[0], "git@")[1]
+		// remove .git
+		repoString := strings.Split(parts[1], ".git")[0]
+		// parse username/repo
+		parts = strings.Split(repoString, "/")
+		cfg.User = parts[0]
+		cfg.Repo = parts[1]
+	} else if strings.HasPrefix(url, "https://") || strings.HasPrefix(url, "http://") {
+		parts = strings.Split(url, "/")
+		cfg.Host = parts[2]
+		cfg.User = parts[3]
+		// remove .git
+		cfg.Repo = strings.Split(parts[4], ".git")[0]
+	} else {
+		color.Red("couldnt parse git url")
+	}
+	cfg.Url = url
 }
 
 func (cfg *cloneConfig) github() {
@@ -143,7 +163,7 @@ func (cfg *cloneConfig) setSourceDir() {
 
 func (cfg *cloneConfig) clone() {
 	var cloneURL string
-	if cfg.User == "" && cfg.Repo == "" {
+	if isFullURL(cfg.Url) {
 		cloneURL = cfg.Url
 	} else {
 		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
