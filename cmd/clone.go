@@ -57,11 +57,11 @@ func init() {
 }
 
 type cloneConfig struct {
-	repo      string
-	user      string
-	host      string
-	url       string
-	sourceDir string
+	Repo      string
+	User      string
+	Host      string
+	Url       string
+	SourceDir string
 	command   *cobra.Command
 }
 
@@ -87,19 +87,19 @@ func clone(cmd *cobra.Command, args []string) {
 
 func (cfg *cloneConfig) parseArgs(args []string) {
 	if isFullURL(args[0]) {
-		cfg.url = args[0]
-		cfg.user = ""
-		cfg.repo = ""
+		cfg.Url = args[0]
+		cfg.User = ""
+		cfg.Repo = ""
 		return
 	}
 
 	args = strings.Split(args[0], "/")
 
 	if len(args) == 1 {
-		cfg.repo = args[0]
+		cfg.Repo = args[0]
 	} else if len(args) == 2 {
-		cfg.user = args[0]
-		cfg.repo = args[1]
+		cfg.User = args[0]
+		cfg.Repo = args[1]
 	}
 }
 
@@ -113,23 +113,23 @@ func isFullURL(s string) bool {
 }
 
 func (cfg *cloneConfig) github() {
-	cfg.url = "github.com"
-	cfg.host = "github.com"
-	user := parser.GetString("github_user")
-	if user != "" {
-		cfg.user = user
+	cfg.Url = "github.com"
+	cfg.Host = "github.com"
+	User := parser.GetString("github_user")
+	if User != "" {
+		cfg.User = User
 	}
 }
 
 func (cfg *cloneConfig) gitlab() {
-	cfg.url = parser.GetString("gitlab_url")
-	cfg.host = parser.GetString("gitlab_url")
-	if cfg.url == "" {
+	cfg.Url = parser.GetString("gitlab_url")
+	cfg.Host = parser.GetString("gitlab_url")
+	if cfg.Url == "" {
 		utilities.ErrorWithHelp(cfg.command, "\nGitlab url not provided in devctlconfig\n ")
 	}
 
-	cfg.user = parser.GetString("gitlab_user")
-	if cfg.user == "" {
+	cfg.User = parser.GetString("gitlab_user")
+	if cfg.User == "" {
 		color.Yellow("Gitlab user not specified, falling back to github user")
 	}
 
@@ -137,20 +137,20 @@ func (cfg *cloneConfig) gitlab() {
 
 func (cfg *cloneConfig) setSourceDir() {
 	sourceDir := parser.GetString("source_dir")
-	cfg.sourceDir = path.Join(sourceDir, "src", cfg.host, cfg.user, tag)
-	os.MkdirAll(cfg.sourceDir, 0755)
+	cfg.SourceDir = path.Join(sourceDir, "src", cfg.Host, cfg.User, tag)
+	os.MkdirAll(cfg.SourceDir, 0755)
 }
 
 func (cfg *cloneConfig) clone() {
 	var cloneURL string
-	if cfg.user == "" && cfg.repo == "" {
-		cloneURL = cfg.url
+	if cfg.User == "" && cfg.Repo == "" {
+		cloneURL = cfg.Url
 	} else {
-		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.url, cfg.user, cfg.repo)
+		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
 	}
 
 	session := sh.NewSession()
-	session.SetDir(cfg.sourceDir)
+	session.SetDir(cfg.SourceDir)
 	session.ShowCMD = true
 	err := session.Command("git", "clone", cloneURL).Run()
 	if err != nil {
