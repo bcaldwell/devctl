@@ -135,9 +135,9 @@ func (cfg *cloneConfig) parseFullURL(url string) {
 func (cfg *cloneConfig) github() {
 	cfg.Url = "github.com"
 	cfg.Host = "github.com"
-	User := parser.GetString("github_user")
-	if User != "" {
-		cfg.User = User
+	user := parser.GetString("github_user")
+	if user != "" {
+		cfg.User = user
 	}
 }
 

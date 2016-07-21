@@ -17,7 +17,7 @@ type testStruct struct {
 	expected *cloneConfig
 }
 
-func TestCdGithub(t *testing.T) {
+func TestCloneGithub(t *testing.T) {
 
 	viper.SetDefault("github_user", "github_user")
 	viper.SetDefault("source_dir", "/")
@@ -57,7 +57,7 @@ func TestCdGithub(t *testing.T) {
 
 }
 
-func TestCdGitlabConfigured(t *testing.T) {
+func TestCloneGitlabConfigured(t *testing.T) {
 
 	viper.SetDefault("github_user", "github_user")
 	viper.SetDefault("source_dir", "/")
@@ -100,7 +100,7 @@ func TestCdGitlabConfigured(t *testing.T) {
 
 }
 
-func TestCdFullUrl(t *testing.T) {
+func TestCloneFullUrl(t *testing.T) {
 
 	viper.SetDefault("github_user", "github_user")
 	viper.SetDefault("source_dir", "/")
@@ -188,7 +188,7 @@ func TestCdFullUrl(t *testing.T) {
 }
 
 // ya this doesnt work....
-// func TestCdGitlabPartlyConfigured(t *testing.T) {
+// func TestCloneGitlabPartlyConfigured(t *testing.T) {
 
 // 	viper.SetDefault("github_user", "github_user")
 // 	viper.SetDefault("source_dir", "/")
@@ -220,7 +220,7 @@ func TestCdFullUrl(t *testing.T) {
 
 // }
 
-// func TestCdGitlabUnconfigured(t *testing.T) {
+// func TestCloneGitlabUnconfigured(t *testing.T) {
 
 // 	viper.SetDefault("github_user", "github_user")
 // 	viper.SetDefault("source_dir", "/")

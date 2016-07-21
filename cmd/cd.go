@@ -15,7 +15,6 @@
 package cmd
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -67,26 +66,25 @@ func init() {
 }
 
 func cd(cmd *cobra.Command, args []string) {
-	if len(args) == 0 {
-		// TODO make this go to /src/github.com/user
-		utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
-	}
-
-	query := args[0]
-
+	var dir string
 	sourceDir := parser.GetString("source_dir")
-	sourceDir = path.Join(sourceDir, "src")
 
-	files := getFolderList(sourceDir)
+	if len(args) == 0 {
+		user := parser.GetString("github_user")
+		dir = path.Join(sourceDir, "src/github.com", user)
+	} else {
+		query := args[0]
 
-	for _, i := range files {
-		fmt.Println(i)
-	}
+		sourceDir = path.Join(sourceDir, "src")
 
-	dir := findMatch(query, files)
-	if dir == "" {
-		color.Yellow("%s could not be found", query)
-		dir = sourceDir
+		files := getFolderList(sourceDir)
+
+		dir = findMatch(query, files)
+		if dir == "" {
+			color.Yellow("%s could not be found", query)
+			user := parser.GetString("github_user")
+			dir = path.Join(sourceDir, "src", user)
+		}
 	}
 
 	post := new(utilities.PostCommand)
@@ -133,13 +131,13 @@ func isVersionControlled(files []os.FileInfo) bool {
 }
 
 func filterDir(files []os.FileInfo) []os.FileInfo {
-	var filted = make([]os.FileInfo, 0)
+	var filtered = make([]os.FileInfo, 0)
 	for _, i := range files {
 		if i.IsDir() && !strings.HasPrefix(i.Name(), ".") {
-			filted = append(filted, i)
+			filtered = append(filtered, i)
 		}
 	}
-	return filted
+	return filtered
 }
 
 func fileInfotoFolder(files []os.FileInfo, root string) []folder {
@@ -157,10 +155,11 @@ func findMatch(query string, files []folder) string {
 			return i.Path()
 		}
 		folders = append(folders, i.Path())
-		// folders = append(folders, i.Name)
 	}
-	temp := fuzzy.RankFind(query, folders)
-	sort.Sort(temp)
-	fmt.Println(temp)
-	return temp[0].Target
+	fuzzyFind := fuzzy.RankFind(query, folders)
+	sort.Sort(fuzzyFind)
+	if len(fuzzyFind) > 0 {
+		return fuzzyFind[0].Target
+	}
+	return ""
 }
