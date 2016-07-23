@@ -6,3 +6,7 @@ import:
   - cobra
 - package: github.com/spf13/viper
 - package: github.com/fatih/color
+- package: github.com/renstrom/fuzzysearch
+  version: ~1.0.0
+  subpackages:
+  - fuzzy

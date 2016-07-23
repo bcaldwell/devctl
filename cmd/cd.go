@@ -18,11 +18,14 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/fatih/color"
+	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
 
@@ -37,6 +40,14 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: cd,
+}
+
+type folder struct {
+	Root, Name string
+}
+
+func (f folder) Path() string {
+	return path.Join(f.Root, f.Name)
 }
 
 func init() {
@@ -55,26 +66,26 @@ func init() {
 }
 
 func cd(cmd *cobra.Command, args []string) {
-	if len(args) == 0 {
-		utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
-	}
-
-	query := args[0]
-
+	var dir string
 	sourceDir := parser.GetString("source_dir")
 
-	files, _ := ioutil.ReadDir(sourceDir)
-	files = filterDir(files)
+	if len(args) == 0 {
+		user := parser.GetString("github_user")
+		dir = path.Join(sourceDir, "src/github.com", user)
+	} else {
+		query := args[0]
 
-	match := findMatch(query, files)
+		sourceDir = path.Join(sourceDir, "src")
 
-	dir := sourceDir
+		files := getFolderList(sourceDir)
 
-	if match == "" {
-		color.Yellow("%s could not be found", query)
+		dir = findMatch(query, files)
+		if dir == "" {
+			color.Yellow("%s could not be found", query)
+			user := parser.GetString("github_user")
+			dir = path.Join(sourceDir, "src", user)
+		}
 	}
-
-	dir = path.Join(sourceDir, match)
 
 	post := new(utilities.PostCommand)
 	post.ChangeDir(dir)
@@ -82,21 +93,73 @@ func cd(cmd *cobra.Command, args []string) {
 
 }
 
-func filterDir(files []os.FileInfo) []os.FileInfo {
-	var filted = make([]os.FileInfo, 0)
-	for _, i := range files {
-		if i.IsDir() {
-			filted = append(filted, i)
-		}
+func getFolderList(sourceDir string, params ...int) []folder {
+	depth := 0
+	if len(params) > 0 {
+		depth = params[0]
 	}
-	return filted
+
+	files, _ := ioutil.ReadDir(sourceDir)
+
+	folders := filterDir(files)
+
+	currentFolder := folder{filepath.Dir(sourceDir), filepath.Base(sourceDir)}
+
+	if isVersionControlled(files) || depth > 3 {
+		var _folders = make([]folder, 0)
+		return append(_folders, currentFolder)
+	}
+
+	depth++
+	var allFolders = make([]folder, 0)
+	allFolders = append(allFolders, currentFolder)
+	for _, i := range folders {
+		temp := getFolderList(path.Join(sourceDir, i.Name()), depth)
+		allFolders = append(allFolders, temp...)
+	}
+
+	return allFolders
 }
 
-func findMatch(query string, files []os.FileInfo) string {
+func isVersionControlled(files []os.FileInfo) bool {
 	for _, i := range files {
-		if strings.Contains(strings.ToLower(i.Name()), strings.ToLower(query)) {
-			return i.Name()
+		if i.Name() == ".git" {
+			return true
 		}
+	}
+	return false
+}
+
+func filterDir(files []os.FileInfo) []os.FileInfo {
+	var filtered = make([]os.FileInfo, 0)
+	for _, i := range files {
+		if i.IsDir() && !strings.HasPrefix(i.Name(), ".") {
+			filtered = append(filtered, i)
+		}
+	}
+	return filtered
+}
+
+func fileInfotoFolder(files []os.FileInfo, root string) []folder {
+	var folders = make([]folder, 0)
+	for _, i := range files {
+		folders = append(folders, folder{root, i.Name()})
+	}
+	return folders
+}
+
+func findMatch(query string, files []folder) string {
+	var folders = make([]string, 0)
+	for _, i := range files {
+		if strings.Contains(strings.ToLower(i.Name), strings.ToLower(query)) {
+			return i.Path()
+		}
+		folders = append(folders, i.Path())
+	}
+	fuzzyFind := fuzzy.RankFind(query, folders)
+	sort.Sort(fuzzyFind)
+	if len(fuzzyFind) > 0 {
+		return fuzzyFind[0].Target
 	}
 	return ""
 }

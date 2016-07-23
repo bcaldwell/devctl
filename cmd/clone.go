@@ -16,6 +16,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
@@ -34,11 +36,13 @@ var cloneCmd = &cobra.Command{
 }
 
 var gitlab bool
+var tag string
 
 func init() {
 	devctlCmd.AddCommand(cloneCmd)
 
 	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
+	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "Clone from gitlab url")
 
 	// Here you will define your flags and configuration settings.
 
@@ -53,10 +57,11 @@ func init() {
 }
 
 type cloneConfig struct {
-	repo      string
-	user      string
-	url       string
-	sourceDir string
+	Repo      string
+	User      string
+	Host      string
+	Url       string
+	SourceDir string
 	command   *cobra.Command
 }
 
@@ -66,7 +71,6 @@ func clone(cmd *cobra.Command, args []string) {
 	}
 
 	cfg := new(cloneConfig)
-	cfg.sourceDir = parser.GetString("source_dir")
 	cfg.command = cmd
 
 	cfg.github()
@@ -75,6 +79,7 @@ func clone(cmd *cobra.Command, args []string) {
 	}
 	cfg.parseArgs(args)
 
+	cfg.setSourceDir()
 	// validate(cfg)
 
 	cfg.clone()
@@ -82,65 +87,92 @@ func clone(cmd *cobra.Command, args []string) {
 
 func (cfg *cloneConfig) parseArgs(args []string) {
 	if isFullURL(args[0]) {
-		cfg.url = args[0]
-		cfg.user = ""
-		cfg.repo = ""
+		cfg.parseFullURL(args[0])
 		return
 	}
 
 	args = strings.Split(args[0], "/")
 
 	if len(args) == 1 {
-		cfg.repo = args[0]
+		cfg.Repo = args[0]
 	} else if len(args) == 2 {
-		cfg.user = args[0]
-		cfg.repo = args[1]
+		cfg.User = args[0]
+		cfg.Repo = args[1]
 	}
 }
 
 func isFullURL(s string) bool {
-	if len(strings.Split(s, ":")) == 2 {
-		return true
-	} else if strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://") {
+	if strings.Contains(s, ":") {
 		return true
 	}
 	return false
 }
 
-func (cfg *cloneConfig) github() {
-	cfg.url = "github.com"
+func (cfg *cloneConfig) parseFullURL(url string) {
+	// if ssh
+	parts := strings.Split(url, ":")
+	if strings.HasPrefix(url, "git@") {
+		// parse hostname from git@github.com
+		cfg.Host = strings.Split(parts[0], "git@")[1]
+		// remove .git
+		repoString := strings.Split(parts[1], ".git")[0]
+		// parse username/repo
+		parts = strings.Split(repoString, "/")
+		cfg.User = parts[0]
+		cfg.Repo = parts[1]
+	} else if strings.HasPrefix(url, "https://") || strings.HasPrefix(url, "http://") {
+		parts = strings.Split(url, "/")
+		cfg.Host = parts[2]
+		cfg.User = parts[3]
+		// remove .git
+		cfg.Repo = strings.Split(parts[4], ".git")[0]
+	} else {
+		color.Red("couldnt parse git url")
+	}
+	cfg.Url = url
+}
 
+func (cfg *cloneConfig) github() {
+	cfg.Url = "github.com"
+	cfg.Host = "github.com"
 	user := parser.GetString("github_user")
 	if user != "" {
-		cfg.user = user
+		cfg.User = user
 	}
 }
 
 func (cfg *cloneConfig) gitlab() {
-	cfg.url = parser.GetString("gitlab_url")
-	if cfg.url == "" {
+	cfg.Url = parser.GetString("gitlab_url")
+	cfg.Host = parser.GetString("gitlab_url")
+	if cfg.Url == "" {
 		utilities.ErrorWithHelp(cfg.command, "\nGitlab url not provided in devctlconfig\n ")
 	}
 
-	cfg.user = parser.GetString("gitlab_user")
-	if cfg.user == "" {
+	cfg.User = parser.GetString("gitlab_user")
+	if cfg.User == "" {
 		color.Yellow("Gitlab user not specified, falling back to github user")
 	}
 
 }
 
+func (cfg *cloneConfig) setSourceDir() {
+	sourceDir := parser.GetString("source_dir")
+	cfg.SourceDir = path.Join(sourceDir, "src", cfg.Host, cfg.User, tag)
+	os.MkdirAll(cfg.SourceDir, 0755)
+}
+
 func (cfg *cloneConfig) clone() {
-	var cloneUrl string
-	if cfg.user == "" && cfg.repo == "" {
-		cloneUrl = cfg.url
+	var cloneURL string
+	if isFullURL(cfg.Url) {
+		cloneURL = cfg.Url
 	} else {
-		cloneUrl = fmt.Sprintf("git@%s:%s/%s", cfg.url, cfg.user, cfg.repo)
+		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
 	}
 
 	session := sh.NewSession()
-	session.SetDir(cfg.sourceDir)
+	session.SetDir(cfg.SourceDir)
 	session.ShowCMD = true
-	err := session.Command("git", "clone", cloneUrl).Run()
+	err := session.Command("git", "clone", cloneURL).Run()
 	if err != nil {
 		fmt.Print(err)
 	} else {
