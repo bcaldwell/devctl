@@ -17,7 +17,7 @@ func Fail(text string, a ...interface{}) {
 }
 
 func Info(text string, a ...interface{}) {
-	fmt.Printf(blue+"🐧 "+nc+text+"\n", a...)
+	fmt.Printf(blue+"🐧  "+nc+text+"\n", a...)
 }
 
 func Warning(text string, a ...interface{}) {

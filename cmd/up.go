@@ -15,8 +15,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/benjamincaldwell/devctl/languages"
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/spf13/cobra"
@@ -53,7 +51,6 @@ func init() {
 func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
-	fmt.Printf("%+v", config)
 
 	languagesUsed := []languages.Language{}
 	if config.Node.Version != "" {
