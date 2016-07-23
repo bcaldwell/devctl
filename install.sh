@@ -29,7 +29,7 @@ clone_devctl() {
     */zsh)
       # Pretty much every zsh user just uses ~/.zshrc so we won't worry about
       # all that file detection stuff we do with bash.
-      install_shell_shim "/Users/${logged_in_user}/.zshrc"
+      install_shell_shim "~/.zshrc"
       ;;
     *)
       echo_fail "No :P"
