@@ -14,7 +14,6 @@ if [ "${devctl_dir}" != "/opt/devctl" ]; then
 fi
 
 devctl() {
-echo "dev"
    case "$1" in
     load-dev)
       local devctl_path="$(devctl cd devctl && pwd)"
@@ -76,15 +75,20 @@ NC='\x1b[0m'
 GREEN='\x1b[32m'
 RED='\x1b[31m'
 BLUE='\x1b[94m'
+YELLOW='\x1b[33m'
 
 echo_success() {
-  echo -e "${GREEN}✓${NC} $1"
+  echo -e "${GREEN}✔ ${NC} $1"
 }
 
 echo_fail() {
-    echo -e "${RED}✗${NC} $1"
+    echo -e "${RED}✗ ${NC} $1"
 }
 
 echo_info() {
-    echo -e "${BLUE}☇${NC} $1"
+    echo -e "${BLUE}🐧 ${NC} $1"
+}
+
+echo_warning() {
+    echo -e "${YELLOW}⚠ ${NC} $1"
 }

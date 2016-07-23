@@ -3,13 +3,13 @@ package utilities
 import (
 	"os"
 
-	"github.com/fatih/color"
+	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/spf13/cobra"
 )
 
 // ErrorWithHelp Show show error message, help menu and exit
 func ErrorWithHelp(cmd *cobra.Command, message string) {
-	color.Red(message)
+	printer.Fail(message)
 	cmd.Help()
 	os.Exit(1)
 }

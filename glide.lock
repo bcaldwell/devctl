@@ -1,5 +1,5 @@
-hash: 4541256632dc0ff66fd83f7e7f224886d7aad6a7c8dece3c40dd263b670e9520
-updated: 2016-07-22T10:35:32.843909819-04:00
+hash: eb08a7ca7ce0776c53fc861bbb5c28e2dbd7471a3b3c699942509e75d80c262c
+updated: 2016-07-23T17:47:09.254702979-04:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
@@ -9,8 +9,6 @@ imports:
   version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
 - name: github.com/codeskyblue/go-sh
   version: ceb46ec4630a726eeed51d0a70066c9e1102c48f
-- name: github.com/fatih/color
-  version: 87d4004f2ab62d0d255e0a38f1680aa534549fe3
 - name: github.com/fsnotify/fsnotify
   version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
 - name: github.com/hashicorp/hcl
@@ -28,10 +26,6 @@ imports:
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/magiconair/properties
   version: e2f061ecfdaca9f35b2e2c12346ffc526f138137
-- name: github.com/mattn/go-colorable
-  version: 9056b7a9f2d1f2d96498d6d146acd1f9d5ed3d59
-- name: github.com/mattn/go-isatty
-  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
 - name: github.com/mitchellh/mapstructure
   version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
 - name: github.com/renstrom/fuzzysearch
