@@ -30,3 +30,4 @@ _testmain.go
 *.prof
 
 vendor
+devctl

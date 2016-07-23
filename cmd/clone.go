@@ -21,9 +21,9 @@ import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/codeskyblue/go-sh"
-	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -127,7 +127,7 @@ func (cfg *cloneConfig) parseFullURL(url string) {
 		// remove .git
 		cfg.Repo = strings.Split(parts[4], ".git")[0]
 	} else {
-		color.Red("couldnt parse git url")
+		printer.Fail("couldnt parse git url")
 	}
 	cfg.Url = url
 }
@@ -150,7 +150,7 @@ func (cfg *cloneConfig) gitlab() {
 
 	cfg.User = parser.GetString("gitlab_user")
 	if cfg.User == "" {
-		color.Yellow("Gitlab user not specified, falling back to github user")
+		printer.Warning("Gitlab user not specified, falling back to github user")
 	}
 
 }
@@ -176,6 +176,6 @@ func (cfg *cloneConfig) clone() {
 	if err != nil {
 		fmt.Print(err)
 	} else {
-		color.Green("Clone was successful")
+		printer.Success("Clone was successful")
 	}
 }

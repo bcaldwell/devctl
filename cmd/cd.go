@@ -23,8 +23,8 @@ import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
-	"github.com/fatih/color"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
@@ -81,9 +81,9 @@ func cd(cmd *cobra.Command, args []string) {
 
 		dir = findMatch(query, files)
 		if dir == "" {
-			color.Yellow("%s could not be found", query)
+			printer.Info("%s could not be found", query)
 			user := parser.GetString("github_user")
-			dir = path.Join(sourceDir, "src", user)
+			dir = path.Join(sourceDir, "github.com", user)
 		}
 	}
 

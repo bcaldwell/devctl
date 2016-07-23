@@ -2,12 +2,6 @@ language: go
 go:
 - 1.6
 sudo: false
-# addons:
-#   apt:
-#     sources:
-#     - masterminds/glide
-#     packages:
-#     - glide
 cache:
   directories:
   - $HOME/gopath/src/github.com/benjamincaldwell/devctl/vendor

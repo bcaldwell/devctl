@@ -7,3 +7,5 @@ type Language interface {
 	PreInstall(*parser.ConfigurationStruct)
 	Install(*parser.ConfigurationStruct)
 }
+
+var LanguageList = []Language{Node{}}

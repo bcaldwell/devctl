@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fatih/color"
+	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -85,6 +85,6 @@ func initConfig() {
 		// 	// fmt.Println("Error reading config " + cfgFile + " :")
 		// 	// fmt.Print(err)
 	} else {
-		color.Yellow("Warning: devctl config was found")
+		printer.Warning("Warning: devctl config was found")
 	}
 }
