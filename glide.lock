@@ -1,6 +1,8 @@
-hash: 4793de2df63faabd23c65ee8da6bb31b8d79b8d64471a31bda59725b7fbd9905
-updated: 2016-07-19T17:10:02.198310055-04:00
+hash: 4541256632dc0ff66fd83f7e7f224886d7aad6a7c8dece3c40dd263b670e9520
+updated: 2016-07-22T10:35:32.843909819-04:00
 imports:
+- name: github.com/bitly/go-simplejson
+  version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/BurntSushi/toml
   version: bec2dacf4b590d26237cfebff4471e21ce543494
 - name: github.com/codegangsta/inject

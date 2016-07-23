@@ -9,7 +9,7 @@ devctl() {
 
   while read -r line
   do
-    cd "${line}"
+    eval "${line}" > /dev/null
   done < "${fd}"
 
   rm -f "${fd}"
