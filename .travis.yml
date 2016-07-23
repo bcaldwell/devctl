@@ -2,12 +2,6 @@ language: go
 go:
 - 1.6
 sudo: false
-# addons:
-#   apt:
-#     sources:
-#     - masterminds/glide
-#     packages:
-#     - glide
 cache:
   directories:
   - $HOME/gopath/src/github.com/benjamincaldwell/devctl/vendor
@@ -20,4 +14,5 @@ before_install:
 install: glide install
 script: go test -v $(glide novendor)
 after_success: 
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sh deploy.sh
+# - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && sh deploy.sh
+- sh deploy.sh
