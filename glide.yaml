@@ -10,3 +10,5 @@ import:
   version: ~1.0.0
   subpackages:
   - fuzzy
+- package: github.com/bitly/go-simplejson
+  version: ~0.5.0

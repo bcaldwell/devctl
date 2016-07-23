@@ -4,20 +4,27 @@ import "os"
 
 // PostCommand struct
 type PostCommand struct {
-	dir string
+	commands []string
 }
 
 // ChangeDir sets the directory to cd to after command exits
 func (p *PostCommand) ChangeDir(dirPath string) {
-	p.dir = dirPath
+	p.commands = append(p.commands, "cd "+dirPath)
+}
+
+func (p *PostCommand) RunCommand(command string) {
+	p.commands = append(p.commands, command)
 }
 
 // Write writes to the file descriptor
 func (p *PostCommand) Write() {
 	fd := os.NewFile(8, "fd")
-	fd.Write([]byte(p.dir))
 
-	fd.Write([]byte("\n"))
+	for _, command := range p.commands {
+		fd.Write([]byte(command))
+		fd.Write([]byte("\n"))
+	}
+
 	fd.Close()
 
 }
