@@ -7,6 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type RunCommand struct {
+	Desc    string
+	Command string
+}
+
 // ErrorWithHelp Show show error message, help menu and exit
 func ErrorWithHelp(cmd *cobra.Command, message string) {
 	printer.Fail(message)

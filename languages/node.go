@@ -51,6 +51,25 @@ func (n Node) Install(c *parser.ConfigurationStruct) {
 
 }
 
-// func (n Node) scripts(c parser.ConfigurationStruct) {
-// 	// return scripts struct array
-// }
+func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
+	// return scripts struct array
+	scripts := make(map[string]utilities.RunCommand)
+
+	packageJSON := parser.Parser{}
+	if err := packageJSON.Parse("package.json"); err != nil {
+		return scripts
+	}
+
+	packageJSONscripts := packageJSON.GetMap("scripts")
+
+	for name := range packageJSONscripts {
+		scripts[name] = utilities.RunCommand{
+			Command: "npm run " + name,
+		}
+	}
+	return scripts
+}
+
+func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
+	return true
+}

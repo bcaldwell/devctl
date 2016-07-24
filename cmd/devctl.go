@@ -39,6 +39,7 @@ var devctlCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// PersistentPreRun: func(cmd *cobra.Command, args []string) {},
+	Run: devctl,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -87,4 +88,8 @@ func initConfig() {
 	} else {
 		printer.Warning("Warning: devctl config was found")
 	}
+}
+
+func devctl(cmd *cobra.Command, args []string) {
+	cmd.Help()
 }
