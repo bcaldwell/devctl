@@ -3,6 +3,8 @@ package parser
 import (
 	"io/ioutil"
 
+	"github.com/benjamincaldwell/devctl/utilities"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -11,8 +13,9 @@ type version struct {
 }
 
 type ConfigurationStruct struct {
-	Node version
-	Go   version
+	Node    version
+	Go      version
+	Scripts map[string]utilities.RunCommand
 }
 
 func (c *ConfigurationStruct) ParseFile(path string) {

@@ -17,8 +17,8 @@ package cmd
 import (
 	"github.com/benjamincaldwell/devctl/languages"
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
-	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -61,17 +61,31 @@ func run(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	// languagesUsed := []languages.Language{}
+	languagesUsed := languages.LanguagesUsed(config)
 
-	// scripts := make(map[string]utilities.RunCommand)
+	scripts := make(map[string]utilities.RunCommand)
 
-	scripts := languages.Node{}.Scripts(config)
+	for _, i := range languagesUsed {
+		scripts = mapmerge(scripts, i.Scripts(config))
+	}
+
+	// merge most important last
+	scripts = mapmerge(scripts, config.Scripts)
 
 	if val, ok := scripts[scriptName]; ok {
 		post := new(utilities.PostCommand)
 		post.RunCommand(val.Command)
 		post.Write()
 	} else {
-		color.Red("%s script not found", scriptName)
+		printer.Fail("%s script not found", scriptName)
 	}
+}
+
+func mapmerge(base map[string]utilities.RunCommand, mapsToMerge ...map[string]utilities.RunCommand) map[string]utilities.RunCommand {
+	for _, m := range mapsToMerge {
+		for key, value := range m {
+			base[key] = value
+		}
+	}
+	return base
 }

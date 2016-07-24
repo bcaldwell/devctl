@@ -52,23 +52,19 @@ func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	languagesUsed := []languages.Language{}
-	if config.Node.Version != "" {
-		languagesUsed = append(languagesUsed, languages.Node{})
-	}
+	languagesUsed := languages.LanguagesUsed(config)
+
 	preInstall(config, languagesUsed)
 	install(config, languagesUsed)
 }
 
 func preInstall(config *parser.ConfigurationStruct, languagesUsed []languages.Language) {
-
 	for _, i := range languagesUsed {
 		i.PreInstall(config)
 	}
 }
 
 func install(config *parser.ConfigurationStruct, languagesUsed []languages.Language) {
-
 	for _, i := range languagesUsed {
 		i.Install(config)
 	}

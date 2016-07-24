@@ -25,7 +25,7 @@ install:
 # golang (glide)
 # python (pip)
 
-commands:
+scripts:
   console:
     desc: blah
     command: bin/rails console

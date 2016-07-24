@@ -14,3 +14,15 @@ type Language interface {
 }
 
 var LanguageList = []Language{Node{}}
+
+func LanguagesUsed(c *parser.ConfigurationStruct) []Language {
+	languagesUsed := []Language{}
+
+	for _, language := range LanguageList {
+		if language.IsProjectType(c) {
+			languagesUsed = append(languagesUsed, language)
+		}
+	}
+
+	return languagesUsed
+}
