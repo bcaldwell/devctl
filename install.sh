@@ -12,7 +12,6 @@ clone_devctl() {
     local git_url
     git_url="https://github.com/devctl/devctl.git"
 
-    # Very intentionally do the `git clone` as the logged in user so ssh keys aren't an issue.
     sudo mkdir -p /opt/devctl
     sudo chown "${logged_in_user}" /opt/devctl
     echo_info "Cloning devctl/devctl into /opt/devctl"
@@ -27,9 +26,7 @@ clone_devctl() {
 
   case "${shell}" in
     */zsh)
-      # Pretty much every zsh user just uses ~/.zshrc so we won't worry about
-      # all that file detection stuff we do with bash.
-      install_shell_shim "$HOME/.zshrc"
+      setup_profile "$HOME/.zshrc"
       ;;
     *)
       echo_fail "No :P"
@@ -37,7 +34,7 @@ clone_devctl() {
   esac
 }
 
-install_shell_shim() {
+setup_profile() {
   local rcfile
   rcfile=$1
   touch "${rcfile}"
@@ -49,6 +46,16 @@ install_shell_shim() {
   echo -e "\n# added by devctl command\n[ -f /opt/devctl/devctl.sh ] && source /opt/devctl/devctl.sh" >> "${rcfile}"
   echo_success "shell set up for devctl"
   echo_info "added a line to the end of ${rcfile}"
+}
+
+source_devctl() {
+  echo_info "Sourcing devctl"
+  source /opt/devctl/devctl.sh
+}
+
+install_dependencies() {
+  echo_info "Install dependencies"
+  devctl setup
 }
 
 NC='\x1b[0m'
@@ -74,3 +81,5 @@ echo_warning() {
 }
 
 clone_devctl
+source_devctl
+install_dependencies

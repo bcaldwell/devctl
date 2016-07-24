@@ -18,7 +18,14 @@ type Node struct {
 }
 
 func (n Node) Setup() {
-
+	isNvmInstalled := nvmInstalled()
+	if isNvmInstalled {
+		printer.Info("nvm already installed")
+		return
+	}
+	printer.Info("Installing nvm")
+	err := sh.Command("curl", "-o-", "https://raw.githubusercontent.com/creationix/nvm/v0.31.3/install.sh").Command("bash").Run()
+	utilities.ErrorCheck(err, "nvm install")
 }
 
 func (n Node) PreInstall(c *parser.ConfigurationStruct) {
@@ -26,14 +33,14 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 	n.version = c.Node.Version
 
 	// check if nvm is install
-	_, err := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Output()
-	if err != nil {
+	isNvmInstalled := nvmInstalled()
+	if !isNvmInstalled {
 		printer.Fail("nvm not installed. Install nvm and try again")
 		return
 	}
 
 	// check if requested version is installed
-	nodeVersions, err := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm version "+n.version).Output()
+	nodeVersions, _ := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm version "+n.version).Output()
 	if strings.Contains(string(nodeVersions), "N/A") {
 		sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm install "+n.version).Output()
 	}
@@ -71,5 +78,16 @@ func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCom
 }
 
 func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
+	if c.Node.Version != "" {
+		return true
+	}
+	return false
+}
+
+func nvmInstalled() bool {
+	_, err := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Output()
+	if err != nil {
+		return false
+	}
 	return true
 }

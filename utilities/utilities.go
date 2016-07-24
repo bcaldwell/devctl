@@ -18,3 +18,11 @@ func ErrorWithHelp(cmd *cobra.Command, message string) {
 	cmd.Help()
 	os.Exit(1)
 }
+
+func ErrorCheck(err error, message string) {
+	if err == nil {
+		printer.Success("%s successful", message)
+	} else {
+		printer.Fail("%s failed", message)
+	}
+}
