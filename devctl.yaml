@@ -32,7 +32,13 @@ scripts:
 
  # import from package.json as well
 
- services:
+services:
+  - nginx
+  - mysql
+  - mongo
+  - redis
+
+ docker:
   web:
     image: nginx
     port: 3000

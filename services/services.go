@@ -1,11 +1,11 @@
-package languages
+package services
 
 import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
-type Language interface {
+type Service interface {
 	Setup()
 	PreInstall(*parser.ConfigurationStruct)
 	Install(*parser.ConfigurationStruct)
@@ -13,16 +13,16 @@ type Language interface {
 	IsProjectType(*parser.ConfigurationStruct) bool
 }
 
-var LanguageList = []Language{Node{}}
+var ServiceList = []Service{Node{}}
 
-func LanguagesUsed(c *parser.ConfigurationStruct) []Language {
-	languagesUsed := []Language{}
+func ServicesUsed(c *parser.ConfigurationStruct) []Service {
+	servicesUsed := []Service{}
 
-	for _, language := range LanguageList {
-		if language.IsProjectType(c) {
-			languagesUsed = append(languagesUsed, language)
+	for _, Service := range ServiceList {
+		if Service.IsProjectType(c) {
+			servicesUsed = append(servicesUsed, Service)
 		}
 	}
 
-	return languagesUsed
+	return servicesUsed
 }

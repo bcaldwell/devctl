@@ -109,6 +109,7 @@ func isFullURL(s string) bool {
 }
 
 func (cfg *cloneConfig) parseFullURL(url string) {
+	// ^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)\.git$
 	// if ssh
 	parts := strings.Split(url, ":")
 	if strings.HasPrefix(url, "git@") {

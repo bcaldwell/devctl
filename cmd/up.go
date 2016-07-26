@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"github.com/benjamincaldwell/devctl/languages"
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/services"
 	"github.com/spf13/cobra"
 )
 
@@ -52,20 +52,20 @@ func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	languagesUsed := languages.LanguagesUsed(config)
+	servicesUsed := services.ServicesUsed(config)
 
-	preInstall(config, languagesUsed)
-	install(config, languagesUsed)
+	preInstall(config, servicesUsed)
+	install(config, servicesUsed)
 }
 
-func preInstall(config *parser.ConfigurationStruct, languagesUsed []languages.Language) {
-	for _, i := range languagesUsed {
+func preInstall(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
+	for _, i := range servicesUsed {
 		i.PreInstall(config)
 	}
 }
 
-func install(config *parser.ConfigurationStruct, languagesUsed []languages.Language) {
-	for _, i := range languagesUsed {
+func install(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
+	for _, i := range servicesUsed {
 		i.Install(config)
 	}
 }

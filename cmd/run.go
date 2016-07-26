@@ -15,10 +15,13 @@
 package cmd
 
 import (
-	"github.com/benjamincaldwell/devctl/languages"
+	"sort"
+
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/services"
 	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
 
@@ -61,11 +64,10 @@ func run(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	languagesUsed := languages.LanguagesUsed(config)
-
+	servicesUsed := services.ServicesUsed(config)
 	scripts := make(map[string]utilities.RunCommand)
 
-	for _, i := range languagesUsed {
+	for _, i := range servicesUsed {
 		scripts = mapmerge(scripts, i.Scripts(config))
 	}
 
@@ -77,7 +79,24 @@ func run(cmd *cobra.Command, args []string) {
 		post.RunCommand(val.Command)
 		post.Write()
 	} else {
-		printer.Fail("%s script not found", scriptName)
+		// fuzzy search
+		keys := make([]string, len(scripts))
+		i := 0
+		for k := range scripts {
+			keys[i] = k
+			i++
+		}
+		fuzzyFind := fuzzy.RankFind(scriptName, keys)
+		sort.Sort(fuzzyFind)
+
+		if len(fuzzyFind) > 0 {
+			val := scripts[fuzzyFind[0].Target]
+			post := new(utilities.PostCommand)
+			post.RunCommand(val.Command)
+			post.Write()
+		} else {
+			printer.Fail("%s script not found", scriptName)
+		}
 	}
 }
 
