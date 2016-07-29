@@ -25,14 +25,20 @@ install:
 # golang (glide)
 # python (pip)
 
-commands:
+scripts:
   console:
     desc: blah
     command: bin/rails console
 
  # import from package.json as well
 
- services:
+services:
+  - nginx
+  - mysql
+  - mongo
+  - redis
+
+ docker:
   web:
     image: nginx
     port: 3000

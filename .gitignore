@@ -31,3 +31,6 @@ _testmain.go
 
 vendor
 devctl
+
+**/*/node_modules
+**/*/*.log

@@ -15,14 +15,13 @@
 package cmd
 
 import (
-	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/services"
 	"github.com/spf13/cobra"
 )
 
-// upCmd represents the up command
-var upCmd = &cobra.Command{
-	Use:   "up",
+// setupCmd represents the setup command
+var setupCmd = &cobra.Command{
+	Use:   "setup",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -30,42 +29,27 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: up,
+	Run: setup,
 }
 
 func init() {
-	devctlCmd.AddCommand(upCmd)
+	devctlCmd.AddCommand(setupCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// upCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// setupCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// upCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// setupCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }
 
-func up(cmd *cobra.Command, args []string) {
-	config := new(parser.ConfigurationStruct)
-	config.ParseFile("./devctl.yaml")
-
-	servicesUsed := services.ServicesUsed(config)
-
-	preInstall(config, servicesUsed)
-	install(config, servicesUsed)
-}
-
-func preInstall(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
-	for _, i := range servicesUsed {
-		i.PreInstall(config)
-	}
-}
-
-func install(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
-	for _, i := range servicesUsed {
-		i.Install(config)
+func setup(cmd *cobra.Command, args []string) {
+	// TODO: Work your own magic here
+	for _, i := range services.ServiceList {
+		i.Setup()
 	}
 }
