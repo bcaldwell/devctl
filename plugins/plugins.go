@@ -1,11 +1,11 @@
-package services
+package plugins
 
 import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
-type Service interface {
+type Plugin interface {
 	Setup()
 	PreInstall(*parser.ConfigurationStruct)
 	Install(*parser.ConfigurationStruct)
@@ -13,16 +13,16 @@ type Service interface {
 	IsProjectType(*parser.ConfigurationStruct) bool
 }
 
-var ServiceList = []Service{Node{}}
+var PluginList = []Plugin{Node{}}
 
-func ServicesUsed(c *parser.ConfigurationStruct) []Service {
-	servicesUsed := []Service{}
+func PluginsUsed(c *parser.ConfigurationStruct) []Plugin {
+	pluginsUsed := []Plugin{}
 
-	for _, Service := range ServiceList {
-		if Service.IsProjectType(c) {
-			servicesUsed = append(servicesUsed, Service)
+	for _, plugin := range PluginList {
+		if plugin.IsProjectType(c) {
+			pluginsUsed = append(pluginsUsed, plugin)
 		}
 	}
 
-	return servicesUsed
+	return pluginsUsed
 }

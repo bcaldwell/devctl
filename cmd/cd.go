@@ -23,8 +23,8 @@ import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
-	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
@@ -87,9 +87,8 @@ func cd(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	post := new(utilities.PostCommand)
-	post.ChangeDir(dir)
-	post.Write()
+	postCommand.ChangeDir(dir)
+	postCommand.Write()
 
 }
 

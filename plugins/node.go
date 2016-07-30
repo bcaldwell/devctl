@@ -1,9 +1,10 @@
-package services
+package plugins
 
 import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/codeskyblue/go-sh"
@@ -46,16 +47,13 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 	}
 
 	// set correct version in ENV
-	post := new(utilities.PostCommand)
-	post.RunCommand("nvm use " + n.version)
-	post.Write()
+	postCommand.RunCommand("nvm use " + n.version)
 }
 
 func (n Node) Install(c *parser.ConfigurationStruct) {
 	// npm install
 	printer.Info("npm install")
 	sh.Command("npm", "install").Output()
-
 }
 
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
