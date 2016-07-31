@@ -1,6 +1,10 @@
 package postCommand
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestWriter(t *testing.T) {
 
@@ -63,7 +67,7 @@ func TestWriter(t *testing.T) {
 		for _, cmd := range test.commands {
 			RunCommand(cmd)
 		}
-		assert(writeString(), test.output, t)
+		assert.Equal(t, writeString(), test.output, "")
 		reset()
 	}
 }
@@ -74,15 +78,10 @@ func TestWriterAlternate(t *testing.T) {
 	ChangeDir("/demo")
 	RunCommand("npm install")
 
-	assert(writeString(), "cd /test\nnvm use 4\ncd /demo\nnpm install", t)
+	assert.Equal(t, writeString(), "cd /test\nnvm use 4\ncd /demo\nnpm install")
 	reset()
 }
 
-func assert(a, b string, t *testing.T) {
-	if a != b {
-		t.Fatalf("expected %s to equal %s", a, b)
-	}
-}
 func reset() {
 	p.commands = p.commands[:0]
 }

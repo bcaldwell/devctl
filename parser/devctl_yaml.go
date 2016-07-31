@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"encoding/json"
 	"io/ioutil"
 
 	"github.com/benjamincaldwell/devctl/utilities"
@@ -8,13 +9,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type version struct {
+type Version struct {
 	Version string
 }
 
 type ConfigurationStruct struct {
-	Node    version
-	Go      version
+	Node    Version
+	Go      Version
 	Scripts map[string]utilities.RunCommand
 }
 
@@ -23,4 +24,8 @@ func (c *ConfigurationStruct) ParseFile(path string) {
 	data, _ := ioutil.ReadFile(path)
 
 	yaml.Unmarshal(data, c)
+}
+
+func (c *ConfigurationStruct) ParseJson(data string) {
+	json.Unmarshal([]byte(data), c)
 }

@@ -49,7 +49,7 @@ func init() {
 
 func setup(cmd *cobra.Command, args []string) {
 	// TODO: Work your own magic here
-	for _, i := range plugins.PluginList {
+	for _, i := range plugins.List {
 		i.Setup()
 	}
 }

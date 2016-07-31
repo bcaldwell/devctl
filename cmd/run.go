@@ -65,7 +65,7 @@ func run(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	pluginsUsed := plugins.PluginsUsed(config)
+	pluginsUsed := plugins.Used(config)
 	scripts := make(map[string]utilities.RunCommand)
 
 	for _, i := range pluginsUsed {
