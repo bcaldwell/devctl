@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"github.com/benjamincaldwell/devctl/services"
+	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/spf13/cobra"
 )
 
@@ -49,7 +49,7 @@ func init() {
 
 func setup(cmd *cobra.Command, args []string) {
 	// TODO: Work your own magic here
-	for _, i := range services.ServiceList {
+	for _, i := range plugins.List {
 		i.Setup()
 	}
 }

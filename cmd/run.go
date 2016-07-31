@@ -18,8 +18,9 @@ import (
 	"sort"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/plugins"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
-	"github.com/benjamincaldwell/devctl/services"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
@@ -64,10 +65,10 @@ func run(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	servicesUsed := services.ServicesUsed(config)
+	pluginsUsed := plugins.Used(config)
 	scripts := make(map[string]utilities.RunCommand)
 
-	for _, i := range servicesUsed {
+	for _, i := range pluginsUsed {
 		scripts = mapmerge(scripts, i.Scripts(config))
 	}
 
@@ -75,9 +76,7 @@ func run(cmd *cobra.Command, args []string) {
 	scripts = mapmerge(scripts, config.Scripts)
 
 	if val, ok := scripts[scriptName]; ok {
-		post := new(utilities.PostCommand)
-		post.RunCommand(val.Command)
-		post.Write()
+		postCommand.RunCommand(val.Command)
 	} else {
 		// fuzzy search
 		keys := make([]string, len(scripts))
@@ -91,13 +90,12 @@ func run(cmd *cobra.Command, args []string) {
 
 		if len(fuzzyFind) > 0 {
 			val := scripts[fuzzyFind[0].Target]
-			post := new(utilities.PostCommand)
-			post.RunCommand(val.Command)
-			post.Write()
+			postCommand.RunCommand(val.Command)
 		} else {
 			printer.Fail("%s script not found", scriptName)
 		}
 	}
+	postCommand.Write()
 }
 
 func mapmerge(base map[string]utilities.RunCommand, mapsToMerge ...map[string]utilities.RunCommand) map[string]utilities.RunCommand {

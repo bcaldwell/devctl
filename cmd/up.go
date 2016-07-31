@@ -16,7 +16,8 @@ package cmd
 
 import (
 	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/services"
+	"github.com/benjamincaldwell/devctl/plugins"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/spf13/cobra"
 )
 
@@ -52,20 +53,21 @@ func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
 
-	servicesUsed := services.ServicesUsed(config)
+	pluginsUsed := plugins.Used(config)
 
-	preInstall(config, servicesUsed)
-	install(config, servicesUsed)
+	preInstall(config, pluginsUsed)
+	install(config, pluginsUsed)
+	postCommand.Write()
 }
 
-func preInstall(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
-	for _, i := range servicesUsed {
+func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
+	for _, i := range pluginsUsed {
 		i.PreInstall(config)
 	}
 }
 
-func install(config *parser.ConfigurationStruct, servicesUsed []services.Service) {
-	for _, i := range servicesUsed {
+func install(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
+	for _, i := range pluginsUsed {
 		i.Install(config)
 	}
 }

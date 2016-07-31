@@ -1,5 +1,5 @@
-hash: eb08a7ca7ce0776c53fc861bbb5c28e2dbd7471a3b3c699942509e75d80c262c
-updated: 2016-07-23T17:47:09.254702979-04:00
+hash: fc7df70b5b30a15ae82d2e5bc027c327ce6b420a28204ad7cfe63452aa2c9bf9
+updated: 2016-07-31T12:43:46.174643596-04:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
@@ -44,6 +44,8 @@ imports:
   version: 367864438f1b1a3c7db4da06a2f55b144e6784e0
 - name: github.com/spf13/viper
   version: c1ccc378a054ea8d4e38d8c67f6938d4760b53dd
+- name: github.com/stretchr/testify
+  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
 - name: golang.org/x/sys
   version: b518c298ac9dc94b6ac0757394f50d10c5dfa25a
   subpackages:
