@@ -1,0 +1,17 @@
+## Customize deployment commands
+deployment:
+  production: # just a label; label names are completely up to you
+    branch: master
+    commands:
+      - mkdir -p /home/ubuntu/.go_workspace/src/github.com/benjamincaldwell
+      - ln -s /home/ubuntu/devctl /home/ubuntu/.go_workspace/src/github.com/benjamincaldwell/devctl
+      - cd /home/ubuntu/devctl && env GOOS=darwin GOARCH=amd64 go build -o devctl.mac
+      - cd /home/ubuntu/devctl && env GOOS=linux GOARCH=amd64 go build -o devctl.linux
+      - git clone git@github.com:devctl/devctl.git "$HOME/deploy"
+      - mv /home/ubuntu/devctl/devctl.* "$HOME/deploy/" 
+      - mv /home/ubuntu/devctl/install.sh "$HOME/deploy/" 
+      - git config --global user.email "circleci@devctl.com" 
+      - git config --global user.name "circleci" 
+      - cd "$HOME/deploy" && git add . 
+      - cd "$HOME/deploy" && git commit -m "Auto update from circleci" 
+      - cd "$HOME/deploy" && git push origin master 
