@@ -25,7 +25,8 @@ func RunCommand(command string) {
 // Write writes to the file descriptor
 func Write() {
 	fd := os.NewFile(8, "fd")
-	fd.Write([]byte(writeString()))
+	postCommandString := writeString() + "\n"
+	fd.Write([]byte(postCommandString))
 	fd.Close()
 }
 
