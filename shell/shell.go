@@ -50,7 +50,7 @@ func (c *session) PrintOutput() error {
 	outScanner := bufio.NewScanner(cmdReader)
 	go func() {
 		for outScanner.Scan() {
-			printer.Info(outScanner.Text())
+			printer.InfoBar(outScanner.Text())
 		}
 	}()
 	cmdReader, _ = c.cmd.StderrPipe()
@@ -59,9 +59,9 @@ func (c *session) PrintOutput() error {
 		for errScanner.Scan() {
 			text := errScanner.Text()
 			if strings.Contains(strings.ToLower(text), "warn") {
-				printer.Warning(text)
+				printer.WarningBar(text)
 			} else {
-				printer.Fail(text)
+				printer.ErrorBar(text)
 			}
 		}
 	}()

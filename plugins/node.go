@@ -12,9 +12,6 @@ import (
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
-// make languages interface{}
-// up makes array of languages interface
-
 type Node struct {
 	path    string
 	version string
@@ -60,7 +57,9 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 func (n Node) Install(c *parser.ConfigurationStruct) {
 	// npm install
 	printer.Info("npm install")
-	shell.Command("npm", "install").PrintOutput()
+	printer.InfoLineTop()
+	shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm use "+c.Node.Version+" > /dev/null && npm install").PrintOutput()
+	printer.InfoLineBottom()
 }
 
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
