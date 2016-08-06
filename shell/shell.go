@@ -13,6 +13,7 @@ var MainInterface SessionInterface = new(session)
 type SessionInterface interface {
 	Command(name string, arg ...string) SessionInterface
 	SetInput(s string) SessionInterface
+	SetDir(s string) SessionInterface
 	Run() error
 	Output() ([]byte, error)
 	PrintOutput() error
@@ -34,6 +35,11 @@ func (c *session) Command(name string, arg ...string) SessionInterface {
 
 func (c *session) SetInput(s string) SessionInterface {
 	c.cmd.Stdin = strings.NewReader(s)
+	return c
+}
+
+func (c *session) SetDir(s string) SessionInterface {
+	c.cmd.Dir = s
 	return c
 }
 
@@ -71,6 +77,10 @@ func (c *session) PrintOutput() error {
 
 func Session() SessionInterface {
 	return MainInterface.New()
+}
+
+func New() SessionInterface {
+	return Session()
 }
 
 // Command creates a new session and sets up the command with the proper arguments

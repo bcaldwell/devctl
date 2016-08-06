@@ -27,6 +27,7 @@ func init() {
 
 type sessionMock struct {
 	cmd   string
+	dir   string
 	input string
 }
 
@@ -42,6 +43,11 @@ func (c *sessionMock) Command(name string, arg ...string) shell.SessionInterface
 
 func (c *sessionMock) SetInput(s string) shell.SessionInterface {
 	c.input = s
+	return c
+}
+
+func (c *sessionMock) SetDir(s string) shell.SessionInterface {
+	c.dir = s
 	return c
 }
 

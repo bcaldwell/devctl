@@ -22,8 +22,8 @@ import (
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
-	"github.com/codeskyblue/go-sh"
 	"github.com/spf13/cobra"
 )
 
@@ -170,9 +170,8 @@ func (cfg *cloneConfig) clone() {
 		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
 	}
 
-	session := sh.NewSession()
+	session := shell.Session()
 	session.SetDir(cfg.SourceDir)
-	session.ShowCMD = true
 	err := session.Command("git", "clone", cloneURL).Run()
 	if err != nil {
 		fmt.Print(err)
