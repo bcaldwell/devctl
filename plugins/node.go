@@ -1,17 +1,16 @@
 package plugins
 
 import (
+	"io/ioutil"
+	"net/http"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
-	"github.com/codeskyblue/go-sh"
 )
-
-// make languages interface{}
-// up makes array of languages interface
 
 type Node struct {
 	path    string
@@ -24,8 +23,13 @@ func (n Node) Setup() {
 		printer.Info("nvm already installed")
 		return
 	}
+	resp, err := http.Get("https://raw.githubusercontent.com/creationix/nvm/v0.31.3/install.sh")
+	utilities.ErrorCheck(err, "nvm download")
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
 	printer.Info("Installing nvm")
-	err := sh.Command("curl", "-o-", "https://raw.githubusercontent.com/creationix/nvm/v0.31.3/install.sh").Command("bash").Run()
+	err = shell.Command("bash").SetInput(string(body)).Run()
 	utilities.ErrorCheck(err, "nvm install")
 }
 
@@ -36,14 +40,14 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 	// check if nvm is install
 	isNvmInstalled := nvmInstalled()
 	if !isNvmInstalled {
-		printer.Fail("nvm not installed. Install nvm and try again")
+		printer.Fail("nvm not installed. Run devctl setup to install")
 		return
 	}
 
 	// check if requested version is installed
-	nodeVersions, _ := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm version "+n.version).Output()
+	nodeVersions, _ := shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm version "+n.version).Output()
 	if strings.Contains(string(nodeVersions), "N/A") {
-		sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm install "+n.version).Output()
+		shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm install "+n.version).PrintOutput()
 	}
 
 	// set correct version in ENV
@@ -53,7 +57,9 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 func (n Node) Install(c *parser.ConfigurationStruct) {
 	// npm install
 	printer.Info("npm install")
-	sh.Command("npm", "install").Output()
+	printer.InfoLineTop()
+	shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm use "+c.Node.Version+" > /dev/null && npm install").PrintOutput()
+	printer.InfoLineBottom()
 }
 
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
@@ -83,7 +89,7 @@ func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
 }
 
 func nvmInstalled() bool {
-	_, err := sh.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Output()
+	err := shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Run()
 	if err != nil {
 		return false
 	}
