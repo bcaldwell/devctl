@@ -1,0 +1,8 @@
+hash: 536de6224530c4ab00d0870702037bd1495db8764ff9c114d2115858101f4f10
+updated: 2016-08-06T10:16:04.028890347-04:00
+imports:
+- name: github.com/golang/example
+  version: 324742add2041e12bee3312066da5f65b827819e
+  subpackages:
+  - stringutil
+testImports: []

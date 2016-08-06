@@ -1,0 +1,7 @@
+---
+go:
+  version: 6
+scripts:
+  hello:
+    desc: blah
+    command: echo hello

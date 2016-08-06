@@ -1,0 +1,5 @@
+package: github.com/benjamincaldwell/devctl/testing_dir/src/github.com/username/golang
+import:
+- package: github.com/golang/example
+  subpackages:
+  - stringutil
