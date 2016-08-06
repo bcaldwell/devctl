@@ -25,7 +25,9 @@ type session struct {
 }
 
 func (c *session) New() SessionInterface {
-	return new(session)
+	s := new(session)
+	s.cmd = &exec.Cmd{}
+	return s
 }
 
 func (c *session) Command(name string, arg ...string) SessionInterface {

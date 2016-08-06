@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
@@ -43,17 +44,6 @@ func init() {
 
 	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
 	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "Clone from gitlab url")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// cloneCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// cloneCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
 }
 
 type cloneConfig struct {
@@ -81,7 +71,6 @@ func clone(cmd *cobra.Command, args []string) {
 
 	cfg.setSourceDir()
 	// validate(cfg)
-
 	cfg.clone()
 }
 
@@ -109,28 +98,12 @@ func isFullURL(s string) bool {
 }
 
 func (cfg *cloneConfig) parseFullURL(url string) {
-	// ^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)\.git$
-	// if ssh
-	parts := strings.Split(url, ":")
-	if strings.HasPrefix(url, "git@") {
-		// parse hostname from git@github.com
-		cfg.Host = strings.Split(parts[0], "git@")[1]
-		// remove .git
-		repoString := strings.Split(parts[1], ".git")[0]
-		// parse username/repo
-		parts = strings.Split(repoString, "/")
-		cfg.User = parts[0]
-		cfg.Repo = parts[1]
-	} else if strings.HasPrefix(url, "https://") || strings.HasPrefix(url, "http://") {
-		parts = strings.Split(url, "/")
-		cfg.Host = parts[2]
-		cfg.User = parts[3]
-		// remove .git
-		cfg.Repo = strings.Split(parts[4], ".git")[0]
-	} else {
-		printer.Fail("couldnt parse git url")
-	}
-	cfg.Url = url
+	r, _ := regexp.Compile(`^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)\.git$`)
+	res := r.FindAllStringSubmatch(url, -1)
+
+	cfg.Host = res[0][1]
+	cfg.User = res[0][2]
+	cfg.Repo = res[0][3]
 }
 
 func (cfg *cloneConfig) github() {
@@ -172,7 +145,8 @@ func (cfg *cloneConfig) clone() {
 
 	session := shell.Session()
 	session.SetDir(cfg.SourceDir)
-	err := session.Command("git", "clone", cloneURL).Run()
+
+	err := session.Command("git", "clone", cloneURL).PrintOutput()
 	if err != nil {
 		fmt.Print(err)
 	} else {

@@ -12,6 +12,10 @@ import (
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
+func init() {
+	AddPlugin(Node{})
+}
+
 type Node struct {
 	path    string
 	version string

@@ -58,7 +58,6 @@ func run(cmd *cobra.Command, args []string) {
 	var scriptName string
 	if len(args) == 0 {
 		scriptName = "run"
-		// utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
 	} else {
 		scriptName = args[0]
 	}
