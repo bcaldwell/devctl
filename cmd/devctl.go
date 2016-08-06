@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -35,19 +36,29 @@ var devctlCmd = &cobra.Command{
 	Cobra is a CLI library for Go that empowers applications.
 	This application is a tool to generate the needed files
 	to quickly create a Cobra application.`,
+	SilenceErrors: true,
 	// PersistentPreRun: initConfig,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// PersistentPreRun: func(cmd *cobra.Command, args []string) {},
-	Run: devctl,
+	Run:               devctl,
+	PersistentPostRun: persistentPostRun,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the devctlCmd.
 func Execute() {
 	if err := devctlCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(-1)
+		scripts := generateScriptMap()
+		if len(os.Args) >= 2 {
+			scriptName := os.Args[1]
+			if val, ok := findScript(scriptName, scripts); ok {
+				postCommand.RunCommand(val.Command)
+			} else {
+				devctlCmd.Help()
+			}
+			postCommand.Write()
+		}
 	}
 }
 
@@ -92,4 +103,8 @@ func initConfig() {
 
 func devctl(cmd *cobra.Command, args []string) {
 	cmd.Help()
+}
+
+func persistentPostRun(cmd *cobra.Command, args []string) {
+	postCommand.Write()
 }

@@ -88,8 +88,6 @@ func cd(cmd *cobra.Command, args []string) {
 	}
 
 	postCommand.ChangeDir(dir)
-	postCommand.Write()
-
 }
 
 func getFolderList(sourceDir string, params ...int) []folder {

@@ -17,7 +17,6 @@ package cmd
 import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
-	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/spf13/cobra"
 )
 
@@ -57,7 +56,6 @@ func up(cmd *cobra.Command, args []string) {
 
 	preInstall(config, pluginsUsed)
 	install(config, pluginsUsed)
-	postCommand.Write()
 }
 
 func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {

@@ -2,6 +2,6 @@
 node:
   version: 6
 scripts:
-  hello:
+  run:
     desc: blah
     command: echo hello
