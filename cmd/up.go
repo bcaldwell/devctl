@@ -56,6 +56,7 @@ func up(cmd *cobra.Command, args []string) {
 
 	preInstall(config, pluginsUsed)
 	install(config, pluginsUsed)
+	postInstall(config, pluginsUsed)
 }
 
 func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
@@ -67,5 +68,11 @@ func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin
 func install(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
 	for _, i := range pluginsUsed {
 		i.Install(config)
+	}
+}
+
+func postInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
+	for _, i := range pluginsUsed {
+		i.PostInstall(config)
 	}
 }

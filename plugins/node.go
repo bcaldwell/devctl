@@ -66,6 +66,10 @@ func (n Node) Install(c *parser.ConfigurationStruct) {
 	printer.InfoLineBottom()
 }
 
+func (n Node) PostInstall(c *parser.ConfigurationStruct) {
+
+}
+
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)

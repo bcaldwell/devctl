@@ -10,6 +10,7 @@ type Plugin interface {
 	Setup()
 	PreInstall(*parser.ConfigurationStruct)
 	Install(*parser.ConfigurationStruct)
+	PostInstall(*parser.ConfigurationStruct)
 	Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand
 	IsProjectType(*parser.ConfigurationStruct) bool
 }
