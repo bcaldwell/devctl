@@ -70,6 +70,7 @@ func clone(cmd *cobra.Command, args []string) {
 	cfg.parseArgs(args)
 
 	cfg.setSourceDir()
+	cfg.setUrl()
 	// validate(cfg)
 	cfg.clone()
 }
@@ -104,6 +105,7 @@ func (cfg *cloneConfig) parseFullURL(url string) {
 	cfg.Host = res[0][1]
 	cfg.User = res[0][2]
 	cfg.Repo = res[0][3]
+	cfg.Url = url
 }
 
 func (cfg *cloneConfig) github() {
@@ -135,20 +137,19 @@ func (cfg *cloneConfig) setSourceDir() {
 	os.MkdirAll(cfg.SourceDir, 0755)
 }
 
-func (cfg *cloneConfig) clone() {
-	var cloneURL string
-	if isFullURL(cfg.Url) {
-		cloneURL = cfg.Url
-	} else {
-		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
+func (cfg *cloneConfig) setUrl() {
+	if !isFullURL(cfg.Url) {
+		cfg.Url = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
 	}
+}
 
+func (cfg *cloneConfig) clone() {
 	session := shell.Session()
 	session.SetDir(cfg.SourceDir)
 
-	err := session.Command("git", "clone", cloneURL).PrintOutput()
+	err := session.Command("git", "clone", cfg.Url).PrintOutput()
 	if err != nil {
-		fmt.Print(err)
+		printer.Fail("Failed to clone %s", cfg.Url)
 	} else {
 		printer.Success("Clone was successful")
 	}
