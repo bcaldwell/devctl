@@ -26,3 +26,13 @@ func ErrorCheck(err error, message string) {
 		printer.Fail("%s failed", message)
 	}
 }
+
+func Keys(arr map[string]string) []string {
+	keys := make([]string, len(arr))
+	i := 0
+	for k := range arr {
+		keys[i] = k
+		i++
+	}
+	return keys
+}

@@ -48,7 +48,7 @@ func TestCd(t *testing.T) {
 
 	match := findMatch("node", folders)
 	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/node"), "Match failed: ")
-	match = findMatch("username/node", folders)
+	match = findMatch("urname/node", folders)
 	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/node"), "Match failed: ")
 	match = findMatch("go", folders)
 	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/golang"), "Match failed: ")
