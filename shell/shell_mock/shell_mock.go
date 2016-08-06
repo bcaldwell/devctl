@@ -6,7 +6,20 @@ import (
 	"github.com/benjamincaldwell/devctl/shell"
 )
 
+// list of commands that go run
 var Commands []string
+
+// top element is popped from this array and returned as the error value
+var ErrorsToReturn []error
+
+// top element is popped and returned from output function
+var OutputToRetrun []string
+
+func Reset() {
+	Commands = Commands[:0]
+	ErrorsToReturn = ErrorsToReturn[:0]
+	OutputToRetrun = OutputToRetrun[:0]
+}
 
 func init() {
 	shell.MainInterface = new(sessionMock)
@@ -33,14 +46,24 @@ func (c *sessionMock) SetInput(s string) shell.SessionInterface {
 }
 
 func (c *sessionMock) Output() ([]byte, error) {
-	return make([]byte, 0), nil
+	return make([]byte, 0), errorReturnValue()
 }
 
 func (c *sessionMock) PrintOutput() error {
-	return nil
+	return errorReturnValue()
 }
 
 func (c *sessionMock) Run() error {
 	Commands = append(Commands, c.cmd)
-	return nil
+
+	return errorReturnValue()
+}
+
+func errorReturnValue() error {
+	var returnErr error
+	if len(ErrorsToReturn) > 0 {
+		returnErr = ErrorsToReturn[0]
+		ErrorsToReturn = ErrorsToReturn[1:]
+	}
+	return returnErr
 }
