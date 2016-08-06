@@ -21,6 +21,7 @@ type Golang struct {
 
 func (g Golang) Setup() {
 	// install go?
+	// instal glide? godeps?
 }
 
 func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
@@ -36,9 +37,23 @@ func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
 }
 
 func (n Golang) Install(c *parser.ConfigurationStruct) {
-	printer.Info("go getting dependencies")
-	printer.InfoLineTop()
-	shell.Command("sh", "-c", "go get $(go list ./... | grep -v /vendor/)").PrintOutput()
+	printer.Info("getting go dependencies")
+	if _, err := os.Stat("glide.yaml"); err == nil {
+		// glide
+		printer.Info("using glide")
+		printer.InfoLineTop()
+		shell.Command("glide", "install").PrintOutput()
+	} else if _, err := os.Stat("Godeps/Godeps.json"); err == nil {
+		// godep
+		printer.Info("using godep")
+		printer.InfoLineTop()
+		shell.Command("godep", "restore").PrintOutput()
+	} else {
+		// go get
+		printer.Info("using go get")
+		printer.InfoLineTop()
+		shell.Command("sh", "-c", "go get $(go list ./... | grep -v /vendor/)").PrintOutput()
+	}
 	printer.InfoLineBottom()
 }
 
@@ -48,7 +63,7 @@ func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 
 	scripts["test"] = utilities.RunCommand{
 		Desc:    "run go test on non vendor packages",
-		Command: "go test $(go list ./... | grep -v /vendor/)",
+		Command: "go test -v $(go list ./... | grep -v /vendor/)",
 	}
 
 	scripts["run"] = utilities.RunCommand{
@@ -59,6 +74,11 @@ func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 	scripts["build"] = utilities.RunCommand{
 		Desc:    "",
 		Command: "go build *.go",
+	}
+
+	scripts["install"] = utilities.RunCommand{
+		Desc:    "",
+		Command: "go install *.go",
 	}
 
 	return scripts
