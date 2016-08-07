@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
@@ -152,5 +153,6 @@ func (cfg *cloneConfig) clone() {
 		printer.Fail("Failed to clone %s", cfg.Url)
 	} else {
 		printer.Success("Clone was successful")
+		postCommand.ChangeDir(path.Join(cfg.SourceDir, cfg.Repo))
 	}
 }
