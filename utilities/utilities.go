@@ -23,7 +23,7 @@ func ErrorCheck(err error, message string) {
 	if err == nil {
 		printer.Success("%s successful", message)
 	} else {
-		printer.Fail("%s failed", message)
+		printer.Fail("%s failed with %s", message, err)
 	}
 }
 

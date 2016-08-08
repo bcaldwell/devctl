@@ -5,3 +5,10 @@ scripts:
   run:
     desc: blah
     command: echo hello
+
+docker-compose:
+  version: "2"
+
+  services:  
+    db:
+      image: mysql
