@@ -29,9 +29,6 @@ _testmain.go
 *.test
 *.prof
 
-vendor
-
-**/*/node_modules
 **/*/*.log
 
-/Users/benjamincaldwell/src/github.com/benjamincaldwell/devctl/testing_dir/src/github.com/username/golang/vendor
+vendor

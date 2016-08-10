@@ -19,6 +19,10 @@ import (
 type Golang struct {
 }
 
+func init() {
+	AddPlugin(Golang{})
+}
+
 func (g Golang) Setup() {
 	// install go?
 	// instal glide? godeps?
@@ -57,6 +61,9 @@ func (n Golang) Install(c *parser.ConfigurationStruct) {
 	printer.InfoLineBottom()
 }
 
+func (n Golang) PostInstall(c *parser.ConfigurationStruct) {
+}
+
 func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
@@ -85,8 +92,5 @@ func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 }
 
 func (n Golang) IsProjectType(c *parser.ConfigurationStruct) bool {
-	if c.Go.Version != "" {
-		return true
-	}
-	return false
+	return c.Go.Version != ""
 }

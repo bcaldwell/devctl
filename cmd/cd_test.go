@@ -39,8 +39,8 @@ func TestCd(t *testing.T) {
 			"docker-compose-example",
 		},
 		{
-			path.Join(pwd, "/testing_dir/src/github.com/username/golang"),
-			"hello",
+			path.Join(pwd, "/testing_dir/src/github.com/devctl"),
+			"golang-example",
 		},
 	}
 
