@@ -1,0 +1,6 @@
+[submodule "testing_dir/src/github.com/devctl/mean-example"]
+	path = testing_dir/src/github.com/devctl/mean-example
+	url = git@github.com:devctl/mean-example.git
+[submodule "testing_dir/src/github.com/devctl/docker-compose-example"]
+	path = testing_dir/src/github.com/devctl/docker-compose-example
+	url = git@github.com:devctl/docker-compose-example.git

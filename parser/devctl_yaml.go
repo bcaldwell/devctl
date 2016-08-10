@@ -14,9 +14,11 @@ type Version struct {
 }
 
 type ConfigurationStruct struct {
-	Node    Version
-	Go      Version
-	Scripts map[string]utilities.RunCommand
+	Node              Version
+	Go                Version
+	Scripts           map[string]utilities.RunCommand
+	DockerCompose     interface{} `yaml:"docker-compose"`
+	DockerComposeFile string      `yaml:"docker-compose-file"`
 }
 
 func (c *ConfigurationStruct) ParseFile(path string) {

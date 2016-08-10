@@ -25,6 +25,7 @@ import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
@@ -88,8 +89,6 @@ func cd(cmd *cobra.Command, args []string) {
 	}
 
 	postCommand.ChangeDir(dir)
-	postCommand.Write()
-
 }
 
 func getFolderList(sourceDir string, params ...int) []folder {
@@ -147,18 +146,28 @@ func fileInfotoFolder(files []os.FileInfo, root string) []folder {
 	return folders
 }
 
-func findMatch(query string, files []folder) string {
-	var folders = make([]string, 0)
+func createDirTranslation(files []folder, length int) map[string]string {
+	translation := map[string]string{}
+
 	for _, i := range files {
-		if strings.Contains(strings.ToLower(i.Name), strings.ToLower(query)) {
-			return i.Path()
-		}
-		folders = append(folders, i.Path())
+		parts := strings.Split(i.Path(), "/")
+		translation[strings.Join(parts[len(parts)-length:], "/")] = i.Path()
 	}
-	fuzzyFind := fuzzy.RankFind(query, folders)
-	sort.Sort(fuzzyFind)
-	if len(fuzzyFind) > 0 {
-		return fuzzyFind[0].Target
+
+	return translation
+}
+
+func findMatch(query string, files []folder) string {
+
+	for i := 1; i <= 3; i++ {
+		translation := createDirTranslation(files, i)
+
+		folders := utilities.Keys(translation)
+		fuzzyFind := fuzzy.RankFind(query, folders)
+		sort.Sort(fuzzyFind)
+		if len(fuzzyFind) > 0 {
+			return translation[fuzzyFind[0].Target]
+		}
 	}
 	return ""
 }

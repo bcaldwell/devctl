@@ -1,4 +1,8 @@
 ## Customize deployment commands
+checkout:
+  post:
+  - git submodule sync --recursive
+  - git submodule update --recursive --init
 deployment:
   production: # just a label; label names are completely up to you
     branch: master

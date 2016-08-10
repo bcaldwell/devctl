@@ -30,7 +30,6 @@ _testmain.go
 *.prof
 
 vendor
-devctl
 
 **/*/node_modules
 **/*/*.log

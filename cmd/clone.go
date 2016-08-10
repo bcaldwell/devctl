@@ -18,9 +18,11 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
@@ -43,17 +45,6 @@ func init() {
 
 	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
 	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "Clone from gitlab url")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// cloneCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// cloneCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
 }
 
 type cloneConfig struct {
@@ -80,8 +71,8 @@ func clone(cmd *cobra.Command, args []string) {
 	cfg.parseArgs(args)
 
 	cfg.setSourceDir()
+	cfg.setUrl()
 	// validate(cfg)
-
 	cfg.clone()
 }
 
@@ -109,27 +100,12 @@ func isFullURL(s string) bool {
 }
 
 func (cfg *cloneConfig) parseFullURL(url string) {
-	// ^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)\.git$
-	// if ssh
-	parts := strings.Split(url, ":")
-	if strings.HasPrefix(url, "git@") {
-		// parse hostname from git@github.com
-		cfg.Host = strings.Split(parts[0], "git@")[1]
-		// remove .git
-		repoString := strings.Split(parts[1], ".git")[0]
-		// parse username/repo
-		parts = strings.Split(repoString, "/")
-		cfg.User = parts[0]
-		cfg.Repo = parts[1]
-	} else if strings.HasPrefix(url, "https://") || strings.HasPrefix(url, "http://") {
-		parts = strings.Split(url, "/")
-		cfg.Host = parts[2]
-		cfg.User = parts[3]
-		// remove .git
-		cfg.Repo = strings.Split(parts[4], ".git")[0]
-	} else {
-		printer.Fail("couldnt parse git url")
-	}
+	r, _ := regexp.Compile(`^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)\.git$`)
+	res := r.FindAllStringSubmatch(url, -1)
+
+	cfg.Host = res[0][1]
+	cfg.User = res[0][2]
+	cfg.Repo = res[0][3]
 	cfg.Url = url
 }
 
@@ -162,20 +138,21 @@ func (cfg *cloneConfig) setSourceDir() {
 	os.MkdirAll(cfg.SourceDir, 0755)
 }
 
-func (cfg *cloneConfig) clone() {
-	var cloneURL string
-	if isFullURL(cfg.Url) {
-		cloneURL = cfg.Url
-	} else {
-		cloneURL = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
+func (cfg *cloneConfig) setUrl() {
+	if !isFullURL(cfg.Url) {
+		cfg.Url = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
 	}
+}
 
+func (cfg *cloneConfig) clone() {
 	session := shell.Session()
 	session.SetDir(cfg.SourceDir)
-	err := session.Command("git", "clone", cloneURL).Run()
+
+	err := session.Command("git", "clone", cfg.Url).PrintOutput()
 	if err != nil {
-		fmt.Print(err)
+		printer.Fail("Failed to clone %s", cfg.Url)
 	} else {
 		printer.Success("Clone was successful")
+		postCommand.ChangeDir(path.Join(cfg.SourceDir, cfg.Repo))
 	}
 }

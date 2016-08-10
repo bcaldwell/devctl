@@ -30,7 +30,7 @@ func TestCloneGithub(t *testing.T) {
 				Repo:      "test",
 				User:      "github_user",
 				Host:      "github.com",
-				Url:       "github.com",
+				Url:       "git@github.com:github_user/test",
 				SourceDir: "/src/github.com/github_user",
 			},
 		},
@@ -41,7 +41,7 @@ func TestCloneGithub(t *testing.T) {
 				Repo:      "test",
 				User:      "username",
 				Host:      "github.com",
-				Url:       "github.com",
+				Url:       "git@github.com:username/test",
 				SourceDir: "/src/github.com/username",
 			},
 		},
@@ -51,6 +51,7 @@ func TestCloneGithub(t *testing.T) {
 		i.config.github()
 		i.config.parseArgs(i.args)
 		i.config.setSourceDir()
+		i.config.setUrl()
 
 		checkStruct(t, &i)
 	}
@@ -72,7 +73,7 @@ func TestCloneGitlabConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "gitlab_user",
 				Host:      "gitlab.somwhere.com",
-				Url:       "gitlab.somwhere.com",
+				Url:       "git@gitlab.somwhere.com:gitlab_user/test",
 				SourceDir: "/src/gitlab.somwhere.com/gitlab_user",
 			},
 		},
@@ -83,7 +84,7 @@ func TestCloneGitlabConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "username",
 				Host:      "gitlab.somwhere.com",
-				Url:       "gitlab.somwhere.com",
+				Url:       "git@gitlab.somwhere.com:username/test",
 				SourceDir: "/src/gitlab.somwhere.com/username",
 			},
 		},
@@ -94,6 +95,7 @@ func TestCloneGitlabConfigured(t *testing.T) {
 		i.config.gitlab()
 		i.config.parseArgs(i.args)
 		i.config.setSourceDir()
+		i.config.setUrl()
 
 		checkStruct(t, &i)
 	}

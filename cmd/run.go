@@ -55,12 +55,43 @@ func init() {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	var scriptName string
 	if len(args) == 0 {
-		utilities.ErrorWithHelp(cmd, "\nMinimum of one argument is required\n ")
+		scriptName = "run"
+	} else {
+		scriptName = args[0]
 	}
 
-	scriptName := args[0]
+	scripts := generateScriptMap()
 
+	if val, ok := findScript(scriptName, scripts); ok {
+		postCommand.RunCommand(val.Command)
+	} else {
+		printer.Fail("%s script not found", scriptName)
+	}
+}
+
+func findScript(scriptName string, scripts map[string]utilities.RunCommand) (utilities.RunCommand, bool) {
+	if val, ok := scripts[scriptName]; ok {
+		return val, true
+	}
+	// fuzzy search
+	keys := make([]string, len(scripts))
+	i := 0
+	for k := range scripts {
+		keys[i] = k
+		i++
+	}
+	fuzzyFind := fuzzy.RankFind(scriptName, keys)
+	sort.Sort(fuzzyFind)
+
+	if len(fuzzyFind) > 0 {
+		return scripts[fuzzyFind[0].Target], true
+	}
+	return utilities.RunCommand{}, false
+}
+
+func generateScriptMap() map[string]utilities.RunCommand {
 	// TODO: Work your own magic here
 	config := new(parser.ConfigurationStruct)
 	config.ParseFile("./devctl.yaml")
@@ -75,27 +106,7 @@ func run(cmd *cobra.Command, args []string) {
 	// merge most important last
 	scripts = mapmerge(scripts, config.Scripts)
 
-	if val, ok := scripts[scriptName]; ok {
-		postCommand.RunCommand(val.Command)
-	} else {
-		// fuzzy search
-		keys := make([]string, len(scripts))
-		i := 0
-		for k := range scripts {
-			keys[i] = k
-			i++
-		}
-		fuzzyFind := fuzzy.RankFind(scriptName, keys)
-		sort.Sort(fuzzyFind)
-
-		if len(fuzzyFind) > 0 {
-			val := scripts[fuzzyFind[0].Target]
-			postCommand.RunCommand(val.Command)
-		} else {
-			printer.Fail("%s script not found", scriptName)
-		}
-	}
-	postCommand.Write()
+	return scripts
 }
 
 func mapmerge(base map[string]utilities.RunCommand, mapsToMerge ...map[string]utilities.RunCommand) map[string]utilities.RunCommand {

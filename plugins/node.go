@@ -12,6 +12,10 @@ import (
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
+func init() {
+	AddPlugin(Node{})
+}
+
 type Node struct {
 	path    string
 	version string
@@ -60,6 +64,10 @@ func (n Node) Install(c *parser.ConfigurationStruct) {
 	printer.InfoLineTop()
 	shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm use "+c.Node.Version+" > /dev/null && npm install").PrintOutput()
 	printer.InfoLineBottom()
+}
+
+func (n Node) PostInstall(c *parser.ConfigurationStruct) {
+
 }
 
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {

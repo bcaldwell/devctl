@@ -23,6 +23,16 @@ func ErrorCheck(err error, message string) {
 	if err == nil {
 		printer.Success("%s successful", message)
 	} else {
-		printer.Fail("%s failed", message)
+		printer.Fail("%s failed with %s", message, err)
 	}
+}
+
+func Keys(arr map[string]string) []string {
+	keys := make([]string, len(arr))
+	i := 0
+	for k := range arr {
+		keys[i] = k
+		i++
+	}
+	return keys
 }

@@ -28,15 +28,15 @@ func TestCd(t *testing.T) {
 		},
 		{
 			path.Join(pwd, "/testing_dir/src/github.com"),
-			"username",
+			"devctl",
 		},
 		{
-			path.Join(pwd, "/testing_dir/src/github.com/username"),
-			"node",
+			path.Join(pwd, "/testing_dir/src/github.com/devctl"),
+			"mean-example",
 		},
 		{
-			path.Join(pwd, "/testing_dir/src/github.com/username"),
-			"golang",
+			path.Join(pwd, "/testing_dir/src/github.com/devctl"),
+			"docker-compose-example",
 		},
 	}
 
@@ -46,12 +46,12 @@ func TestCd(t *testing.T) {
 		assert.Contains(t, folders, folder, "Value of folders returned")
 	}
 
-	match := findMatch("node", folders)
-	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/node"), "Match failed: ")
-	match = findMatch("username/node", folders)
-	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/node"), "Match failed: ")
-	match = findMatch("go", folders)
-	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/username/golang"), "Match failed: ")
+	match := findMatch("mean", folders)
+	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/devctl/mean-example"), "Match failed: ")
+	match = findMatch("dev/mea", folders)
+	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/devctl/mean-example"), "Match failed: ")
+	match = findMatch("compose", folders)
+	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src/github.com/devctl/docker-compose-example"), "Match failed: ")
 	match = findMatch("src", folders)
 	assert.Equal(t, match, path.Join(pwd, "/testing_dir/src"), "Match failed: ")
 }
