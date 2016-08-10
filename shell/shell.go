@@ -66,8 +66,11 @@ func (c *session) PrintOutput() error {
 	go func() {
 		for errScanner.Scan() {
 			text := errScanner.Text()
-			if strings.Contains(strings.ToLower(text), "warn") {
+			lowerText := strings.ToLower(text)
+			if strings.Contains(lowerText, "warn") {
 				printer.WarningBar(text)
+			} else if strings.Contains(lowerText, "info") {
+				printer.InfoBar(text)
 			} else {
 				printer.ErrorBar(text)
 			}

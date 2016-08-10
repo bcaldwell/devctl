@@ -4,3 +4,6 @@
 [submodule "testing_dir/src/github.com/devctl/docker-compose-example"]
 	path = testing_dir/src/github.com/devctl/docker-compose-example
 	url = git@github.com:devctl/docker-compose-example.git
+[submodule "testing_dir/src/github.com/devctl/golang-example"]
+	path = testing_dir/src/github.com/devctl/golang-example
+	url = git@github.com:devctl/golang-example.git

@@ -38,9 +38,13 @@ func TestCd(t *testing.T) {
 			path.Join(pwd, "/testing_dir/src/github.com/devctl"),
 			"docker-compose-example",
 		},
+		{
+			path.Join(pwd, "/testing_dir/src/github.com/devctl"),
+			"golang-example",
+		},
 	}
 
-	assert.Equal(t, len(folders), len(expectedFolders), "Number of folders returned")
+	assert.Equal(t, len(expectedFolders), len(folders), "Number of folders returned")
 
 	for _, folder := range expectedFolders {
 		assert.Contains(t, folders, folder, "Value of folders returned")
