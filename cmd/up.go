@@ -50,7 +50,7 @@ func init() {
 
 func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
-	config.ParseFile("./devctl.yaml")
+	config.ParseFileDefault()
 
 	pluginsUsed := plugins.Used(config)
 

@@ -94,7 +94,7 @@ func findScript(scriptName string, scripts map[string]utilities.RunCommand) (uti
 func generateScriptMap() map[string]utilities.RunCommand {
 	// TODO: Work your own magic here
 	config := new(parser.ConfigurationStruct)
-	config.ParseFile("./devctl.yaml")
+	config.ParseFileDefault()
 
 	pluginsUsed := plugins.Used(config)
 	scripts := make(map[string]utilities.RunCommand)

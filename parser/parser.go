@@ -7,6 +7,9 @@ import (
 	"github.com/spf13/viper"
 )
 
+// https://github.com/buger/jsonparser
+// https://github.com/tidwall/gjson
+
 type Parser struct {
 	Data *simplejson.Json
 }

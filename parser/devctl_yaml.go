@@ -21,11 +21,20 @@ type ConfigurationStruct struct {
 	DockerComposeFile string      `yaml:"docker-compose-file"`
 }
 
-func (c *ConfigurationStruct) ParseFile(path string) {
+func (c *ConfigurationStruct) ParseFileDefault() error {
+	return c.ParseFile("devctl.yaml", "./devctl.yml")
+}
 
-	data, _ := ioutil.ReadFile(path)
+func (c *ConfigurationStruct) ParseFile(paths ...string) (err error) {
 
-	yaml.Unmarshal(data, c)
+	for _, path := range paths {
+		data, err := ioutil.ReadFile(path)
+		if err == nil {
+			err = yaml.Unmarshal(data, c)
+			return err
+		}
+	}
+	return err
 }
 
 func (c *ConfigurationStruct) ParseJson(data string) {
