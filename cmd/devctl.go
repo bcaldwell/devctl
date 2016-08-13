@@ -97,7 +97,7 @@ func initConfig() {
 		// 	// fmt.Println("Error reading config " + cfgFile + " :")
 		// 	// fmt.Print(err)
 	} else {
-		printer.Warning("Warning: devctl config was found")
+		printer.Warning("Warning: devctl config was not found")
 	}
 }
 
