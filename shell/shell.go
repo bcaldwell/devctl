@@ -2,6 +2,7 @@ package shell
 
 import (
 	"bufio"
+	"io"
 	"os/exec"
 	"strings"
 
@@ -21,7 +22,9 @@ type SessionInterface interface {
 }
 
 type session struct {
-	cmd *exec.Cmd
+	cmd   *exec.Cmd
+	dir   string
+	stdin io.Reader
 }
 
 func (c *session) New() SessionInterface {
@@ -36,24 +39,36 @@ func (c *session) Command(name string, arg ...string) SessionInterface {
 }
 
 func (c *session) SetInput(s string) SessionInterface {
-	c.cmd.Stdin = strings.NewReader(s)
+	c.stdin = strings.NewReader(s)
 	return c
 }
 
 func (c *session) SetDir(s string) SessionInterface {
-	c.cmd.Dir = s
+	c.dir = s
 	return c
 }
 
+func (c *session) applySettings() {
+	if c.dir != "" {
+		c.cmd.Dir = c.dir
+	}
+	if c.stdin != nil {
+		c.cmd.Stdin = c.stdin
+	}
+}
+
 func (c *session) Run() error {
+	c.applySettings()
 	return c.cmd.Run()
 }
 
 func (c *session) Output() ([]byte, error) {
+	c.applySettings()
 	return c.cmd.Output()
 }
 
 func (c *session) PrintOutput() error {
+	c.applySettings()
 	cmdReader, _ := c.cmd.StdoutPipe()
 	outScanner := bufio.NewScanner(cmdReader)
 	go func() {
