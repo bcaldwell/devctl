@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"os"
+
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/spf13/cobra"
@@ -51,6 +53,9 @@ func init() {
 func up(cmd *cobra.Command, args []string) {
 	config := new(parser.ConfigurationStruct)
 	config.ParseFileDefault()
+
+	// create .devctl folder
+	os.Mkdir(".devctl", 0700)
 
 	pluginsUsed := plugins.Used(config)
 

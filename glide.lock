@@ -1,5 +1,5 @@
-hash: 2ba9e2c6e7ac7b26927be68e4ed665e92a67cdf09975f532de6d03acebbfc4f6
-updated: 2016-08-06T12:44:43.719106532-04:00
+hash: acff76149d641c264cb0590a366dfb889d6ac26c3660e13a8f495a3693e357c3
+updated: 2016-08-21T14:16:48.119512168-04:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
@@ -7,6 +7,8 @@ imports:
   version: bec2dacf4b590d26237cfebff4471e21ce543494
 - name: github.com/fsnotify/fsnotify
   version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
+- name: github.com/fsouza/go-dockerclient
+  version: 0436d420da98515cfe6370c9c5cdde868415637b
 - name: github.com/golang/example
   version: 324742add2041e12bee3312066da5f65b827819e
   subpackages:

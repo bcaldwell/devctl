@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/spf13/cobra"
@@ -49,11 +51,15 @@ var devctlCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the devctlCmd.
 func Execute() {
 	if err := devctlCmd.Execute(); err != nil {
-		scripts := generateScriptMap()
+		config := new(parser.ConfigurationStruct)
+		config.ParseFileDefault()
+
+		pluginsUsed := plugins.Used(config)
+		scripts := generateScriptMap(config, pluginsUsed)
 		if len(os.Args) >= 2 {
 			scriptName := os.Args[1]
 			if val, ok := findScript(scriptName, scripts); ok {
-				postCommand.RunCommand(val.Command)
+				runScript(val, config, pluginsUsed)
 			} else {
 				devctlCmd.Help()
 			}

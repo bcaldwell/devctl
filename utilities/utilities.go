@@ -36,3 +36,12 @@ func Keys(arr map[string]string) []string {
 	}
 	return keys
 }
+
+// HandleError prints error with fail printer if it exists
+func HandleError(err error) bool {
+	if err != nil {
+		printer.Fail("%s", err)
+		return true
+	}
+	return false
+}
