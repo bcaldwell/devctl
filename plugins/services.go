@@ -7,6 +7,8 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"strings"
+	"sync"
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/post_command"
@@ -17,13 +19,14 @@ import (
 
 func init() {
 	AddPlugin(&Docker{
-		services: make(map[string]string),
+		services:    make(map[string]string),
+		environment: make(map[string]string),
 	})
 }
 
 type Service struct {
 	image       string
-	port        string
+	port        docker.Port
 	volumes     []string
 	environment []string
 }
@@ -60,49 +63,21 @@ func (d *Docker) Install(c *parser.ConfigurationStruct) {
 		return
 	}
 
+	var wg sync.WaitGroup
+
 	d.services, err = readTomlLike(".devctl/service_list")
 
 	for _, service := range c.Services {
-		if val, ok := d.services[service]; ok {
-			status, err := containerStatus(d, val)
-			utilities.HandleError(err)
-			if status == "running" {
-				printer.SuccessBar("%s already running", service)
-				return
-			} else if status == "deleted" {
-				printer.InfoBar("creating service %s", service)
-				d.services[service], err = createContainer(d, serviceList[service], dir)
-				if err != nil {
-					printer.ErrorBar("Failed to create service %s with error %s", service, err)
-					return
-				}
-			} else {
-				printer.InfoBar("starting service %s", service)
-			}
-		} else {
-			printer.InfoBar("creating service %s", service)
-			d.services[service], err = createContainer(d, serviceList[service], dir)
-			if err != nil {
-				printer.ErrorBar("Failed to create service %s with error %s", service, err)
-				return
-			}
-		}
-
-		err = d.client.StartContainer(
-			d.services[service],
-			&docker.HostConfig{},
-		)
-
-		if err != nil {
-			printer.ErrorBar("failed to start service %s with error %s", service, err)
-		} else {
-			printer.SuccessBar("Successfully started %s", service)
-		}
+		wg.Add(1)
+		go startService(&wg, d, service, dir)
 	}
+
+	wg.Wait()
+
 	printer.InfoLineBottom()
 
 	writeMapTomlLike(d.services, ".devctl/service_list")
-
+	writeMapTomlLike(d.environment, ".devctl/env")
 }
 
 func (d *Docker) PostInstall(c *parser.ConfigurationStruct) {
@@ -167,7 +142,7 @@ func writeMapTomlLike(m map[string]string, fileName string) error {
 	r := ""
 
 	for key, val := range m {
-		r += fmt.Sprintf("%s=%s", key, val)
+		r += fmt.Sprintf("%s=%s\n", key, val)
 	}
 
 	return ioutil.WriteFile(fileName, []byte(r), 0644)
@@ -219,6 +194,17 @@ func createContainer(d *Docker, serviceConfig Service, dir string) (string, erro
 
 	container, err := d.client.CreateContainer(opts)
 	if err != nil {
+		if err == docker.ErrNoSuchImage {
+			printer.InfoBar("Getting image for %s", serviceConfig.image)
+			if err = d.client.PullImage(docker.PullImageOptions{Repository: serviceConfig.image, Tag: "latest"}, docker.AuthConfiguration{}); err != nil {
+				printer.ErrorBar("Failed to get image for %s because %s", serviceConfig.image, err)
+				return "", err
+			}
+			if container, err = d.client.CreateContainer(opts); err != nil {
+				return "", err
+			}
+			return container.ID, nil
+		}
 		return "", err
 	}
 
@@ -234,4 +220,57 @@ func containerStatus(d *Docker, id string) (string, error) {
 		return "", err
 	}
 	return container.State.Status, nil
+}
+
+func startService(wg *sync.WaitGroup, d *Docker, service string, dir string) {
+	defer wg.Done()
+
+	var err error
+	if val, ok := d.services[service]; ok {
+		status, err := containerStatus(d, val)
+		utilities.HandleError(err)
+		if status == "running" {
+			printer.SuccessBar("%s already running", service)
+			d.environment[strings.ToUpper(service)+"_URL"] = getDockerPort(d, service)
+			return
+		} else if status == "deleted" {
+			printer.InfoBar("creating service %s", service)
+			d.services[service], err = createContainer(d, serviceList[service], dir)
+			if err != nil {
+				printer.ErrorBar("Failed to create service %s because %s", service, err)
+				return
+			}
+		} else {
+			printer.InfoBar("starting service %s", service)
+		}
+	} else {
+		printer.InfoBar("creating service %s", service)
+		d.services[service], err = createContainer(d, serviceList[service], dir)
+		if err != nil {
+			printer.ErrorBar("Failed to create service %s because %s", service, err)
+			return
+		}
+	}
+
+	err = d.client.StartContainer(
+		d.services[service],
+		&docker.HostConfig{},
+	)
+
+	if err != nil {
+		printer.ErrorBar("failed to start service %s because %s", service, err)
+	} else {
+		printer.SuccessBar("Successfully started %s", service)
+	}
+
+	d.environment[strings.ToUpper(service)+"_URL"] = getDockerPort(d, service)
+}
+
+func getDockerPort(d *Docker, service string) string {
+	container, _ := d.client.InspectContainer(d.services[service])
+	port := serviceList[service].port
+	if portBinding, ok := container.NetworkSettings.Ports[port]; ok {
+		return portBinding[0].HostPort
+	}
+	return ""
 }

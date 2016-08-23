@@ -20,7 +20,7 @@ type Golang struct {
 }
 
 func init() {
-	AddPlugin(Golang{})
+	AddPlugin(&Golang{})
 }
 
 func (g Golang) Setup() {
