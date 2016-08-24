@@ -187,9 +187,6 @@ func (d *Docker) Down(c *parser.ConfigurationStruct) {
 
 	wg.Wait()
 	printer.InfoLineBottom()
-
-	err = os.Remove(".devctl/service_list")
-	err = os.Remove(".devctl/env")
 }
 
 func (d *Docker) IsProjectType(c *parser.ConfigurationStruct) bool {
