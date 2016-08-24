@@ -19,7 +19,7 @@ type ConfigurationStruct struct {
 	Scripts           map[string]utilities.RunCommand
 	DockerCompose     interface{} `yaml:"docker-compose"`
 	DockerComposeFile string      `yaml:"docker-compose-file"`
-	Services          []string
+	Services          []interface{}
 }
 
 func (c *ConfigurationStruct) ParseFileDefault() error {
