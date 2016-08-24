@@ -97,6 +97,9 @@ func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 func (g Golang) PostScript(c *parser.ConfigurationStruct) {
 }
 
+func (g Golang) Down(c *parser.ConfigurationStruct) {
+}
+
 func (n Golang) IsProjectType(c *parser.ConfigurationStruct) bool {
 	return c.Go.Version != ""
 }

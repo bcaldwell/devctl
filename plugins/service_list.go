@@ -21,6 +21,12 @@ var serviceList = map[string]Service{
 		volumes: []string{"/var/lib/postgresql/data"},
 		tag:     "alpine",
 	},
+	"mariadb": Service{
+		image:   "mariadb",
+		port:    "3306/tcp",
+		volumes: []string{"/var/lib//mysql"},
+		tag:     "alpine",
+	},
 	"rethinkdb": Service{
 		image:   "rethinkdb",
 		port:    "3306/tcp",
@@ -56,13 +62,6 @@ var serviceList = map[string]Service{
 		volumes: []string{"/var/liv/rabbitmq"},
 		tag:     "alpine",
 	},
-	"celery": Service{
-		image:   "celery",
-		port:    "8983/tcp",
-		volumes: []string{"/var/liv/rabbitmq"},
-		tag:     "alpine",
-	},
 }
 
-// celery
 // mariadb

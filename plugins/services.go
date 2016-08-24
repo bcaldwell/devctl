@@ -165,6 +165,33 @@ func (d *Docker) PostScript(c *parser.ConfigurationStruct) {
 	}
 }
 
+func (d *Docker) Down(c *parser.ConfigurationStruct) {
+	var err error
+	endpoint := "unix:///var/run/docker.sock"
+	d.client, err = docker.NewClient(endpoint)
+	if err != nil {
+		printer.Fail("Failed to connect to docker")
+		return
+	}
+
+	printer.Info("Stop services")
+	printer.InfoLineTop()
+
+	var wg sync.WaitGroup
+
+	d.ids, err = readTomlLike(".devctl/service_list")
+	for name, id := range d.ids {
+		go stopContainer(&wg, d, name, id)
+		wg.Add(1)
+	}
+
+	wg.Wait()
+	printer.InfoLineBottom()
+
+	err = os.Remove(".devctl/service_list")
+	err = os.Remove(".devctl/env")
+}
+
 func (d *Docker) IsProjectType(c *parser.ConfigurationStruct) bool {
 	return len(c.Services) > 0
 }
@@ -215,6 +242,7 @@ func createContainer(d *Docker, serviceConfig Service, tag, dir string) (string,
 		HostConfig: &docker.HostConfig{
 			Binds:           []string{},
 			PublishAllPorts: true,
+			RestartPolicy:   docker.RestartUnlessStopped(),
 		},
 		Name: containerName,
 	}
@@ -296,6 +324,18 @@ func startService(wg *sync.WaitGroup, d *Docker, serviceName string, dir string)
 	}
 
 	d.environment[strings.ToUpper(serviceName)+"_URL"] = getDockerPort(d, serviceName)
+}
+
+func stopContainer(wg *sync.WaitGroup, d *Docker, name, id string) error {
+	defer wg.Done()
+	printer.InfoBar("Stoping %s", name)
+	err := d.client.StopContainer(id, 60)
+	if err != nil {
+		printer.ErrorBar("Failed to stop %s because %s", name, err)
+	} else {
+		printer.SuccessBar("Successfully stopped %s", name)
+	}
+	return err
 }
 
 func getDockerPort(d *Docker, serviceName string) string {

@@ -76,6 +76,9 @@ func (d *DockerCompose) Scripts(c *parser.ConfigurationStruct) map[string]utilit
 func (d *DockerCompose) PostScript(c *parser.ConfigurationStruct) {
 }
 
+func (d *DockerCompose) Down(c *parser.ConfigurationStruct) {
+}
+
 func (d *DockerCompose) IsProjectType(c *parser.ConfigurationStruct) bool {
 	return c.DockerCompose != nil || c.DockerComposeFile != ""
 }

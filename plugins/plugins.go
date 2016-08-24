@@ -14,6 +14,7 @@ type Plugin interface {
 	PreScript(*parser.ConfigurationStruct)
 	Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand
 	PostScript(*parser.ConfigurationStruct)
+	Down(*parser.ConfigurationStruct)
 	IsProjectType(*parser.ConfigurationStruct) bool
 }
 

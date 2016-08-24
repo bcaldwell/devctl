@@ -95,6 +95,9 @@ func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCom
 func (n Node) PostScript(c *parser.ConfigurationStruct) {
 }
 
+func (n Node) Down(c *parser.ConfigurationStruct) {
+}
+
 func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
 	if c.Node.Version != "" {
 		return true
