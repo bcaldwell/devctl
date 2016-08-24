@@ -288,7 +288,7 @@ func startService(wg *sync.WaitGroup, d *Docker, serviceName string, dir string)
 		utilities.HandleError(err)
 		if status == "running" {
 			printer.SuccessBar("%s already running", serviceName)
-			d.environment[strings.ToUpper(serviceName)+"_URL"] = getDockerPort(d, serviceName)
+			d.environment[strings.ToUpper(serviceName)+"_URL"] = "localhost:" + getDockerPort(d, serviceName)
 			return
 		} else if status == "deleted" {
 			printer.InfoBar("creating service %s", serviceName)

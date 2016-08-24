@@ -15,8 +15,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/spf13/cobra"
@@ -37,7 +35,6 @@ to quickly create a Cobra application.`,
 		config.ParseFileDefault()
 
 		pluginsUsed := plugins.Used(config)
-		fmt.Println(pluginsUsed)
 		for _, i := range pluginsUsed {
 			i.Down(config)
 		}
