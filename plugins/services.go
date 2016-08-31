@@ -112,7 +112,18 @@ func (d *Docker) Install(c *parser.ConfigurationStruct) {
 }
 
 func (d *Docker) PostInstall(c *parser.ConfigurationStruct) {
+	printer.Info("Running service health check")
+	printer.InfoLineTop()
 
+	for service, id := range d.ids {
+		if status, err := containerStatus(d, id); err != nil || status != "running" {
+			printer.ErrorBar("%s is not running", service)
+		}else{
+			printer.SuccessBar("%s is running", service)
+		}
+	}
+
+	printer.InfoLineBottom()
 }
 
 func (d *Docker) PreScript(c *parser.ConfigurationStruct) {
@@ -239,7 +250,7 @@ func createContainer(d *Docker, serviceConfig Service, tag, dir string) (string,
 		HostConfig: &docker.HostConfig{
 			Binds:           []string{},
 			PublishAllPorts: true,
-			RestartPolicy:   docker.RestartUnlessStopped(),
+			// RestartPolicy:   docker.RestartUnlessStopped(),
 		},
 		Name: containerName,
 	}
