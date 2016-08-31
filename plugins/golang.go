@@ -20,7 +20,7 @@ type Golang struct {
 }
 
 func init() {
-	AddPlugin(Golang{})
+	AddPlugin(&Golang{})
 }
 
 func (g Golang) Setup() {
@@ -64,6 +64,9 @@ func (n Golang) Install(c *parser.ConfigurationStruct) {
 func (n Golang) PostInstall(c *parser.ConfigurationStruct) {
 }
 
+func (g Golang) PreScript(c *parser.ConfigurationStruct) {
+}
+
 func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
@@ -89,6 +92,12 @@ func (n Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 	}
 
 	return scripts
+}
+
+func (g Golang) PostScript(c *parser.ConfigurationStruct) {
+}
+
+func (g Golang) Down(c *parser.ConfigurationStruct) {
 }
 
 func (n Golang) IsProjectType(c *parser.ConfigurationStruct) bool {

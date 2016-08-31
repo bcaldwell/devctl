@@ -16,15 +16,17 @@ package cmd
 
 import (
 	"os"
+	"path"
 
-	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/plugins"
+	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
 )
 
-// upCmd represents the up command
-var upCmd = &cobra.Command{
-	Use:   "up",
+// servicesCmd represents the services command
+var servicesCmd = &cobra.Command{
+	Use:   "services",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -32,52 +34,29 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: up,
+	Run: func(cmd *cobra.Command, args []string) {
+		dir, err := os.Getwd()
+		if utilities.HandleError(err) {
+			return
+		}
+		project := path.Base(dir)
+		printer.InfoLineTop()
+		shell.Command("docker", "ps", "--filter", "label=devctl="+project, "--format", "table {{.Image}}\t{{.Status}}\t{{.Ports}}").PrintOutput()
+		printer.InfoLineBottom()
+	},
 }
 
 func init() {
-	devctlCmd.AddCommand(upCmd)
+	devctlCmd.AddCommand(servicesCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// upCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// servicesCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// upCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// servicesCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-}
-
-func up(cmd *cobra.Command, args []string) {
-	config := new(parser.ConfigurationStruct)
-	config.ParseFileDefault()
-
-	// create .devctl folder
-	os.Mkdir(".devctl", 0700)
-
-	pluginsUsed := plugins.Used(config)
-
-	preInstall(config, pluginsUsed)
-	install(config, pluginsUsed)
-	postInstall(config, pluginsUsed)
-}
-
-func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.PreInstall(config)
-	}
-}
-
-func install(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.Install(config)
-	}
-}
-
-func postInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.PostInstall(config)
-	}
 }

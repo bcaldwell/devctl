@@ -19,6 +19,7 @@ type ConfigurationStruct struct {
 	Scripts           map[string]utilities.RunCommand
 	DockerCompose     interface{} `yaml:"docker-compose"`
 	DockerComposeFile string      `yaml:"docker-compose-file"`
+	Services          []interface{}
 }
 
 func (c *ConfigurationStruct) ParseFileDefault() error {
@@ -26,7 +27,6 @@ func (c *ConfigurationStruct) ParseFileDefault() error {
 }
 
 func (c *ConfigurationStruct) ParseFile(paths ...string) (err error) {
-
 	for _, path := range paths {
 		data, err := ioutil.ReadFile(path)
 		if err == nil {

@@ -1,11 +1,14 @@
 package utilities
 
 import (
+	"math/rand"
 	"os"
 
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/spf13/cobra"
 )
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
 type RunCommand struct {
 	Desc    string
@@ -27,6 +30,7 @@ func ErrorCheck(err error, message string) {
 	}
 }
 
+// Keys returns the keys of a map
 func Keys(arr map[string]string) []string {
 	keys := make([]string, len(arr))
 	i := 0
@@ -35,4 +39,21 @@ func Keys(arr map[string]string) []string {
 		i++
 	}
 	return keys
+}
+
+// HandleError prints error with fail printer if it exists
+func HandleError(err error) bool {
+	if err != nil {
+		printer.Fail("%s", err)
+		return true
+	}
+	return false
+}
+
+func RandStringBytesRmndr(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	return string(b)
 }

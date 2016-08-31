@@ -20,7 +20,7 @@ func TestPluginsUsed(t *testing.T) {
 					"Version": "4"
 				}
 			}`,
-			[]Plugin{Node{}},
+			[]Plugin{&Node{}},
 		},
 		{
 			`{

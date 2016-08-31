@@ -62,12 +62,29 @@ func run(cmd *cobra.Command, args []string) {
 		scriptName = args[0]
 	}
 
-	scripts := generateScriptMap()
+	config := new(parser.ConfigurationStruct)
+	config.ParseFileDefault()
+
+	pluginsUsed := plugins.Used(config)
+
+	scripts := generateScriptMap(config, pluginsUsed)
 
 	if val, ok := findScript(scriptName, scripts); ok {
-		postCommand.RunCommand(val.Command)
+		runScript(val, config, pluginsUsed)
 	} else {
 		printer.Fail("%s script not found", scriptName)
+	}
+}
+
+func runScript(script utilities.RunCommand, config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
+	for _, i := range pluginsUsed {
+		i.PreScript(config)
+	}
+
+	postCommand.RunCommand(script.Command)
+
+	for _, i := range pluginsUsed {
+		i.PostScript(config)
 	}
 }
 
@@ -91,12 +108,7 @@ func findScript(scriptName string, scripts map[string]utilities.RunCommand) (uti
 	return utilities.RunCommand{}, false
 }
 
-func generateScriptMap() map[string]utilities.RunCommand {
-	// TODO: Work your own magic here
-	config := new(parser.ConfigurationStruct)
-	config.ParseFileDefault()
-
-	pluginsUsed := plugins.Used(config)
+func generateScriptMap(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) map[string]utilities.RunCommand {
 	scripts := make(map[string]utilities.RunCommand)
 
 	for _, i := range pluginsUsed {

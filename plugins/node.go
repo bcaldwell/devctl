@@ -13,7 +13,7 @@ import (
 )
 
 func init() {
-	AddPlugin(Node{})
+	AddPlugin(&Node{})
 }
 
 type Node struct {
@@ -21,7 +21,7 @@ type Node struct {
 	version string
 }
 
-func (n Node) Setup() {
+func (n *Node) Setup() {
 	isNvmInstalled := nvmInstalled()
 	if isNvmInstalled {
 		printer.Info("nvm already installed")
@@ -37,7 +37,7 @@ func (n Node) Setup() {
 	utilities.ErrorCheck(err, "nvm install")
 }
 
-func (n Node) PreInstall(c *parser.ConfigurationStruct) {
+func (n *Node) PreInstall(c *parser.ConfigurationStruct) {
 	printer.Info("setting node version to " + c.Node.Version)
 	n.version = c.Node.Version
 
@@ -58,16 +58,19 @@ func (n Node) PreInstall(c *parser.ConfigurationStruct) {
 	postCommand.RunCommand("nvm use " + n.version)
 }
 
-func (n Node) Install(c *parser.ConfigurationStruct) {
+func (n *Node) Install(c *parser.ConfigurationStruct) {
 	// npm install
 	printer.Info("npm install")
 	printer.InfoLineTop()
-	shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm use "+c.Node.Version+" > /dev/null && npm install").PrintOutput()
+	shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && nvm use "+n.version+" > /dev/null && npm install").PrintOutput()
 	printer.InfoLineBottom()
 }
 
 func (n Node) PostInstall(c *parser.ConfigurationStruct) {
 
+}
+
+func (n Node) PreScript(c *parser.ConfigurationStruct) {
 }
 
 func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
@@ -87,6 +90,12 @@ func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCom
 		}
 	}
 	return scripts
+}
+
+func (n Node) PostScript(c *parser.ConfigurationStruct) {
+}
+
+func (n Node) Down(c *parser.ConfigurationStruct) {
 }
 
 func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
