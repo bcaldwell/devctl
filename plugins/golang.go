@@ -6,6 +6,8 @@
 package plugins
 
 import (
+	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
 
@@ -32,11 +34,26 @@ func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
 	sourceDir := parser.GetString("source_dir")
 	// set go path
 	printer.Info("adding devctl root to gopath")
-	if gopath, ok := os.LookupEnv("GOPATH"); !ok || strings.Contains(gopath, sourceDir) {
+	if gopath, ok := os.LookupEnv("GOPATH"); !ok || utilities.StringInSlice(sourceDir, strings.Split(gopath, ":")) {
 		printer.Success("gopath already set properly")
 	} else {
 		postCommand.RunCommand("export GOPATH=${GOPATH}:" + sourceDir)
 		printer.Success("adding devctl root to gopath")
+	}
+
+	if _, err := os.Stat("glide.yaml"); err == nil && !utilities.CheckIfInstalled("glide") {
+		resp, err := http.Get("https://glide.sh/get")
+		utilities.ErrorCheck(err, "glide download")
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+
+		printer.Info("Installing glide")
+		err = shell.Command("sh").SetEnv("GOPATH", "/home/benjamin/go").SetInput(string(body)).Run()
+		utilities.ErrorCheck(err, "glide install")
+	} else if _, err := os.Stat("Godeps/Godeps.json"); err == nil && !utilities.CheckIfInstalled("godep") {
+		printer.Info("Installing godep")
+		err := shell.Command("go", "get", "github.com/tools/godep").Run()
+		utilities.ErrorCheck(err, "godep install")
 	}
 }
 
@@ -51,7 +68,7 @@ func (n Golang) Install(c *parser.ConfigurationStruct) {
 		// godep
 		printer.Info("using godep")
 		printer.InfoLineTop()
-		shell.Command("godep", "restore").PrintOutput()
+		shell.Command("godep", "restore", "-v").PrintOutput()
 	} else {
 		// go get
 		printer.Info("using go get")

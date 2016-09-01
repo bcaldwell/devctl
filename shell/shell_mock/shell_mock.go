@@ -29,6 +29,7 @@ type sessionMock struct {
 	cmd   string
 	dir   string
 	input string
+	env   map[string]string
 }
 
 func (c *sessionMock) New() shell.SessionInterface {
@@ -49,6 +50,11 @@ func (c *sessionMock) SetInput(s string) shell.SessionInterface {
 func (c *sessionMock) SetDir(s string) shell.SessionInterface {
 	c.dir = s
 	return c
+}
+
+func (s *sessionMock) SetEnv(key, value string) shell.SessionInterface {
+	c.env[key] = value
+	return s
 }
 
 func (c *sessionMock) Output() ([]byte, error) {

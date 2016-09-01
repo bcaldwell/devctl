@@ -3,6 +3,7 @@ package shell
 import (
 	"bufio"
 	"io"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -15,6 +16,7 @@ type SessionInterface interface {
 	Command(name string, arg ...string) SessionInterface
 	SetInput(s string) SessionInterface
 	SetDir(s string) SessionInterface
+	SetEnv(key, value string) SessionInterface
 	Run() error
 	Output() ([]byte, error)
 	PrintOutput() error
@@ -25,11 +27,19 @@ type session struct {
 	cmd   *exec.Cmd
 	dir   string
 	stdin io.Reader
+	env   map[string]string
 }
 
 func (c *session) New() SessionInterface {
-	s := new(session)
-	s.cmd = &exec.Cmd{}
+	env := make(map[string]string)
+	for _, line := range os.Environ() {
+		parts := strings.Split(line, "=")
+		env[parts[0]] = parts[1]
+	}
+	s := &session{
+		cmd: &exec.Cmd{},
+		env: env,
+	}
 	return s
 }
 
@@ -48,6 +58,11 @@ func (c *session) SetDir(s string) SessionInterface {
 	return c
 }
 
+func (s *session) SetEnv(key, value string) SessionInterface {
+	s.env[key] = value
+	return s
+}
+
 func (c *session) applySettings() {
 	if c.dir != "" {
 		c.cmd.Dir = c.dir
@@ -55,6 +70,7 @@ func (c *session) applySettings() {
 	if c.stdin != nil {
 		c.cmd.Stdin = c.stdin
 	}
+	c.cmd.Env = newEnvironment(c.env)
 }
 
 func (c *session) Run() error {
@@ -107,4 +123,13 @@ func New() SessionInterface {
 func Command(name string, arg ...string) SessionInterface {
 	cmd := MainInterface.New()
 	return cmd.Command(name, arg...)
+}
+
+func newEnvironment(env map[string]string) []string {
+	environment := make([]string, 0, len(env))
+
+	for key, value := range env {
+		environment = append(environment, key+"="+value)
+	}
+	return environment
 }

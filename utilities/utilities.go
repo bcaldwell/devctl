@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/spf13/cobra"
 )
 
@@ -56,4 +57,18 @@ func RandStringBytesRmndr(n int) string {
 		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
 	}
 	return string(b)
+}
+
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
+func CheckIfInstalled(binary string) bool {
+	err := shell.Command("sh", "-c", "command -v "+binary).Run()
+	return (err == nil)
 }
