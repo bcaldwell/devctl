@@ -2,6 +2,10 @@
 devctl_dir="$(dirname "$0:A")"
 binary_file="devctl.mac"
 
+if [ -n "$BASH_SOURCE" ]; then
+  devctl_dir="$(dirname "$BASH_SOURCE")"
+fi
+
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   binary_file="devctl.linux"
 fi
