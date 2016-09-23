@@ -101,7 +101,7 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 	} else {
-		printer.Warning("Warning: devctl config was found")
+		printer.Warning("Warning: devctl config was not found")
 
 		cmdUsed := os.Args[1]
 		shouldExit := true
