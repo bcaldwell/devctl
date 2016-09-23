@@ -28,6 +28,8 @@ import (
 
 var cfgFile string
 
+var cmdWhitelist = [2]string{"update", "setup"}
+
 // devctlCmd represents the base command when called without any subcommands
 var devctlCmd = &cobra.Command{
 	Use:   "devctl",
@@ -98,12 +100,19 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		// 	// fmt.Println("Using config file:", viper.ConfigFileUsed())
-		// } else {
-		// 	// fmt.Println("Error reading config " + cfgFile + " :")
-		// 	// fmt.Print(err)
 	} else {
 		printer.Warning("Warning: devctl config was found")
+
+		cmdUsed := os.Args[1]
+		shouldExit := true
+		for _, cmd := range cmdWhitelist {
+			if cmd == cmdUsed {
+				shouldExit = false
+			}
+		}
+		if shouldExit {
+			os.Exit(1)
+		}
 	}
 }
 
