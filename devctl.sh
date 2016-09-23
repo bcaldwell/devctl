@@ -2,6 +2,10 @@
 devctl_dir="$(dirname "$0:A")"
 binary_file="devctl.mac"
 
+if [ -n "$BASH_SOURCE" ]; then
+  devctl_dir="$(dirname "$BASH_SOURCE")"
+fi
+
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   binary_file="devctl.linux"
 fi
@@ -56,13 +60,20 @@ devctl() {
 
 devctl_check_update(){
   devctl_echo_info "checking for updates"
-  {
-    git -C /opt/devctl fetch
-    git -C /opt/devctl reset --hard origin/master
-  } >/dev/null 2>&1
-  devctl_check_error $? "Update"
-  # shellcheck disable=SC1091
-  source "/opt/devctl/devctl.sh"
+  if git -C /opt/devctl fetch origin master  >/dev/null 2>&1 &&
+    [ `git -C /opt/devctl rev-list HEAD...origin/master --count` != 0 ]
+  then
+    devctl_echo_info "Downloading update"
+    {
+      git -C /opt/devctl fetch
+      git -C /opt/devctl reset --hard origin/master
+    } >/dev/null 2>&1
+    devctl_check_error $? "Update"
+    # shellcheck disable=SC1091
+    source "/opt/devctl/devctl.sh"
+  else
+    devctl_echo_success "Already up to date :)"
+  fi
 }
 
 devctl_check_error(){
