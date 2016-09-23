@@ -52,9 +52,9 @@ func (c *sessionMock) SetDir(s string) shell.SessionInterface {
 	return c
 }
 
-func (s *sessionMock) SetEnv(key, value string) shell.SessionInterface {
+func (c *sessionMock) SetEnv(key, value string) shell.SessionInterface {
 	c.env[key] = value
-	return s
+	return c
 }
 
 func (c *sessionMock) Output() ([]byte, error) {
