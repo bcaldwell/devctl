@@ -3,7 +3,6 @@ package plugins
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"regexp"
@@ -67,7 +66,7 @@ func (d *Docker) Install(c *parser.ConfigurationStruct) {
 
 	var wg sync.WaitGroup
 
-	d.ids, err = readTomlLike(".devctl/service_list")
+	d.ids, err = parser.ReadTomlLike(".devctl/service_list")
 
 	for _, serviceConf := range c.Services {
 		var tag string
@@ -107,8 +106,8 @@ func (d *Docker) Install(c *parser.ConfigurationStruct) {
 
 	printer.InfoLineBottom()
 
-	writeMapTomlLike(d.ids, ".devctl/service_list")
-	writeMapTomlLike(d.environment, ".devctl/env")
+	parser.WriteMapTomlLike(d.ids, ".devctl/service_list")
+	parser.WriteMapTomlLike(d.environment, ".devctl/env")
 }
 
 func (d *Docker) PostInstall(c *parser.ConfigurationStruct) {
@@ -118,7 +117,7 @@ func (d *Docker) PostInstall(c *parser.ConfigurationStruct) {
 	for service, id := range d.ids {
 		if status, err := containerStatus(d, id); err != nil || status != "running" {
 			printer.ErrorBar("%s is not running", service)
-		}else{
+		} else {
 			printer.SuccessBar("%s is running", service)
 		}
 	}
@@ -190,7 +189,7 @@ func (d *Docker) Down(c *parser.ConfigurationStruct) {
 
 	var wg sync.WaitGroup
 
-	d.ids, err = readTomlLike(".devctl/service_list")
+	d.ids, err = parser.ReadTomlLike(".devctl/service_list")
 	for name, id := range d.ids {
 		go stopContainer(&wg, d, name, id)
 		wg.Add(1)
@@ -202,39 +201,6 @@ func (d *Docker) Down(c *parser.ConfigurationStruct) {
 
 func (d *Docker) IsProjectType(c *parser.ConfigurationStruct) bool {
 	return len(c.Services) > 0
-}
-
-func writeMapTomlLike(m map[string]string, fileName string) error {
-	r := ""
-
-	for key, val := range m {
-		r += fmt.Sprintf("%s=%s\n", key, val)
-	}
-
-	return ioutil.WriteFile(fileName, []byte(r), 0644)
-}
-
-func readTomlLike(fileName string) (map[string]string, error) {
-	m := make(map[string]string)
-	if _, err := os.Stat(fileName); err == nil {
-		r, err := regexp.Compile(`^([^\s#]+)=([^\s]+)$`)
-		if err != nil {
-			return m, err
-		}
-		file, err := os.Open(fileName)
-		if err != nil {
-			return m, err
-		}
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			if res := r.FindAllStringSubmatch(scanner.Text(), 2); res != nil {
-				key := res[0][1]
-				val := res[0][2]
-				m[key] = val
-			}
-		}
-	}
-	return m, nil
 }
 
 func createContainer(d *Docker, serviceConfig Service, tag, dir string) (string, error) {
