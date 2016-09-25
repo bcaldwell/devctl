@@ -28,6 +28,7 @@ func (p *Parser) GetMap(key string) map[string]interface{} {
 	return p.Data.Get(key).MustMap()
 }
 
+// ParseDevctlConfig parses main devctl config file. Data is stored in parser package for future access with GetString method
 func ParseDevctlConfig(file string) (err error) {
 	configData, err = ReadTomlLike(file)
 	return err
