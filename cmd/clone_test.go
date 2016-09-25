@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"os"
 	"testing"
 
-	"github.com/spf13/viper"
+	"github.com/benjamincaldwell/devctl/parser"
 )
 
 type User struct {
@@ -19,8 +21,17 @@ type testStruct struct {
 
 func TestCloneGithub(t *testing.T) {
 
-	viper.SetDefault("github_user", "github_user")
-	viper.SetDefault("source_dir", "/")
+	config := map[string]string{
+		"github_user": "github_user",
+		"source_dir":  "/",
+	}
+
+	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
+	defer os.Remove(file.Name())
+
+	parser.WriteMapTomlLike(config, file.Name())
+
+	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -60,10 +71,19 @@ func TestCloneGithub(t *testing.T) {
 
 func TestCloneGitlabConfigured(t *testing.T) {
 
-	viper.SetDefault("github_user", "github_user")
-	viper.SetDefault("source_dir", "/")
-	viper.SetDefault("gitlab_url", "gitlab.somwhere.com")
-	viper.SetDefault("gitlab_user", "gitlab_user")
+	config := map[string]string{
+		"github_user": "github_user",
+		"source_dir":  "/",
+		"gitlab_url":  "gitlab.somwhere.com",
+		"gitlab_user": "gitlab_user",
+	}
+
+	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
+	defer os.Remove(file.Name())
+
+	parser.WriteMapTomlLike(config, file.Name())
+
+	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -104,10 +124,19 @@ func TestCloneGitlabConfigured(t *testing.T) {
 
 func TestCloneFullUrl(t *testing.T) {
 
-	viper.SetDefault("github_user", "github_user")
-	viper.SetDefault("source_dir", "/")
-	viper.SetDefault("gitlab_url", "gitlab.somwhere.com")
-	viper.SetDefault("gitlab_user", "gitlab_user")
+	config := map[string]string{
+		"github_user": "github_user",
+		"source_dir":  "/",
+		"gitlab_url":  "gitlab.somwhere.com",
+		"gitlab_user": "gitlab_user",
+	}
+
+	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
+	defer os.Remove(file.Name())
+
+	parser.WriteMapTomlLike(config, file.Name())
+
+	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
