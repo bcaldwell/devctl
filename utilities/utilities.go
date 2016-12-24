@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"os"
 
+	"strings"
+
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/spf13/cobra"
@@ -71,4 +73,23 @@ func StringInSlice(a string, list []string) bool {
 func CheckIfInstalled(binary string) bool {
 	err := shell.Command("sh", "-c", "command -v "+binary).Run()
 	return (err == nil)
+}
+
+func UniqueStringMerge(aString string, bString string) string {
+	a := strings.Split(aString, "\n")
+	b := strings.Split(bString, "\n")
+
+	for _, line := range b {
+		a = AppendIfMissing(a, line)
+	}
+	return strings.Join(a, "\n")
+}
+
+func AppendIfMissing(slice []string, i string) []string {
+	for _, ele := range slice {
+		if ele == i {
+			return slice
+		}
+	}
+	return append(slice, i)
 }

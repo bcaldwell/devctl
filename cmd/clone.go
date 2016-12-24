@@ -31,10 +31,11 @@ import (
 
 // cloneCmd represents the clone command
 var cloneCmd = &cobra.Command{
-	Use:   "clone",
-	Short: "Clone the github repository to the source_dir",
-	Long:  ``,
-	Run:   clone,
+	Aliases: []string{"c"},
+	Use:     "clone",
+	Short:   "Clone the github repository to the source_dir",
+	Long:    ``,
+	Run:     clone,
 }
 
 var gitlab bool
