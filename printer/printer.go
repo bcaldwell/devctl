@@ -8,13 +8,16 @@ import (
 	"unsafe"
 )
 
-const nc = "\x1b[0m"
-const green = "\x1b[32m"
-const red = "\x1b[31m"
-const blue = "\x1b[94m"
-const yellow = "\x1b[33m"
-const bold = "\033[1m"
-const nobold = "\033[0m"
+// Nc is the no color string constant
+const Nc = "\x1b[0m"
+const Green = "\x1b[32m"
+const Red = "\x1b[31m"
+
+// Blue is the blue color string constant
+const Blue = "\x1b[94m"
+const Yellow = "\x1b[33m"
+const Bold = "\033[1m"
+const Nobold = "\033[0m"
 
 const line = "━"
 const bar = "┃ "
@@ -22,99 +25,99 @@ const cornerTop = "┏"
 const cornerBottom = "┗"
 
 func Success(text string, a ...interface{}) {
-	fmt.Printf(green+"✔ "+nc+text+"\n", a...)
+	fmt.Printf(Green+"✔ "+Nc+text+"\n", a...)
 }
 
 func Fail(text string, a ...interface{}) {
-	fmt.Printf(red+"✗ "+nc+text+"\n", a...)
+	fmt.Printf(Red+"✗ "+Nc+text+"\n", a...)
 }
 
 func Error(text string, a ...interface{}) {
-	fmt.Printf(red+"✗ "+nc+text+"\n", a...)
+	fmt.Printf(Red+"✗ "+Nc+text+"\n", a...)
 }
 
 func Info(text string, a ...interface{}) {
-	fmt.Printf(blue+"🐧  "+nc+text+"\n", a...)
+	fmt.Printf(Blue+"🐧  "+Nc+text+"\n", a...)
 }
 
 func Warning(text string, a ...interface{}) {
-	fmt.Printf(yellow+"⚠ "+nc+text+"\n", a...)
+	fmt.Printf(Yellow+"⚠ "+Nc+text+"\n", a...)
 }
 
 func SuccessBar(text string, a ...interface{}) {
-	fmt.Printf(green+bar+nc+text+"\n", a...)
+	fmt.Printf(Green+bar+Nc+text+"\n", a...)
 }
 
 func ErrorBar(text string, a ...interface{}) {
-	fmt.Printf(red+bar+nc+text+"\n", a...)
+	fmt.Printf(Red+bar+Nc+text+"\n", a...)
 }
 
 func InfoBar(text string, a ...interface{}) {
-	fmt.Printf(blue+bar+nc+text+"\n", a...)
+	fmt.Printf(Blue+bar+Nc+text+"\n", a...)
 }
 
 func WarningBar(text string, a ...interface{}) {
-	fmt.Printf(yellow+bar+nc+text+"\n", a...)
+	fmt.Printf(Yellow+bar+Nc+text+"\n", a...)
 }
 
 func SuccessLine() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(green + strings.Repeat(line, width) + nc)
+	fmt.Printf(Green + strings.Repeat(line, width) + Nc)
 }
 
 func ErrorLine() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(red + strings.Repeat(line, width) + nc)
+	fmt.Printf(Red + strings.Repeat(line, width) + Nc)
 }
 
 func InfoLine() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(blue + strings.Repeat(line, width) + nc)
+	fmt.Printf(Blue + strings.Repeat(line, width) + Nc)
 }
 
 func WarningLine() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(yellow + strings.Repeat(line, width) + nc)
+	fmt.Printf(Yellow + strings.Repeat(line, width) + Nc)
 }
 
 func SuccessLineTop() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + green + cornerTop + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Green + cornerTop + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func ErrorLineTop() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + red + cornerTop + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Red + cornerTop + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func InfoLineTop() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + blue + cornerTop + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Blue + cornerTop + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func WarningLineTop() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + yellow + cornerTop + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Yellow + cornerTop + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func SuccessLineBottom() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + green + cornerBottom + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Green + cornerBottom + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func ErrorLineBottom() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + red + cornerBottom + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Red + cornerBottom + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func InfoLineBottom() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + blue + cornerBottom + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Blue + cornerBottom + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 func WarningLineBottom() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
-	fmt.Printf(bold + yellow + cornerBottom + strings.Repeat(line, width-1) + nc + nobold)
+	fmt.Printf(Bold + Yellow + cornerBottom + strings.Repeat(line, width-1) + Nc + Nobold)
 }
 
 // GetSize returns the dimensions of the given terminal.
