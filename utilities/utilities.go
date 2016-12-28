@@ -95,7 +95,7 @@ func CheckIfInstalled(binary string, params ...string) bool {
 		}
 	}
 
-	return false
+	return true
 }
 
 func UniqueStringMerge(aString string, bString string) string {
