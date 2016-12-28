@@ -1,4 +1,15 @@
 ## Customize deployment commands
+machine:
+  environment:
+    BUILD_DATE: date '+%A %W %Y %X'
+    BUILD_VERSION: git describe --abbrev=0 --tags
+    GODIST: "go1.7.3.linux-amd64.tar.gz"
+  post:
+    - mkdir -p downloads
+    - test -e downloads/$GODIST || curl -o downloads/$GODIST https://storage.googleapis.com/golang/$GODIST
+    - sudo rm -rf /usr/local/go
+    - sudo tar -C /usr/local -xzf downloads/$GODIST
+
 checkout:
   post:
   - git submodule sync --recursive
@@ -9,6 +20,15 @@ test:
     - go test -v -race $(go list ./... | grep -v /vendor/)
 
 deployment:
+  # github releases
+  release:
+    branch: github-release
+    commands:
+      - go get github.com/mitchellh/gox
+      - go get github.com/tcnksm/ghr
+      - gox -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/ncd_{{.OS}}_{{.Arch}}"
+      - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME 0.1 dist/
+
   production:
     branch: master
     commands:
