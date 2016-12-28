@@ -1,6 +1,7 @@
 package utilities
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 
@@ -70,9 +71,31 @@ func StringInSlice(a string, list []string) bool {
 	return false
 }
 
-func CheckIfInstalled(binary string) bool {
+func nvmInstalled() bool {
+	err := shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Run()
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+// CheckIfInstalled checks if a binary is install. Optional argument ti source a file
+func CheckIfInstalled(binary string, params ...string) bool {
+	command := fmt.Sprintf("command -v %s", binary)
 	err := shell.Command("sh", "-c", "command -v "+binary).Run()
-	return (err == nil)
+	if err != nil {
+		return false
+	}
+
+	if len(params) > 0 {
+		command = fmt.Sprintf("source %s && command -v %s", params[0], binary)
+		err := shell.Command("sh", "-c", command).Run()
+		if err != nil {
+			return false
+		}
+	}
+
+	return false
 }
 
 func UniqueStringMerge(aString string, bString string) string {
