@@ -123,12 +123,15 @@ func (cfg *cloneConfig) gitlab() {
 	cfg.Url = parser.GetString("gitlab_url")
 	cfg.Host = parser.GetString("gitlab_url")
 	if cfg.Url == "" {
-		utilities.ErrorWithHelp(cfg.command, "\nGitlab url not provided in devctlconfig\n ")
+		printer.Warning("Gitlab url not provided, falling back to gitlab.com")
+		cfg.Url = "gitlab.com"
+		cfg.Host = "gitlab.com"
 	}
 
 	cfg.User = parser.GetString("gitlab_user")
 	if cfg.User == "" {
 		printer.Warning("Gitlab user not specified, falling back to github user")
+		cfg.User = parser.GetString("github_user")
 	}
 
 }
