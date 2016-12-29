@@ -12,7 +12,7 @@ then
   echo "Building $BUILD_VERSION"
   gox -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devcl_{{.OS}}_{{.Arch}}"
   echo "Pushing to Github"
-  ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $BUILD_VERSION dist/
+  ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION dist/
 
   # Generating md5 hash
   export DARWIN_AMD64_MD5=$(md5sum dist/devcl_darwin_amd64 | cut -d ' ' -f 1)
