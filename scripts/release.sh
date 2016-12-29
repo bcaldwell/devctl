@@ -30,5 +30,6 @@ then
   cd "$HOME/devctl.github.io"
   git add . 
   git commit -m "Version update from circleci" 
+  git diff
   git push origin master 
 fi
