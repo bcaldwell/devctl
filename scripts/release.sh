@@ -22,8 +22,8 @@ then
   pip install pyyaml
   git clone git@github.com:devctl/devctl.github.io.git "$HOME/devctl.github.io"
   
-  git config --global user.email "circleci@devctl.com" 
-  git config --global user.name "circleci" 
+  git config --global user.email "caldwellbenjamin8@gmail.com" 
+  git config --global user.name "benjamin-bot" 
 
   python scripts/update_website_version.py
 
