@@ -19,7 +19,7 @@ test:
 
 deployment:
   release:
-    branch: github-release
+    branch: master
     commands:
       - bash scripts/release.sh
 
