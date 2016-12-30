@@ -12,19 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package cmd
 
-import "github.com/benjamincaldwell/devctl/cmd"
+import (
+	"fmt"
 
-// Version sets command version
-var Version = "dev"
+	"github.com/spf13/cobra"
+)
 
-// BuildDate sets the date that the current build was built
-var BuildDate = "n/a"
+var showDate bool
 
-func main() {
-	// pass down build date and version number set at build time
-	cmd.Version = Version
-	cmd.BuildDate = BuildDate
-	cmd.Execute()
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use: "version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(Version)
+		if showDate {
+			fmt.Println("Built: " + BuildDate)
+		}
+	},
+}
+
+func init() {
+	devctlCmd.AddCommand(versionCmd)
+	versionCmd.Flags().BoolVarP(&showDate, "date", "d", false, "Show build date")
 }

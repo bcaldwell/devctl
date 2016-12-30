@@ -28,6 +28,9 @@ var cfgFile string
 
 var cmdWhitelist = [2]string{"update", "setup"}
 
+var Version string
+var BuildDate string
+
 // devctlCmd represents the base command when called without any subcommands
 var devctlCmd = &cobra.Command{
 	Use:   "devctl",

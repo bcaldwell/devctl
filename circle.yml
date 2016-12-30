@@ -1,4 +1,13 @@
 ## Customize deployment commands
+machine:
+  environment:
+    GODIST: "go1.7.3.linux-amd64.tar.gz"
+  post:
+    - mkdir -p downloads
+    - test -e downloads/$GODIST || curl -o downloads/$GODIST https://storage.googleapis.com/golang/$GODIST
+    - sudo rm -rf /usr/local/go
+    - sudo tar -C /usr/local -xzf downloads/$GODIST
+
 checkout:
   post:
   - git submodule sync --recursive
@@ -9,6 +18,11 @@ test:
     - go test -v -race $(go list ./... | grep -v /vendor/)
 
 deployment:
+  release:
+    branch: master
+    commands:
+      - bash scripts/release.sh
+
   production:
     branch: master
     commands:
@@ -19,8 +33,8 @@ deployment:
       - git clone git@github.com:devctl/devctl.git "$HOME/deploy"
       - mv /home/ubuntu/devctl/devctl.* "$HOME/deploy/" 
       - mv /home/ubuntu/devctl/install.sh "$HOME/deploy/" 
-      - git config --global user.email "circleci@devctl.com" 
-      - git config --global user.name "circleci" 
+      - git config --global user.email "caldwellbenjamin8@gmail.com" 
+      - git config --global user.name "benjamin-bot" 
       - cd "$HOME/deploy" && git add . 
       - cd "$HOME/deploy" && git commit -m "Auto update from circleci" 
       - cd "$HOME/deploy" && git push origin master 
