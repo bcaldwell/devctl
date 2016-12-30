@@ -13,23 +13,25 @@ then
   gox -ldflags "-X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}" -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devcl_{{.OS}}_{{.Arch}}_bin"
   
   echo "Creating release tarball"
+  cd dist
   mkdir release
-  mkdir dist/devcl_darwin_amd64
-  mv dist/devcl_darwin_amd64_bin dist/devcl_darwin_amd64/
-  cp devctl.sh dist/devcl_darwin_amd64/
-  tar -czvf release/devcl_darwin_amd64.tar.gz dist/devcl_darwin_amd64
+  mkdir devcl
+  mv devcl_darwin_amd64_bin devcl/devctl
+  cp ../devctl.sh devcl/
+  tar -czvf release/devcl_darwin_amd64.tar.gz devcl
 
-  mkdir dist/devcl_linux_amd64
-  mv dist/devcl_linux_amd64_bin dist/devcl_linux_amd64/
-  cp devctl.sh dist/devcl_linux_amd64/
-  tar -czvf release/devcl_linux_amd64.tar.gz dist/devcl_linux_amd64
-  
+  mkdir devcl_linux_amd64
+  mv devcl_linux_amd64_bin devcl/devctl
+  cp ../devctl.sh devcl/
+  tar -czvf release/devcl_linux_amd64.tar.gz devcl
+  cd ..
+
   echo "Pushing to Github"
-  ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION release/
+  ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION dist/release/
 
   # Generating md5 hash
-  export DARWIN_AMD64_MD5=$(md5sum release/devcl_darwin_amd64.tar.gz | cut -d ' ' -f 1)
-  export LINUX_AMD64_MD5=$(md5sum release/devcl_linux_amd64.tar.gz | cut -d ' ' -f 1)
+  export DARWIN_AMD64_MD5=$(md5sum dist/release/devcl_darwin_amd64.tar.gz | cut -d ' ' -f 1)
+  export LINUX_AMD64_MD5=$(md5sum dist/release/devcl_linux_amd64.tar.gz | cut -d ' ' -f 1)
 
   # Pushing new version and sha to website
   pip install pyyaml
