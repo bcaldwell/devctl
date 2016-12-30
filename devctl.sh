@@ -21,7 +21,7 @@ devctl() {
    case "$1" in
     load-dev)
       local devctl_path
-      devctl_path="$(devctl cd devctl && pwd)"
+      devctl_path="$(devctl cd github.com/benjamincaldwell/devctl && pwd)"
       # shellcheck disable=SC1090
       source "${devctl_path}/devctl.sh"
       devctl_echo_info "Loaded dev devctl"
