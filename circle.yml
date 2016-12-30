@@ -18,9 +18,8 @@ test:
     - go test -v -race $(go list ./... | grep -v /vendor/)
 
 deployment:
-  # github releases
   release:
-    branch: master
+    branch: github-release
     commands:
       - bash scripts/release.sh
 
