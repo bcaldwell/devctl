@@ -30,8 +30,8 @@ then
   ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION dist/release/
 
   # Generating md5 hash
-  export DARWIN_AMD64_MD5=$(md5sum dist/release/devcl_darwin_amd64.tar.gz | cut -d ' ' -f 1)
-  export LINUX_AMD64_MD5=$(md5sum dist/release/devcl_linux_amd64.tar.gz | cut -d ' ' -f 1)
+  export DARWIN_AMD64_MD5=$(md5sum dist/release/devctl_darwin_amd64.tar.gz | cut -d ' ' -f 1)
+  export LINUX_AMD64_MD5=$(md5sum dist/release/devctl_linux_amd64.tar.gz | cut -d ' ' -f 1)
 
   # Pushing new version and sha to website
   pip install pyyaml
