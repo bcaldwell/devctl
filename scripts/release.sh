@@ -10,20 +10,20 @@ then
   go get github.com/mitchellh/gox
   go get github.com/tcnksm/ghr
   echo "Building $BUILD_VERSION"
-  gox -ldflags "-X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}" -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devcl_{{.OS}}_{{.Arch}}_bin"
+  gox -ldflags "-X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}" -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devctl_{{.OS}}_{{.Arch}}_bin"
   
   echo "Creating release tarball"
   cd dist
   mkdir release
-  mkdir devcl
-  mv devcl_darwin_amd64_bin devcl/devctl
-  cp ../devctl.sh devcl/
-  tar -czvf release/devcl_darwin_amd64.tar.gz devcl
+  mkdir devctl
+  mv devctl_darwin_amd64_bin devctl/devctl
+  cp ../devctl.sh devctl/
+  tar -czvf release/devctl_darwin_amd64.tar.gz devctl
 
-  mkdir devcl_linux_amd64
-  mv devcl_linux_amd64_bin devcl/devctl
-  cp ../devctl.sh devcl/
-  tar -czvf release/devcl_linux_amd64.tar.gz devcl
+  mkdir devctl_linux_amd64
+  mv devctl_linux_amd64_bin devctl/devctl
+  cp ../devctl.sh devctl/
+  tar -czvf release/devctl_linux_amd64.tar.gz devctl
   cd ..
 
   echo "Pushing to Github"
