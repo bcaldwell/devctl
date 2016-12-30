@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export BUILD_DATE=`date '+%A %W %Y %X'`
+export BUILD_DATE=`date +%Y-%m-%d:%H:%M:%S`
 export BUILD_VERSION=`git log -1 --pretty=%B | tr " " "\n" | grep -Ei 'v[0-9]+(\.[0-9]+)*'`
 
 if [[ $BUILD_VERSION ]] 
@@ -10,7 +10,7 @@ then
   go get github.com/mitchellh/gox
   go get github.com/tcnksm/ghr
   echo "Building $BUILD_VERSION"
-  gox -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devcl_{{.OS}}_{{.Arch}}"
+  gox -ldflags "-X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}" -parallel=2 -osarch="linux/amd64 darwin/amd64" -output "dist/devcl_{{.OS}}_{{.Arch}}"
   echo "Pushing to Github"
   ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION dist/
 

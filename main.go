@@ -16,6 +16,15 @@ package main
 
 import "github.com/benjamincaldwell/devctl/cmd"
 
+// Version sets command version
+var Version = "dev"
+
+// BuildDate sets the date that the current build was built
+var BuildDate = "n/a"
+
 func main() {
+	// pass down build date and version number set at build time
+	cmd.Version = Version
+	cmd.BuildDate = BuildDate
 	cmd.Execute()
 }
