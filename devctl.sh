@@ -22,12 +22,12 @@ if [ "${devctl_dir}" != "/opt/devctl" ]; then
 fi
 
 devctl() {
-  local _devctl_verbose=1
-  while getopts 'abf:v' flag; do
-    case "${flag}" in
-      v) _devctl_verbose=0 ;;
-    esac
-  done
+  # local _devctl_verbose=1
+  # while getopts 'abf:v' flag; do
+  #   case "${flag}" in
+  #     v) _devctl_verbose=0 ;;
+  #   esac
+  # done
 
   case "$1" in
     load-dev)
@@ -108,7 +108,6 @@ _devctl_echo_fail() {
 }
 
 _devctl_echo_info() {
-    echo $_devctl_verbose 
     echo -e "${BLUE}🐧 ${NC} $1"
 }
 
@@ -171,18 +170,4 @@ _devctl_check_version() {
     local winner=$(echo -e "${installed}\n${latest}" | sed '/^$/d' | sort -nr | head -1)
     [[ "$winner" = "$installed" ]] && return 0
     return 1
-}
-
-_devctl_check_verbose_flag() {
-  echo "running"
-  while getopts ":v:" opt; do
-    case $opt in
-      v)
-        echo "verbose"
-        ;;
-      :)
-        echo "normal"
-        ;;
-    esac
-  done
 }

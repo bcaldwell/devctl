@@ -21,6 +21,7 @@ import (
 	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +33,7 @@ var Version string
 var BuildDate string
 
 var Verbose bool
+var DryRun bool
 
 // devctlCmd represents the base command when called without any subcommands
 var devctlCmd = &cobra.Command{
@@ -76,7 +78,8 @@ func init() {
 	// will be global for your application.
 
 	devctlCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (located at $HOME/.devctlconfig)")
-	Verbose = *(devctlCmd.PersistentFlags().BoolP("verbose", "v", false, "Verbose output"))
+	devctlCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
+	devctlCmd.PersistentFlags().BoolVar(&DryRun, "dryrun", false, "dry run")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	// devctlCmd.Flags().BoolP("help", "h", false, "Help message for command")
@@ -86,6 +89,9 @@ func init() {
 func initConfig() {
 
 	cfgFile := os.Getenv("HOME") + "/.devctlconfig"
+
+	shell.DryRun = DryRun
+	postCommand.DryRun = DryRun
 
 	if err := parser.ParseDevctlConfig(cfgFile); err != nil {
 		printer.Warning("Warning: devctl config was not found or could not be parsed. %s", err)
