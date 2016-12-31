@@ -3,7 +3,12 @@ package postCommand
 import (
 	"os"
 	"strings"
+
+	"github.com/benjamincaldwell/dev/printer"
 )
+
+// DryRun set dryrun mode. Commands will be printed and not run
+var DryRun = false
 
 // PostCommand struct
 type postCommand struct {
@@ -24,6 +29,10 @@ func RunCommand(command string) {
 
 // Write writes to the file descriptor
 func Write() {
+	if DryRun {
+		printer.InfoBar(writeString())
+		return
+	}
 	fd := os.NewFile(8, "fd")
 	postCommandString := writeString() + "\n"
 	fd.Write([]byte(postCommandString))

@@ -12,6 +12,9 @@ import (
 
 var MainInterface SessionInterface = new(session)
 
+// DryRun set dryrun mode. Commands will be printed and not run
+var DryRun = false
+
 type SessionInterface interface {
 	Command(name string, arg ...string) SessionInterface
 	SetInput(s string) SessionInterface
@@ -75,16 +78,28 @@ func (c *session) applySettings() {
 
 func (c *session) Run() error {
 	c.applySettings()
+	if DryRun {
+		printer.InfoBar(strings.Join(c.cmd.Args, " "))
+		return nil
+	}
 	return c.cmd.Run()
 }
 
 func (c *session) Output() ([]byte, error) {
 	c.applySettings()
+	if DryRun {
+		printer.InfoBar(strings.Join(c.cmd.Args, " "))
+		return nil, nil
+	}
 	return c.cmd.Output()
 }
 
 func (c *session) PrintOutput() error {
 	c.applySettings()
+	if DryRun {
+		printer.InfoBar(strings.Join(c.cmd.Args, " "))
+		return nil
+	}
 	cmdReader, _ := c.cmd.StdoutPipe()
 	outScanner := bufio.NewScanner(cmdReader)
 	go func() {
