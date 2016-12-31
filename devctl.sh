@@ -1,6 +1,7 @@
 #!/bin/bash
-local website="https://devctl.github.io"
-local install_location="/opt"
+
+website="https://devctl.github.io"
+install_location="/opt"
 
 devctl_dir="$(dirname "$0:A")"
 binary_file="devctl"
@@ -117,7 +118,9 @@ _devctl_install_version() {
   local remote_hash=$(wget -qO- "${website}/dl/sha/${system_name}" | grep "${1}" | perl -e 'if (<> =~ /$1:([a-fA-F\d]{32})/g) {print "$1"} else {print <>}')
   if _devctl_verify_hash "${tar_file_name}" "${remote_hash}"
   then
-    /bin/rm -r "${install_location}"/devctl/*
+    if [[ -d "${install_location}/devctl" ]] && [ "$(ls -A ${install_location}/devctl)" ]; then
+      /bin/rm -r "${install_location}"/devctl/*
+    fi
     tar -zxvf "${tar_file_name}" -C "${install_location}" --keep-newer-files
     chmod +x "${install_location}/devctl/devctl"
     /bin/rm -r "${tar_file_name}"
@@ -153,10 +156,10 @@ _devctl_system_detector() {
   echo "${os}_${arch}"
 }
 
-_devctl_check_version()
-{
+_devctl_check_version() {
     local installed=${1} latest=${2}
     local winner=$(echo -e "${installed}\n${latest}" | sed '/^$/d' | sort -nr | head -1)
     [[ "$winner" = "$installed" ]] && return 0
     return 1
 }
+
