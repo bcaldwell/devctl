@@ -31,16 +31,13 @@ var cmdWhitelist = [2]string{"update", "setup"}
 var Version string
 var BuildDate string
 
+var Verbose bool
+
 // devctlCmd represents the base command when called without any subcommands
 var devctlCmd = &cobra.Command{
-	Use:   "devctl",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-	examples and usage of using your application. For example:
-
-	Cobra is a CLI library for Go that empowers applications.
-	This application is a tool to generate the needed files
-	to quickly create a Cobra application.`,
+	Use:           "devctl",
+	Short:         "devctl is enables developers to manage their development environments across different projects.",
+	Long:          `devctl is enables developers to manage their development environments across different projects. To get started clone a respositories with devctl clone user/repo`,
 	SilenceErrors: true,
 	// PersistentPreRun: initConfig,
 	// Uncomment the following line if your bare application
@@ -79,9 +76,10 @@ func init() {
 	// will be global for your application.
 
 	devctlCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (located at $HOME/.devctlconfig)")
+	Verbose = *(devctlCmd.PersistentFlags().BoolP("verbose", "v", false, "Verbose output"))
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	devctlCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// devctlCmd.Flags().BoolP("help", "h", false, "Help message for command")
 }
 
 // initConfig reads in config file and ENV variables if set.
