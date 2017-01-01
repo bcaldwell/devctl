@@ -32,7 +32,6 @@ var gitCmd = &cobra.Command{
 	Short:   "a set of git alaises",
 	Long:    ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("git called")
 		postCommand.RunCommand("git " + strings.Join(args, " "))
 	},
 }
@@ -42,18 +41,42 @@ var cleanCmd = &cobra.Command{
 	Short: "removes local branches which where deleted remotely",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		output, err := shell.Command("git", "branch", "--merged", "master").Output()
-		if utilities.HandleError(err) {
-			output, err = shell.Command("grep", "-v", "master").SetInput(string(output)).Output()
-			if utilities.HandleError(err) {
-				err = shell.Command("xargs", "-n", "1", "git", "branch", "-d").SetInput(string(output)).PrintOutput()
-				utilities.HandleError(err)
+		fmt.Println("clean called")
+		// output, err := shell.Command("git", "branch", "--merged", "master").Output()
+		// if utilities.HandleError(err) {
+		// 	output, err = shell.Command("grep", "-v", "master").SetInput(string(output)).Output()
+		// 	if utilities.HandleError(err) {
+		// 		err = shell.Command("xargs", "-n", "1", "git", "branch", "-d").SetInput(string(output)).PrintOutput()
+		// 		utilities.HandleError(err)
+		// 	}
+		// }
+	},
+}
+
+var yoloCmd = &cobra.Command{
+	Use:   "yolo",
+	Short: "removes local branches which where deleted remotely",
+	Long:  ``,
+	Run: func(cmd *cobra.Command, args []string) {
+		err := shell.Command("git", "add", "-A").PrintOutput()
+		if !utilities.HandleError(err) {
+			err = shell.Command("git", "commit", "--amend", "--no-edit").PrintOutput()
+			if !utilities.HandleError(err) {
+				if currentBranch, err := gitOutput("rev-parse", "--abbrev-ref", "HEAD"); err == nil {
+					// for some reason its not working in go...
+					postCommand.RunCommand("git push -f origin " + string(currentBranch))
+					// err = shell.Command("git", "push", "-f", "-v", "origin", string(currentBranch)+":"+string(currentBranch)).PrintOutput()
+					// utilities.HandleError(err)
+				}
 			}
 		}
 	},
 }
 
+//
+
 func init() {
 	devctlCmd.AddCommand(gitCmd)
-	gitCmd.AddCommand(cleanCmd)
+	// gitCmd.AddCommand(cleanCmd)
+	gitCmd.AddCommand(yoloCmd)
 }

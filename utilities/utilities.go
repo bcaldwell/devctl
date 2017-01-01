@@ -112,6 +112,7 @@ func AppendIfMissing(slice []string, i string) []string {
 	return append(slice, i)
 }
 
+<<<<<<< master
 func RemoveFromPath(s string) string {
 	pathParts := strings.Split(os.Getenv("PATH"), ":")
 	var filtedParts []string
@@ -155,4 +156,13 @@ func DownloadToFile(uri string, dst string) error {
 		return WriteFile(dst, d)
 	}
 	return err
+}
+
+func LineWith(lines string, text string) string {
+	for _, line := range strings.Split(lines, "\n") {
+		if strings.Contains(line, text) {
+			return line
+		}
+	}
+	return ""
 }

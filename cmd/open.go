@@ -17,7 +17,11 @@ package cmd
 import (
 	"fmt"
 
+	"strings"
+
 	"github.com/benjamincaldwell/devctl/post_command"
+	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
 )
 
@@ -34,13 +38,51 @@ var openCmd = &cobra.Command{
 
 var repoCmd = &cobra.Command{
 	Use:   "repo",
-	Short: "Open github repo in default browser",
+	Short: "Open repo webpage in default browser",
 	Run: func(cmd *cobra.Command, args []string) {
-		postCommand.RunCommand("open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\\/\\//' | sed 's/com:/com\\//'`| head -n1")
+		postCommand.RunCommand("open " + gitURL())
 	},
+}
+
+var issueCmd = &cobra.Command{
+	Use:   "issue",
+	Short: "Open new issue",
+	Run: func(cmd *cobra.Command, args []string) {
+		postCommand.RunCommand("open " + gitURL() + "/issues/new")
+	},
+}
+
+// https://github.com/benjamincaldwell/devctl/compare/master...feature/add-open-command
+
+var createPRCmd = &cobra.Command{
+	Use:   "pr",
+	Short: "Open new pull request",
+	Run: func(cmd *cobra.Command, args []string) {
+		if currentBranch, err := gitOutput("rev-parse", "--abbrev-ref", "HEAD"); err == nil {
+			postCommand.RunCommand("open " + gitURL() + "/compare/master..." + string(currentBranch))
+		}
+	},
+}
+
+func gitURL() string {
+	if output, err := gitOutput("remote", "-v"); err == nil {
+		urlLine := utilities.LineWith(string(output), "fetch")
+		url := strings.Fields(urlLine)[1]
+		fmt.Println(url)
+		url = strings.Replace(url, ":", "/", -1)
+		url = strings.Replace(url, "git@", "http://", -1)
+		return url
+	}
+	return ""
+}
+
+func gitOutput(args ...string) ([]byte, error) {
+	return shell.Command("git", args...).Output()
 }
 
 func init() {
 	devctlCmd.AddCommand(openCmd)
 	openCmd.AddCommand(repoCmd)
+	openCmd.AddCommand(issueCmd)
+	openCmd.AddCommand(createPRCmd)
 }

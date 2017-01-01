@@ -23,8 +23,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/benjamincaldwell/dev/printer"
-	"github.com/benjamincaldwell/dev/utilities"
+	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
