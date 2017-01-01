@@ -10,9 +10,9 @@ if [ -n "$BASH_SOURCE" ]; then
   devctl_dir="$(dirname "$BASH_SOURCE")"
 fi
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  binary_file="devctl.linux"
-fi
+#if [[ "$OSTYPE" == "linux-gnu" ]]; then
+#  binary_file="devctl"
+#fi
 
 run_command=""
 
