@@ -23,7 +23,7 @@ import (
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/post_command"
+	"github.com/benjamincaldwell/devctl/postCommand"
 	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/renstrom/fuzzysearch/fuzzy"
