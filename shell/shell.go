@@ -20,6 +20,7 @@ type SessionInterface interface {
 	SetInput(s string) SessionInterface
 	SetDir(s string) SessionInterface
 	SetEnv(key, value string) SessionInterface
+	SetPath(path string) SessionInterface
 	Run() error
 	Output() ([]byte, error)
 	PrintOutput() error
@@ -59,6 +60,11 @@ func (c *session) SetInput(s string) SessionInterface {
 func (c *session) SetDir(s string) SessionInterface {
 	c.dir = s
 	return c
+}
+
+func (s *session) SetPath(path string) SessionInterface {
+	s.env["PATH"] = path
+	return s
 }
 
 func (s *session) SetEnv(key, value string) SessionInterface {

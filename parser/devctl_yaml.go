@@ -16,6 +16,7 @@ type Version struct {
 type ConfigurationStruct struct {
 	Node              Version
 	Go                Version
+	Python            Version
 	Scripts           map[string]utilities.RunCommand
 	DockerCompose     interface{} `yaml:"docker-compose"`
 	DockerComposeFile string      `yaml:"docker-compose-file"`
