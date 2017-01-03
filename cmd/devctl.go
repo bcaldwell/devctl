@@ -93,6 +93,8 @@ func initConfig() {
 	shell.DryRun = DryRun
 	postCommand.DryRun = DryRun
 
+	printer.Verbose = Verbose
+
 	if err := parser.ParseDevctlConfig(cfgFile); err != nil {
 		printer.Warning("Warning: devctl config was not found or could not be parsed. %s", err)
 

@@ -24,7 +24,7 @@ type Node struct {
 func (n *Node) Setup() {
 	isNvmInstalled := nvmInstalled()
 	if isNvmInstalled {
-		printer.Info("nvm already installed")
+		printer.Success("nvm already installed")
 		return
 	}
 	resp, err := http.Get("https://raw.githubusercontent.com/creationix/nvm/v0.31.3/install.sh")

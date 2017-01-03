@@ -3,7 +3,9 @@ package utilities
 import (
 	"crypto/md5"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"os"
 
 	"strings"
@@ -35,6 +37,14 @@ func ErrorCheck(err error, message string) {
 	}
 }
 
+func Hand(err error, message string) bool {
+	if err != nil {
+		printer.Fail("%s failed with %s", message, err)
+		return true
+	}
+	return false
+}
+
 // Keys returns the keys of a map
 func Keys(arr map[string]string) []string {
 	keys := make([]string, len(arr))
@@ -47,9 +57,14 @@ func Keys(arr map[string]string) []string {
 }
 
 // HandleError prints error with fail printer if it exists
-func HandleError(err error) bool {
+func HandleError(err error, args ...string) bool {
 	if err != nil {
-		printer.Fail("%s", err)
+		if len(args) > 1 {
+			message := args[0]
+			printer.Fail("%s failed with %s", message, err)
+		} else {
+			printer.Fail("%s", err)
+		}
 		return true
 	}
 	return false
@@ -115,4 +130,29 @@ func LocationHash() string {
 	}
 	HandleError(err)
 	return ""
+}
+
+func HTTPDownload(uri string) ([]byte, error) {
+	res, err := http.Get(uri)
+	HandleError(err)
+
+	defer res.Body.Close()
+	d, err := ioutil.ReadAll(res.Body)
+	HandleError(err)
+
+	return d, err
+}
+
+func WriteFile(dst string, d []byte) error {
+	err := ioutil.WriteFile(dst, d, 0444)
+	HandleError(err)
+	return err
+}
+
+func DownloadToFile(uri string, dst string) error {
+	d, err := HTTPDownload(uri)
+	if err == nil {
+		return WriteFile(dst, d)
+	}
+	return err
 }

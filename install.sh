@@ -2,7 +2,7 @@
 set -e
 
 curlsource() {
-    f=$(mktemp -t curlsource)
+    f=$(mktemp -t curlsource-XXXX)
     curl -o "$f" -s -L "$1"
     source "$f"
     rm -f "$f"
@@ -32,7 +32,7 @@ _devctl_install() {
 
   case "${shell}" in
     */zsh)
-      setup_profile "$HOME/.zshrc"
+      _devctl_setup_profile "$HOME/.zshrc"
       ;;
     *)
       _devctl_echo_fail "No :P"
@@ -40,7 +40,7 @@ _devctl_install() {
   esac
 }
 
-_devctl_source() {
+_devctl_setup_profile() {
   local rcfile
   rcfile=$1
   touch "${rcfile}"
@@ -54,7 +54,7 @@ _devctl_source() {
   _devctl_echo_info "added a line to the end of ${rcfile}"
 }
 
-source_devctl() {
+_devctl_source() {
   _devctl_echo_info "Sourcing devctl"
   source /opt/devctl/devctl.sh
 }
