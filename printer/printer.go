@@ -8,6 +8,9 @@ import (
 	"unsafe"
 )
 
+// Enables verbose printing
+var Verbose = false
+
 // Nc is the no color string constant
 const Nc = "\x1b[0m"
 const Green = "\x1b[32m"
@@ -118,6 +121,36 @@ func InfoLineBottom() {
 func WarningLineBottom() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
 	fmt.Printf(Bold + Yellow + cornerBottom + strings.Repeat(line, width-1) + Nc + Nobold)
+}
+
+func VerboseSuccess(text string, a ...interface{}) {
+	if Verbose {
+		Success(text, a...)
+	}
+}
+
+func VerboseFail(text string, a ...interface{}) {
+	if Verbose {
+		Fail(text, a...)
+	}
+}
+
+func VerboseError(text string, a ...interface{}) {
+	if Verbose {
+		Error(text, a...)
+	}
+}
+
+func VerboseInfo(text string, a ...interface{}) {
+	if Verbose {
+		Info(text, a...)
+	}
+}
+
+func VerboseWarning(text string, a ...interface{}) {
+	if Verbose {
+		Warning(text, a...)
+	}
 }
 
 // GetSize returns the dimensions of the given terminal.

@@ -3,15 +3,20 @@ package plugins
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
+
+	"crypto/sha256"
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/post_command"
 	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/fsouza/go-dockerclient"
 )
@@ -40,6 +45,72 @@ type Docker struct {
 }
 
 func (d Docker) Setup() {
+	if runtime.GOOS == "darwin" {
+		if !utilities.CheckIfInstalled("docker") {
+			printer.Info("Installing docker for mac")
+			tmpfile, err := ioutil.TempFile("", "docker-install-")
+			printer.VerboseInfo("created temporary file %s", tmpfile.Name())
+			defer os.Remove(tmpfile.Name()) // clean up
+
+			if utilities.HandleError(err, "creating a temporary file") {
+				return
+			}
+
+			printer.VerboseInfo("Downloading docker from stable channel")
+			data, err := utilities.HTTPDownload("https://download.docker.com/mac/stable/Docker.dmg")
+			if utilities.HandleError(err, "downloading docker") {
+				return
+			}
+
+			localSha := fmt.Sprintf("%x", sha256.Sum256(data))
+			printer.VerboseInfo("local docker sha: %s", localSha)
+
+			var remoteShaBytes []byte
+			remoteShaBytes, err = utilities.HTTPDownload("https://download.docker.com/mac/stable/Docker.dmg.sha256sum")
+			if utilities.HandleError(err, "downloading docker sha") {
+				return
+			}
+
+			remoteSha := strings.Fields(string(remoteShaBytes))[0]
+			printer.VerboseInfo("remote docker sha: %s", localSha)
+
+			if remoteSha != localSha {
+				printer.Fail("sha verification of docker.dmg failed")
+				return
+			}
+
+			_, err = tmpfile.Write(data)
+			if utilities.HandleError(err, "writing docker.dmg to temporary file") {
+				return
+			}
+			err = tmpfile.Close()
+			if utilities.HandleError(err, "closing temporary file") {
+				return
+			}
+
+			printer.VerboseInfo("mounting docker")
+			err = shell.Command("hdiutil", "mount", tmpfile.Name()).Run()
+			if utilities.HandleError(err, "mounting dokcer") {
+				return
+			}
+
+			mountPoint := "/Volumes/Docker"
+			printer.Info("Installing docker to /Applications")
+			err = shell.Command("sudo", "cp", "-R", mountPoint+"/Docker.app", "/Applications").Run()
+			if utilities.HandleError(err, "copying docker to /Applications") {
+				return
+			}
+
+			printer.VerboseInfo("unmounting docker")
+			err = shell.Command("hdiutil", "unmount", mountPoint).Run()
+			if utilities.HandleError(err, "unmounting docker") {
+				return
+			}
+			printer.Success("Successfully install docker for mac")
+		} else {
+			printer.Success("docker for mac already installed")
+		}
+	}
 }
 
 func (d *Docker) PreInstall(c *parser.ConfigurationStruct) {
