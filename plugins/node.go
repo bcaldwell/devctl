@@ -22,7 +22,7 @@ type Node struct {
 }
 
 func (n *Node) Setup() {
-	isNvmInstalled := nvmInstalled()
+	isNvmInstalled := utilities.CheckIfInstalled("nvm", "~/.nvm/nvm.sh")
 	if isNvmInstalled {
 		printer.Info("nvm already installed")
 		return
@@ -42,7 +42,7 @@ func (n *Node) PreInstall(c *parser.ConfigurationStruct) {
 	n.version = c.Node.Version
 
 	// check if nvm is install
-	isNvmInstalled := nvmInstalled()
+	isNvmInstalled := utilities.CheckIfInstalled("nvm", "~/.nvm/nvm.sh")
 	if !isNvmInstalled {
 		printer.Fail("nvm not installed. Run devctl setup to install")
 		return
@@ -103,12 +103,4 @@ func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
 		return true
 	}
 	return false
-}
-
-func nvmInstalled() bool {
-	err := shell.Command("sh", "-c", "source ~/.nvm/nvm.sh && command -v nvm").Run()
-	if err != nil {
-		return false
-	}
-	return true
 }
