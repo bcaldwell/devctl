@@ -52,6 +52,11 @@ func (c *sessionMock) SetDir(s string) shell.SessionInterface {
 	return c
 }
 
+func (c *sessionMock) SetPath(path string) shell.SessionInterface {
+	c.env["PATH"] = path
+	return c
+}
+
 func (c *sessionMock) SetEnv(key, value string) shell.SessionInterface {
 	c.env[key] = value
 	return c

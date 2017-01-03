@@ -1,6 +1,8 @@
 package utilities
 
 import (
+	"crypto/md5"
+	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -85,8 +87,9 @@ func StringInSlice(a string, list []string) bool {
 	return false
 }
 
+// CheckIfInstalled usees command -v to check if a binary is current in the path
 func CheckIfInstalled(binary string) bool {
-	err := shell.Command("sh", "-c", "command -v "+binary).Run()
+	err := shell.Command("command", "-v", binary).Run()
 	return (err == nil)
 }
 
@@ -107,6 +110,26 @@ func AppendIfMissing(slice []string, i string) []string {
 		}
 	}
 	return append(slice, i)
+}
+
+func RemoveFromPath(s string) string {
+	pathParts := strings.Split(os.Getenv("PATH"), ":")
+	var filtedParts []string
+	for _, part := range pathParts {
+		if part != s {
+			filtedParts = append(filtedParts, part)
+		}
+	}
+	return strings.Join(filtedParts, ":")
+}
+
+func LocationHash() string {
+	dir, err := os.Getwd()
+	if err == nil {
+		return fmt.Sprintf("%x", md5.Sum([]byte(dir)))
+	}
+	HandleError(err)
+	return ""
 }
 
 func HTTPDownload(uri string) ([]byte, error) {
