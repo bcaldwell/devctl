@@ -140,7 +140,7 @@ _devctl_install_version() {
 
 _devctl_verify_hash() {
   #0 is true and 1 is false
-  local hash=$(openssl md5 "${1}" | cut -d ' ' -f 2)
+  local hash=$(openssl dgst -sha256 "${1}" | cut -d ' ' -f 2)
   if [ "${hash}" == "${2}" ]
   then
     return 0
