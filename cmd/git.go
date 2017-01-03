@@ -15,8 +15,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/post_command"
@@ -24,6 +22,8 @@ import (
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
 )
+
+var force bool
 
 // gitCmd represents the git command
 var gitCmd = &cobra.Command{
@@ -41,15 +41,11 @@ var cleanCmd = &cobra.Command{
 	Short: "removes local branches which where deleted remotely",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("clean called")
-		// output, err := shell.Command("git", "branch", "--merged", "master").Output()
-		// if utilities.HandleError(err) {
-		// 	output, err = shell.Command("grep", "-v", "master").SetInput(string(output)).Output()
-		// 	if utilities.HandleError(err) {
-		// 		err = shell.Command("xargs", "-n", "1", "git", "branch", "-d").SetInput(string(output)).PrintOutput()
-		// 		utilities.HandleError(err)
-		// 	}
-		// }
+		if force {
+			postCommand.RunCommand("sh -c \"git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D\"")
+		} else {
+			postCommand.RunCommand("sh -c \"git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d\"")
+		}
 	},
 }
 
@@ -77,6 +73,7 @@ var yoloCmd = &cobra.Command{
 
 func init() {
 	devctlCmd.AddCommand(gitCmd)
-	// gitCmd.AddCommand(cleanCmd)
+	gitCmd.AddCommand(cleanCmd)
 	gitCmd.AddCommand(yoloCmd)
+	cleanCmd.PersistentFlags().BoolVarP(&force, "force", "f", false, "force")
 }
