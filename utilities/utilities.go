@@ -87,7 +87,7 @@ func StringInSlice(a string, list []string) bool {
 	return false
 }
 
-// CheckIfInstalled usees command -v to check if a binary is current in the path
+// CheckIfInstalled usees command -v to check if a binary is current in the path. Returns true if it is installed
 func CheckIfInstalled(binary string) bool {
 	err := shell.Command("command", "-v", binary).Run()
 	return (err == nil)

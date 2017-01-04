@@ -8,16 +8,28 @@ ruby:
 python:
   version: 3
 
-install:
-  - brew:
-    -  openssl
-  - apt-get:
+dependencies:
+  install:
     - openssl
-  - custom:
-      name: bower
-      desc: install bower dep
-      installed?: which dev
-      install: bower install
+  brew:
+  # brew tap
+    # sources:
+    install:
+      - python3
+  aptget:
+  # apt-key add
+    keys:
+      - https://dl.yarnpkg.com/debian/pubkey.gpg
+  # add-apt-repository
+    sources:
+      - deb https://dl.yarnpkg.com/debian/ stable main
+    install:
+      - yarn
+  custom:
+    name: bower
+    desc: install bower dep
+    installed?: which dev
+    install: bower install
 
 # default installs
 # node (npm)

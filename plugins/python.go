@@ -31,8 +31,7 @@ type Python struct {
 }
 
 func (p *Python) Setup() {
-	printer.Info("%b %b", utilities.CheckIfInstalled("ls"), utilities.CheckIfInstalled("deactivate"))
-	printer.Info("Setting up python")
+	// printer.Info("Setting up python")
 	p.dectectSystemBinary()
 	p.pipInstallIfNotInstalled("virtualenv")
 }

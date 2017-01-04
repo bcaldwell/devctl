@@ -21,6 +21,15 @@ type ConfigurationStruct struct {
 	DockerCompose     interface{} `yaml:"docker-compose"`
 	DockerComposeFile string      `yaml:"docker-compose-file"`
 	Services          []interface{}
+	Dependencies      struct {
+		Install []string
+		Brew    struct {
+			Install []string
+		}
+		Aptget struct {
+			Install []string
+		}
+	}
 }
 
 func (c *ConfigurationStruct) ParseFileDefault() error {
