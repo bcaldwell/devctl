@@ -153,6 +153,30 @@ func VerboseWarning(text string, a ...interface{}) {
 	}
 }
 
+func VerboseSuccessBar(text string, a ...interface{}) {
+	if Verbose {
+		SuccessBar(text, a...)
+	}
+}
+
+func VerboseErrorBar(text string, a ...interface{}) {
+	if Verbose {
+		ErrorBar(text, a...)
+	}
+}
+
+func VerboseInfoBar(text string, a ...interface{}) {
+	if Verbose {
+		InfoBar(text, a...)
+	}
+}
+
+func VerboseWarningBar(text string, a ...interface{}) {
+	if Verbose {
+		WarningBar(text, a...)
+	}
+}
+
 // GetSize returns the dimensions of the given terminal.
 // https://github.com/golang/crypto/blob/master/ssh/terminal/util.go#L80
 func getSize(fd int) (width, height int, err error) {
