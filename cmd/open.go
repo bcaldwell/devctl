@@ -19,7 +19,7 @@ import (
 
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/post_command"
+	"github.com/benjamincaldwell/devctl/postCommand"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
@@ -68,9 +68,9 @@ func gitURL() string {
 	if output, err := gitOutput("remote", "-v"); err == nil {
 		urlLine := utilities.LineWith(string(output), "fetch")
 		url := strings.Fields(urlLine)[1]
-		fmt.Println(url)
 		url = strings.Replace(url, ":", "/", -1)
 		url = strings.Replace(url, "git@", "http://", -1)
+		url = strings.Replace(url, ".git", "", -1)
 		return url
 	}
 	return ""
