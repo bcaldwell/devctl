@@ -112,7 +112,6 @@ func AppendIfMissing(slice []string, i string) []string {
 	return append(slice, i)
 }
 
-<<<<<<< master
 func RemoveFromPath(s string) string {
 	pathParts := strings.Split(os.Getenv("PATH"), ":")
 	var filtedParts []string

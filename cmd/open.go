@@ -59,7 +59,7 @@ var createPRCmd = &cobra.Command{
 	Short: "Open new pull request",
 	Run: func(cmd *cobra.Command, args []string) {
 		if currentBranch, err := gitOutput("rev-parse", "--abbrev-ref", "HEAD"); err == nil {
-			postCommand.RunCommand("open " + gitURL() + "/compare/master..." + string(currentBranch))
+			postCommand.RunCommand("open " + gitURL() + "/pull/" + string(currentBranch))
 		}
 	},
 }
