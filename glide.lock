@@ -1,64 +1,72 @@
-hash: acff76149d641c264cb0590a366dfb889d6ac26c3660e13a8f495a3693e357c3
-updated: 2016-08-21T14:16:48.119512168-04:00
+hash: 25a1c865d425acd9278870dfe2c8f68eb6900ea33e5163ea599a0138e95e8dfa
+updated: 2017-01-01T11:46:39.98479989-05:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
-- name: github.com/BurntSushi/toml
-  version: bec2dacf4b590d26237cfebff4471e21ce543494
-- name: github.com/fsnotify/fsnotify
-  version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
+- name: github.com/docker/docker
+  version: 0f5c9d301b9b1cca66b3ea0f9dec3b5317d3686d
+  subpackages:
+  - opts
+  - pkg/archive
+  - pkg/fileutils
+  - pkg/homedir
+  - pkg/ioutils
+  - pkg/mflag
+  - pkg/parsers
+  - pkg/pools
+  - pkg/promise
+  - pkg/stdcopy
+  - pkg/system
+  - pkg/ulimit
+  - pkg/units
+  - volume
+- name: github.com/docker/engine-api
+  version: 4290f40c056686fcaa5c9caf02eac1dde9315adf
+  subpackages:
+  - types/mount
+  - types/swarm
+- name: github.com/docker/go-units
+  version: 9b001659dd36225e356b4467c465d732e745f53d
 - name: github.com/fsouza/go-dockerclient
   version: 0436d420da98515cfe6370c9c5cdde868415637b
 - name: github.com/golang/example
   version: 324742add2041e12bee3312066da5f65b827819e
   subpackages:
   - stringutil
-- name: github.com/hashicorp/hcl
-  version: d8c773c4cba11b11539e3d45f93daeaa5dcf1fa1
-  subpackages:
-  - hcl/ast
-  - hcl/parser
-  - hcl/token
-  - json/parser
-  - hcl/scanner
-  - hcl/strconv
-  - json/scanner
-  - json/token
+- name: github.com/hashicorp/go-cleanhttp
+  version: ad28ea4487f05916463e2423a55166280e8254b5
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
-- name: github.com/magiconair/properties
-  version: e2f061ecfdaca9f35b2e2c12346ffc526f138137
-- name: github.com/mitchellh/mapstructure
-  version: 21a35fb16463dfb7c8eee579c65d995d95e64d1e
+- name: github.com/opencontainers/runc
+  version: db25629d4630459929ba08ea663dccf562b8ff70
+  subpackages:
+  - libcontainer/user
 - name: github.com/renstrom/fuzzysearch
   version: d4ca9dfccd55dc6b076f9880d49c35315922c1f4
   subpackages:
   - fuzzy
-- name: github.com/spf13/cast
-  version: 27b586b42e29bec072fe7379259cc719e1289da6
+- name: github.com/Sirupsen/logrus
+  version: 26709e2714106fb8ad40b773b711ebce25b78914
 - name: github.com/spf13/cobra
   version: a272c3cbd5ff80a5bf5c5603df50183f9f3f7324
   subpackages:
   - cobra
-- name: github.com/spf13/jwalterweatherman
-  version: 33c24e77fb80341fe7130ee7c594256ff08ccc46
 - name: github.com/spf13/pflag
   version: 367864438f1b1a3c7db4da06a2f55b144e6784e0
-- name: github.com/spf13/viper
-  version: c1ccc378a054ea8d4e38d8c67f6938d4760b53dd
 - name: github.com/stretchr/testify
-  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
-- name: golang.org/x/sys
-  version: b518c298ac9dc94b6ac0757394f50d10c5dfa25a
+- name: golang.org/x/net
+  version: 8fd7f25955530b92e73e9e1932a41b522b22ccd9
   subpackages:
-  - unix
+  - context
+  - context/ctxhttp
 - name: gopkg.in/yaml.v2
   version: a83829b6f1293c91addabc89d0571c246397bbf4
 testImports:
 - name: github.com/davecgh/go-spew
-  version: 2df174808ee097f90d259e432cc04442cf60be21
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib

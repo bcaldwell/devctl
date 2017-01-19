@@ -156,3 +156,12 @@ func DownloadToFile(uri string, dst string) error {
 	}
 	return err
 }
+
+func LineWith(lines string, text string) string {
+	for _, line := range strings.Split(lines, "\n") {
+		if strings.Contains(line, text) {
+			return line
+		}
+	}
+	return ""
+}
