@@ -65,7 +65,6 @@ func Execute() {
 			} else {
 				devctlCmd.Help()
 			}
-			postCommand.Write()
 		}
 	}
 }
