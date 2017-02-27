@@ -52,6 +52,14 @@ var issueCmd = &cobra.Command{
 	},
 }
 
+var issuesCmd = &cobra.Command{
+	Use:   "issues",
+	Short: "Open projects issue page",
+	Run: func(cmd *cobra.Command, args []string) {
+		postCommand.RunCommand("open " + gitURL() + "/issues")
+	},
+}
+
 // https://github.com/benjamincaldwell/devctl/compare/master...feature/add-open-command
 
 var createPRCmd = &cobra.Command{
@@ -84,5 +92,6 @@ func init() {
 	devctlCmd.AddCommand(openCmd)
 	openCmd.AddCommand(repoCmd)
 	openCmd.AddCommand(issueCmd)
+	openCmd.AddCommand(issuesCmd)
 	openCmd.AddCommand(createPRCmd)
 }
