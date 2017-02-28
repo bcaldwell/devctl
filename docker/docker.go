@@ -6,6 +6,7 @@ import (
 
 	"github.com/benjamincaldwell/devctl/shell"
 	printer "github.com/benjamincaldwell/go-printer"
+	systemDetector "github.com/benjamincaldwell/go-system-detector"
 	"github.com/fsouza/go-dockerclient"
 )
 
@@ -37,9 +38,16 @@ func startDocker() error {
 	// timeout set to 20 seconds
 	timeout := 20.0
 	startTime := time.Now()
+	system, _ := systemDetector.DetectSystem()
 	if !isDockerRunning() {
 		printer.Info("Starting docker")
-		err := shell.Command("open", "/Applications/Docker.app").Run()
+		var command string
+		if system.ID == "darwin" {
+			command = "open /Applications/Docker.app"
+		} else if system.ID == "ubuntu" {
+			command = "sudo start docker"
+		}
+		err := shell.Command("sh", "-c", command).Run()
 		if err != nil {
 			return err
 		}

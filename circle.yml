@@ -8,10 +8,14 @@ machine:
     - sudo rm -rf /usr/local/go
     - sudo tar -C /usr/local -xzf downloads/$GODIST
 
+  services:
+    - docker
+
 checkout:
   post:
   - git submodule sync --recursive
   - git submodule update --recursive --init
+
 test:
   override:
     # './...' is a relative pattern which means all subdirectories

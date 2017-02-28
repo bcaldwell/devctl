@@ -1,6 +1,10 @@
-hash: 25a1c865d425acd9278870dfe2c8f68eb6900ea33e5163ea599a0138e95e8dfa
-updated: 2017-01-01T11:46:39.98479989-05:00
+hash: 7921e353137bc70e5f9cdc8a45bd31e0172fc723d92c9be6dce0a3402bc2ed96
+updated: 2017-02-28T16:55:59.023457334-05:00
 imports:
+- name: github.com/benjamincaldwell/go-printer
+  version: 02c5cdb1f2fe20c640b0b0a023debdc6a03fab26
+- name: github.com/benjamincaldwell/go-system-detector
+  version: 7399bec40f3d7efdcd9ca7088673753cfac0af00
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/docker/docker
@@ -29,10 +33,6 @@ imports:
   version: 9b001659dd36225e356b4467c465d732e745f53d
 - name: github.com/fsouza/go-dockerclient
   version: 0436d420da98515cfe6370c9c5cdde868415637b
-- name: github.com/golang/example
-  version: 324742add2041e12bee3312066da5f65b827819e
-  subpackages:
-  - stringutil
 - name: github.com/hashicorp/go-cleanhttp
   version: ad28ea4487f05916463e2423a55166280e8254b5
 - name: github.com/inconshreveable/mousetrap
