@@ -39,7 +39,10 @@ func startDocker() error {
 	startTime := time.Now()
 	if !isDockerRunning() {
 		printer.Info("Starting docker")
-		shell.Command("open", "/Applications/Docker.app").Run()
+		err := shell.Command("open", "/Applications/Docker.app").Run()
+		if err != nil {
+			return err
+		}
 		// sudo start docker ubuntu
 		// sudo systemctl start docker CentOS/Red Hat Enterprise Linux/Fedora
 		for !isDockerRunning() {
