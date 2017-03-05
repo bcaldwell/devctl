@@ -63,6 +63,22 @@ func WarningBar(text string, a ...interface{}) {
 	fmt.Printf(Yellow+bar+Nc+text+"\n", a...)
 }
 
+func SuccessBarIcon(text string, a ...interface{}) {
+	fmt.Printf(Green+bar+"✔ "+Nc+text+"\n", a...)
+}
+
+func ErrorBarIcon(text string, a ...interface{}) {
+	fmt.Printf(Red+bar+"✗ "+Nc+text+"\n", a...)
+}
+
+func InfoBarIcon(text string, a ...interface{}) {
+	fmt.Printf(Blue+bar+"🐧 "+Nc+text+"\n", a...)
+}
+
+func WarningBarIcon(text string, a ...interface{}) {
+	fmt.Printf(Yellow+bar+"⚠ "+Nc+text+"\n", a...)
+}
+
 func SuccessLine() {
 	width, _, _ := getSize(int(os.Stdout.Fd()))
 	fmt.Printf(Green + strings.Repeat(line, width) + Nc)

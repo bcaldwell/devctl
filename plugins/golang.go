@@ -48,7 +48,8 @@ func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
 		body, err := ioutil.ReadAll(resp.Body)
 
 		printer.Info("Installing glide")
-		err = shell.Command("sh").SetEnv("GOPATH", "/home/benjamin/go").SetInput(string(body)).Run()
+		// TODO: BAD. also make GOATPH/bin dir
+		err = shell.Command("sh").SetEnv("GOPATH", "/home/benjamin/go").SetInput(string(body)).PrintOutput()
 		utilities.ErrorCheck(err, "glide install")
 	} else if _, err := os.Stat("Godeps/Godeps.json"); err == nil && !utilities.CheckIfInstalled("godep") {
 		printer.Info("Installing godep")

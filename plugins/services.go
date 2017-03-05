@@ -240,7 +240,7 @@ func (d *Docker) Scripts(c *parser.ConfigurationStruct) map[string]utilities.Run
 }
 
 func (d *Docker) PostScript(c *parser.ConfigurationStruct) {
-	for envName, _ := range d.environment {
+	for envName := range d.environment {
 		unsetString := fmt.Sprintf("unset %s", envName)
 		postCommand.RunCommand(unsetString)
 	}
