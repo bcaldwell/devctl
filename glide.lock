@@ -1,65 +1,89 @@
 hash: df08cb861b422d80b7eaabecc7675ddc6dac611c7fd5338b5ff784d1feda7b25
-updated: 2017-03-06T18:51:13.101297029-05:00
+updated: 2017-03-06T18:56:39.856655704-05:00
 imports:
+- name: github.com/Azure/go-ansiterm
+  version: fa152c58bc15761d0200cb75fe958b89a9d4888e
+  subpackages:
+  - winterm
 - name: github.com/benjamincaldwell/go-printer
-  version: 1e82368f337aebc94d25bee0a8b446268e66d10f
+  version: a28e1e6f8b28bdf0c8f121c2d7f9c24448aa4870
 - name: github.com/benjamincaldwell/go-system-detector
-  version: 7399bec40f3d7efdcd9ca7088673753cfac0af00
+  version: 893a24d9154e178f297d094eea39c9c46c4c6766
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
 - name: github.com/docker/docker
-  version: 0f5c9d301b9b1cca66b3ea0f9dec3b5317d3686d
+  version: 65068ea4c0fdaf300d0c7a06b3478c6c1c6d4271
   subpackages:
+  - api/types
+  - api/types/blkiodev
+  - api/types/container
+  - api/types/filters
+  - api/types/mount
+  - api/types/network
+  - api/types/registry
+  - api/types/strslice
+  - api/types/swarm
+  - api/types/versions
   - opts
   - pkg/archive
   - pkg/fileutils
   - pkg/homedir
+  - pkg/idtools
   - pkg/ioutils
-  - pkg/mflag
-  - pkg/parsers
+  - pkg/jsonlog
+  - pkg/jsonmessage
+  - pkg/longpath
   - pkg/pools
   - pkg/promise
   - pkg/stdcopy
   - pkg/system
-  - pkg/ulimit
-  - pkg/units
-  - volume
-- name: github.com/docker/engine-api
-  version: 4290f40c056686fcaa5c9caf02eac1dde9315adf
+  - pkg/term
+  - pkg/term/windows
+- name: github.com/docker/go-connections
+  version: a2afab9802043837035592f1c24827fb70766de9
   subpackages:
-  - types/mount
-  - types/swarm
+  - nat
 - name: github.com/docker/go-units
-  version: 9b001659dd36225e356b4467c465d732e745f53d
+  version: 0dadbb0345b35ec7ef35e228dabb8de89a65bf52
 - name: github.com/fsouza/go-dockerclient
-  version: 0436d420da98515cfe6370c9c5cdde868415637b
+  version: 8844e96b4cd6730ab2daa510a96e232107a2c09c
 - name: github.com/ghodss/yaml
   version: 04f313413ffd65ce25f2541bfd2b2ceec5c0908c
 - name: github.com/hashicorp/go-cleanhttp
-  version: ad28ea4487f05916463e2423a55166280e8254b5
+  version: 3573b8b52aa7b37b9358d966a898feb387f62437
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/Microsoft/go-winio
+  version: fff283ad5116362ca252298cfc9b95828956d85d
+- name: github.com/Nvveen/Gotty
+  version: cd527374f1e5bff4938207604a14f2e38a9cf512
 - name: github.com/opencontainers/runc
-  version: db25629d4630459929ba08ea663dccf562b8ff70
+  version: 49a33c41f830c7863c3e53e547d071cd0c0f27b7
   subpackages:
+  - libcontainer/system
   - libcontainer/user
 - name: github.com/renstrom/fuzzysearch
   version: d4ca9dfccd55dc6b076f9880d49c35315922c1f4
   subpackages:
   - fuzzy
 - name: github.com/Sirupsen/logrus
-  version: 26709e2714106fb8ad40b773b711ebce25b78914
+  version: 0208149b40d863d2c1a2f8fe5753096a9cf2cc8b
 - name: github.com/spf13/cobra
-  version: a272c3cbd5ff80a5bf5c5603df50183f9f3f7324
+  version: fcd0c5a1df88f5d6784cb4feead962c3f3d0b66c
 - name: github.com/spf13/pflag
-  version: 367864438f1b1a3c7db4da06a2f55b144e6784e0
+  version: 9ff6c6923cfffbcd502984b8e0c80539a94968b7
 - name: golang.org/x/net
-  version: 8fd7f25955530b92e73e9e1932a41b522b22ccd9
+  version: d379faa25cbdc04d653984913a2ceb43b0bc46d7
   subpackages:
   - context
   - context/ctxhttp
+- name: golang.org/x/sys
+  version: e48874b42435b4347fc52bdee0424a52abc974d7
+  subpackages:
+  - unix
+  - windows
 - name: gopkg.in/yaml.v2
-  version: a83829b6f1293c91addabc89d0571c246397bbf4
+  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9

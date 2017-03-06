@@ -28,10 +28,11 @@ test:
   pre:
     - mkdir -p "$IMPORT_PATH"
     - ln -sf "$(pwd)" "${APP_PATH}"
-    - cd "${APP_PATH}" && bash scripts/go.test.sh
+    - cd "${APP_PATH}"
+    - glide install
   override:
     - cd "${APP_PATH}"
-    - go test -v -race $(glide nv)
+    - bash scripts/go.test.sh
   post:
     - bash <(curl -s https://codecov.io/bash)
 
