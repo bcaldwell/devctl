@@ -13,9 +13,9 @@ import (
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/postCommand"
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/benjamincaldwell/go-printer"
 )
 
 type Golang struct {

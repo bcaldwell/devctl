@@ -3,6 +3,7 @@ import:
 - package: github.com/spf13/cobra
   subpackages:
   - cobra
+- package: github.com/benjamincaldwell/go-printer
 - package: github.com/renstrom/fuzzysearch
   version: ~1.0.0
   subpackages:

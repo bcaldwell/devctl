@@ -23,8 +23,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/benjamincaldwell/go-printer"
 	"github.com/renstrom/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
@@ -55,7 +55,7 @@ var gitignoreCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		const fileName = ".gitignore"
 		if len(args) == 0 {
-			printer.Error("Minimum of one argument is required\nUse " + printer.Blue + "devctl generate gitignore list" + printer.Nc + " to list all posibilities\n")
+			printer.Error("Minimum of one argument is required\nUse " + printer.Blue("devctl generate gitignore list") + " to list all posibilities\n")
 		}
 		language := strings.ToLower(args[0])
 

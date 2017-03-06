@@ -18,9 +18,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/benjamincaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
 

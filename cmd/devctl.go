@@ -20,8 +20,8 @@ import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
 	"github.com/benjamincaldwell/devctl/postCommand"
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/benjamincaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
 

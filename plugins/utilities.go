@@ -3,8 +3,8 @@ package plugins
 import (
 	"time"
 
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/benjamincaldwell/go-printer"
 )
 
 func isDockerRunning() bool {

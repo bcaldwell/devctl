@@ -2,7 +2,7 @@ hash: 7921e353137bc70e5f9cdc8a45bd31e0172fc723d92c9be6dce0a3402bc2ed96
 updated: 2017-02-28T16:55:59.023457334-05:00
 imports:
 - name: github.com/benjamincaldwell/go-printer
-  version: 02c5cdb1f2fe20c640b0b0a023debdc6a03fab26
+  version: ebae93dfd5af8d7ab4c1b2d9cc607c6ec8671760
 - name: github.com/benjamincaldwell/go-system-detector
   version: 7399bec40f3d7efdcd9ca7088673753cfac0af00
 - name: github.com/bitly/go-simplejson

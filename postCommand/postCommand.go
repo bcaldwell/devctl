@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/go-printer"
 )
 
 // DryRun set dryrun mode. Commands will be printed and not run

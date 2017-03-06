@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/printer"
+	"github.com/benjamincaldwell/go-printer"
 )
 
 var MainInterface SessionInterface = new(session)

@@ -2,9 +2,9 @@ package plugins
 
 import (
 	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/printer"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/benjamincaldwell/go-printer"
 )
 
 func init() {
