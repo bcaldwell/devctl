@@ -6,7 +6,7 @@ import (
 
 	"github.com/benjamincaldwell/devctl/utilities"
 
-	"gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 type Version struct {

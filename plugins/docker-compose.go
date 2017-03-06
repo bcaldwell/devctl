@@ -8,8 +8,8 @@ import (
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/shell"
 	"github.com/benjamincaldwell/devctl/utilities"
-	"gopkg.in/yaml.v2"
 	"github.com/benjamincaldwell/go-printer"
+	"github.com/ghodss/yaml"
 )
 
 func init() {
