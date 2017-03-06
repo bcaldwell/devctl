@@ -12,11 +12,12 @@ machine:
 
 dependencies:
   override:
-    - mkdir -p "$IMPORT_PATH"
-    - ln -sf "$(pwd)" "${APP_PATH}"
-    - cd "${APP_PATH}" && glide install
+    - sudo add-apt-repository ppa:masterminds/glide -y
+    - sudo apt-get update
+    - sudo apt-get install glide -y
   cache_directories:
     - downloads
+    - "${APP_PATH}/vendor"
 
 checkout:
   post:
@@ -25,7 +26,9 @@ checkout:
 
 test:
   pre:
-    - glide install
+    - mkdir -p "$IMPORT_PATH"
+    - ln -sf "$(pwd)" "${APP_PATH}"
+    - cd "${APP_PATH}" && glide install
   override:
     # './...' is a relative pattern which means all subdirectories
     - go test -v -race $(go list ./... | grep -v /vendor/)
