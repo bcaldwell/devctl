@@ -28,10 +28,10 @@ test:
   pre:
     - mkdir -p "$IMPORT_PATH"
     - ln -sf "$(pwd)" "${APP_PATH}"
-    - cd "${APP_PATH}" && glide install
+    - cd "${APP_PATH}" && bash scripts/go.test.sh
   override:
-    # './...' is a relative pattern which means all subdirectories
-    - go test -v -race $(go list ./... | grep -v /vendor/)
+    - cd "${APP_PATH}"
+    - go test -v -race $(glide nv)
   post:
     - bash <(curl -s https://codecov.io/bash)
 
