@@ -1,5 +1,5 @@
 hash: df08cb861b422d80b7eaabecc7675ddc6dac611c7fd5338b5ff784d1feda7b25
-updated: 2017-03-06T13:22:21.114417797-05:00
+updated: 2017-03-06T18:51:13.101297029-05:00
 imports:
 - name: github.com/benjamincaldwell/go-printer
   version: 1e82368f337aebc94d25bee0a8b446268e66d10f
