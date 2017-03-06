@@ -1,8 +1,8 @@
-hash: d5651e4fa8a670ff4a71a3b267b2517c6db22a8c18e3fb17dc4054adbc0ce6d1
-updated: 2017-03-05T20:43:55.355336447-05:00
+hash: df08cb861b422d80b7eaabecc7675ddc6dac611c7fd5338b5ff784d1feda7b25
+updated: 2017-03-06T13:22:21.114417797-05:00
 imports:
 - name: github.com/benjamincaldwell/go-printer
-  version: ebae93dfd5af8d7ab4c1b2d9cc607c6ec8671760
+  version: 1e82368f337aebc94d25bee0a8b446268e66d10f
 - name: github.com/benjamincaldwell/go-system-detector
   version: 7399bec40f3d7efdcd9ca7088673753cfac0af00
 - name: github.com/bitly/go-simplejson
