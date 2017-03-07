@@ -1,5 +1,5 @@
-hash: df08cb861b422d80b7eaabecc7675ddc6dac611c7fd5338b5ff784d1feda7b25
-updated: 2017-03-06T18:56:39.856655704-05:00
+hash: 4446070d26c11b0887c87d617133726d012d314abf4998392c93af53c139a34b
+updated: 2017-03-06T19:07:27.739637453-05:00
 imports:
 - name: github.com/Azure/go-ansiterm
   version: fa152c58bc15761d0200cb75fe958b89a9d4888e
@@ -49,6 +49,10 @@ imports:
   version: 8844e96b4cd6730ab2daa510a96e232107a2c09c
 - name: github.com/ghodss/yaml
   version: 04f313413ffd65ce25f2541bfd2b2ceec5c0908c
+- name: github.com/golang/example
+  version: 0dea2d0bf90754ffa40e0cb2f23b638f3e3d7e09
+  subpackages:
+  - stringutil
 - name: github.com/hashicorp/go-cleanhttp
   version: 3573b8b52aa7b37b9358d966a898feb387f62437
 - name: github.com/inconshreveable/mousetrap
