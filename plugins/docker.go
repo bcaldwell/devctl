@@ -27,7 +27,7 @@ func (i *installDocker) Execute() error {
 type startDocker struct{}
 
 func (s *startDocker) String() string {
-	return "Starting Docker"
+	return "Configuring Docker"
 }
 
 func (s *startDocker) Check() (bool, error) {

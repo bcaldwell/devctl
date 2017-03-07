@@ -25,7 +25,7 @@ func TestConnect(t *testing.T) {
 	}
 }
 
-func Test_isDockerRunning(t *testing.T) {
+func Test_IsDockerRunning(t *testing.T) {
 	tests := []struct {
 		name string
 		want bool
@@ -34,14 +34,14 @@ func Test_isDockerRunning(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := isDockerRunning(); got != tt.want {
+			if got := IsDockerRunning(); got != tt.want {
 				t.Errorf("isDockerRunning() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_startDocker(t *testing.T) {
+func Test_StartDocker(t *testing.T) {
 	tests := []struct {
 		name    string
 		wantErr bool
@@ -50,7 +50,7 @@ func Test_startDocker(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := startDocker(); (err != nil) != tt.wantErr {
+			if err := StartDocker(); (err != nil) != tt.wantErr {
 				t.Errorf("startDocker() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
