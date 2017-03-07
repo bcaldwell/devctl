@@ -10,6 +10,9 @@ machine:
     - test -e "${DOWNLOADS}/${GODIST}" || curl -o "${DOWNLOADS}/${GODIST}" "https://storage.googleapis.com/golang/${GODIST}"
     - sudo rm -rf /usr/local/go
     - sudo tar -C /usr/local -xzf "${DOWNLOADS}/${GODIST}"
+    
+  services:
+    - docker
 
 dependencies:
   override:
