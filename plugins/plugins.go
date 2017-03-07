@@ -38,7 +38,10 @@ type Plugin interface {
 }
 
 // List is a list of all available plugins
-var List = []Plugin{}
+var List = []Plugin{
+	&Docker{},
+	// &Golang{},
+}
 
 // AddPlugin adds a new plugin
 func AddPlugin(plugin Plugin) {
