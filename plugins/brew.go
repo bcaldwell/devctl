@@ -7,10 +7,6 @@ import (
 	"github.com/benjamincaldwell/go-printer"
 )
 
-func init() {
-	AddPlugin(&Brew{})
-}
-
 // Brew plugin struct
 type Brew struct {
 	dependencies []string

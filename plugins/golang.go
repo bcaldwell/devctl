@@ -21,8 +21,8 @@ import (
 type Golang struct {
 }
 
-func init() {
-	AddPlugin(&Golang{})
+func (g Golang) String() string {
+	return "Go"
 }
 
 func (g Golang) Setup() {

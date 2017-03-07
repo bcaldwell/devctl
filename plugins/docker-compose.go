@@ -12,10 +12,6 @@ import (
 	"github.com/ghodss/yaml"
 )
 
-func init() {
-	AddPlugin(&DockerCompose{})
-}
-
 var composeFile string
 
 type DockerCompose struct {

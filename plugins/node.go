@@ -12,10 +12,6 @@ import (
 	"github.com/benjamincaldwell/go-printer"
 )
 
-func init() {
-	AddPlugin(&Node{})
-}
-
 type Node struct {
 	path    string
 	version string

@@ -15,7 +15,6 @@ import (
 
 func init() {
 	virtualEnvLocation = path.Join(os.Getenv("HOME"), "/.devctl", utilities.LocationHash(), "venv")
-	AddPlugin(&Python{})
 }
 
 var virtualEnvLocation string
