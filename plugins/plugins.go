@@ -7,14 +7,33 @@ import (
 
 // Plugin interfaceUse
 type Plugin interface {
+	// implement stringer interface
+	String() string
+
+	// Runs on devctl install or upgrade
 	Setup()
-	PreInstall(*parser.ConfigurationStruct)
-	Install(*parser.ConfigurationStruct)
-	PostInstall(*parser.ConfigurationStruct)
+
+	// Tasks initializes tasks required during the up stage.
+	// The tasks returned by Tasks will be run in order
+	// Note: tasks are not passed ConfigurationStruct as such need to be initialized with required values
+	UpTasks(*parser.ConfigurationStruct) (tasks []Task, err error)
+
+	// devctl up functions
+	// Check if any tasks need to be run.
+	// Check is also run after Up is finished to ensure function complete successfully
+	// Check(*parser.ConfigurationStruct) bool
+	// Main runs
+	// Up(*parser.ConfigurationStruct)
+
+	// PreInstall(*parser.ConfigurationStruct)
+	// Install(*parser.ConfigurationStruct)
+	// PostInstall(*parser.ConfigurationStruct)
 	PreScript(*parser.ConfigurationStruct)
 	Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand
 	PostScript(*parser.ConfigurationStruct)
 	Down(*parser.ConfigurationStruct)
+
+	// Returns true if plugin applies to the current plugin
 	IsProjectType(*parser.ConfigurationStruct) bool
 }
 

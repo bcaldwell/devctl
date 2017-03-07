@@ -8,7 +8,7 @@ import (
 
 // Task is the interface used by task runner
 type Task interface {
-	Name() string
+	String() string
 	Check() (bool, error)
 	Execute() error
 }
@@ -26,11 +26,11 @@ func RunTasks(tasks []Task) (err error) {
 			return err
 		}
 		if pass {
-			printer.SuccessBarIcon("%s (Check passed)", task.Name())
+			printer.SuccessBarIcon("%s (Already completed)", task)
 			continue
 		}
 		// run task
-		printer.InfoBar("Executing: %s", task.Name())
+		printer.InfoBar("Executing: %s", task)
 		err = task.Execute()
 		if err != nil {
 			return err
@@ -41,7 +41,7 @@ func RunTasks(tasks []Task) (err error) {
 			return err
 		}
 		if !pass {
-			printer.ErrorBarIcon("%s (Check failed after task was executed)", task.Name())
+			printer.ErrorBarIcon("%s (Check failed after task was executed)", task)
 			return CheckFailedAfterTaskErr
 		}
 	}

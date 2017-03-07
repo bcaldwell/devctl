@@ -19,6 +19,7 @@ import (
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
+	printer "github.com/benjamincaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
 
@@ -59,25 +60,32 @@ func up(cmd *cobra.Command, args []string) {
 
 	pluginsUsed := plugins.Used(config)
 
-	preInstall(config, pluginsUsed)
-	install(config, pluginsUsed)
-	postInstall(config, pluginsUsed)
-}
+	pluginCount := len(pluginsUsed)
 
-func preInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.PreInstall(config)
-	}
-}
+	for i, plugin := range pluginsUsed {
+		// get tasks
+		tasks, err := plugin.UpTasks(config)
 
-func install(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.Install(config)
-	}
-}
+		// run pre checks
+		check, err := plugins.RunChecks(tasks)
+		if err != nil {
+			printer.ErrorBar("%s", err)
+		}
 
-func postInstall(config *parser.ConfigurationStruct, pluginsUsed []plugins.Plugin) {
-	for _, i := range pluginsUsed {
-		i.PostInstall(config)
+		// log completed check
+		if check {
+			printer.Success("%d/%d %s (Already completed)", i+1, pluginCount, plugin)
+			continue
+		}
+
+		// Run task if necessary
+		printer.InfoLineTextTop("%d/%d %s", i+1, pluginCount, plugin)
+		err = plugins.RunTasks(tasks)
+		printer.InfoLineBottom()
+
+		// Run post checks
+		if err == plugins.CheckFailedAfterTaskErr {
+			os.Exit(1)
+		}
 	}
 }
