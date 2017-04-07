@@ -174,6 +174,47 @@ func TestCloneGitlabConfigured(t *testing.T) {
 
 }
 
+func TestCloneFullUrlWithoutGit(t *testing.T) {
+
+	config := map[string]string{
+		"github_user": "github_user",
+		"source_dir":  "/",
+		"gitlab_url":  "gitlab.somwhere.com",
+		"gitlab_user": "gitlab_user",
+	}
+
+	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
+	defer os.Remove(file.Name())
+
+	parser.WriteMapTomlLike(config, file.Name())
+
+	parser.ParseDevctlConfig(file.Name())
+
+	testStructs := []testStruct{
+		{
+			[]string{"https://github.com/user1/project1"},
+			new(cloneConfig),
+			&cloneConfig{
+				Repo:      "project1",
+				User:      "user1",
+				Host:      "github.com",
+				Url:       "https://github.com/user1/project1",
+				SourceDir: "/src/github.com/user1",
+			},
+		},
+	}
+
+	for _, i := range testStructs {
+		i.config.github()
+		i.config.gitlab()
+		i.config.parseArgs(i.args)
+		i.config.setSourceDir()
+
+		checkStruct(t, &i)
+	}
+
+}
+
 func TestCloneFullUrl(t *testing.T) {
 
 	config := map[string]string{
