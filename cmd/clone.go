@@ -101,7 +101,7 @@ func isFullURL(s string) bool {
 }
 
 func (cfg *cloneConfig) parseFullURL(url string) {
-	r, _ := regexp.Compile(`^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)(.git)?$`)
+	r, _ := regexp.Compile(`^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)(?:.git)?$`)
 	res := r.FindAllStringSubmatch(url, -1)
 
 	cfg.Host = res[0][1]
