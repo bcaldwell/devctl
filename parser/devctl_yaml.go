@@ -3,6 +3,7 @@ package parser
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 
 	"github.com/benjamincaldwell/devctl/utilities"
 
@@ -18,8 +19,8 @@ type ConfigurationStruct struct {
 	Go                Version
 	Python            Version
 	Scripts           map[string]utilities.RunCommand
-	DockerCompose     interface{} `yaml:"docker-compose"`
-	DockerComposeFile string      `yaml:"docker-compose-file"`
+	DockerCompose     interface{} `json:"docker-compose"`
+	DockerComposeFile string      `json:"docker-compose-file"`
 	Services          []interface{}
 	Dependencies      struct {
 		Install []string
@@ -28,7 +29,7 @@ type ConfigurationStruct struct {
 		}
 		Aptget struct {
 			Install []string
-		}
+		} `json:"apt-get"`
 	}
 }
 
@@ -47,6 +48,14 @@ func (c *ConfigurationStruct) ParseFile(paths ...string) (err error) {
 	return err
 }
 
+func (c *ConfigurationStruct) ProjectName() (string, error) {
+	return os.Getwd()
+}
+
 func (c *ConfigurationStruct) ParseJson(data string) {
 	json.Unmarshal([]byte(data), c)
+}
+
+func (c *ConfigurationStruct) ParseYaml(data string) {
+	yaml.Unmarshal([]byte(data), c)
 }

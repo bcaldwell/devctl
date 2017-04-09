@@ -2,6 +2,8 @@ package plugins
 
 import docker "github.com/fsouza/go-dockerclient"
 
+// import docker "github.com/fsouza/go-dockerclient"
+
 // import (
 // 	"bufio"
 // 	"fmt"
@@ -20,7 +22,6 @@ import docker "github.com/fsouza/go-dockerclient"
 // 	"github.com/benjamincaldwell/devctl/shell"
 // 	"github.com/benjamincaldwell/devctl/utilities"
 // 	"github.com/benjamincaldwell/go-printer"
-// 	"github.com/fsouza/go-dockerclient"
 // )
 
 // // func init() {

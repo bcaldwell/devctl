@@ -85,7 +85,9 @@ func (d Docker) Setup() {
 
 }
 
-func (d Docker) UpTasks(*parser.ConfigurationStruct) (tasks []Task, err error) {
+func (d Docker) UpTasks(config *parser.ConfigurationStruct) (tasks []Task, err error) {
+	fmt.Printf("%+v\n", config)
+
 	client := dockerClient.New()
 	tasks = []Task{
 		&installDocker{client},

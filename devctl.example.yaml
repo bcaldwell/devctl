@@ -45,7 +45,9 @@ scripts:
  # import from package.json as well
 
 services:
-  - nginx
+  - nginx:
+    version: 4.0
+    image: mysql
   - mysql
   - mongo
   - redis

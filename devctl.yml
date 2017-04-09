@@ -1,7 +1,9 @@
 ---
 go:
-  version: 6
+  version: 1.8
 scripts:
   hello:
     desc: blah
     command: echo hello
+services:
+  - nginx

@@ -15,8 +15,6 @@ import (
 )
 
 var (
-	// client that all CLI structs will use
-	dockerClient          *client.Client
 	ErrDockerTimeout      = errors.New("Timed out waiting for docker to start")
 	ErrCouldntStartDocker = errors.New("Couldn't start docker daemon. Try starting it manually")
 )
@@ -25,6 +23,7 @@ type Client interface {
 	Connect() (err error)
 	IsDockerRunning() bool
 	StartDocker() error
+	dockerClient() *client.Client
 
 	// Network functions
 	Network(id string) (network types.NetworkResource, err error)
@@ -39,14 +38,15 @@ type CLI struct {
 
 func New() Client {
 	return &CLI{
-		Client: dockerClient,
-		ctx:    context.Background(),
+		ctx: context.Background(),
 	}
 }
 
 func (c *CLI) Connect() (err error) {
 	if c.Client == nil {
-		os.Setenv("DOCKER_API_VERSION", c.DockerAPIversion())
+		if os.Getenv("DOCKER_API_VERSION") == "" {
+			os.Setenv("DOCKER_API_VERSION", c.DockerAPIversion())
+		}
 		c.Client, err = client.NewEnvClient()
 	}
 	return err
@@ -91,4 +91,8 @@ func (c *CLI) StartDocker() error {
 		return nil
 	}
 	return nil
+}
+
+func (c *CLI) dockerClient() *client.Client {
+	return c.Client
 }

@@ -30,6 +30,10 @@ func (t *testTask) Execute() error {
 	return nil
 }
 
+func (t *testTask) String() string {
+	return "Testing"
+}
+
 type executeErrorTask struct {
 	testTask
 }
