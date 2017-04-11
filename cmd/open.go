@@ -72,6 +72,14 @@ var createPRCmd = &cobra.Command{
 	},
 }
 
+var PRsCmd = &cobra.Command{
+	Use:   "prs",
+	Short: "Open projects pull requests page",
+	Run: func(cmd *cobra.Command, args []string) {
+		postCommand.RunCommand("open " + gitURL() + "/pulls")
+	},
+}
+
 func gitURL() string {
 	if output, err := gitOutput("remote", "-v"); err == nil {
 		urlLine := utilities.LineWith(string(output), "fetch")
@@ -94,4 +102,5 @@ func init() {
 	openCmd.AddCommand(issueCmd)
 	openCmd.AddCommand(issuesCmd)
 	openCmd.AddCommand(createPRCmd)
+	openCmd.AddCommand(PRsCmd)
 }
