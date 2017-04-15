@@ -26,11 +26,11 @@ func RunTasks(tasks []Task) (err error) {
 			return err
 		}
 		if pass {
-			printer.SuccessBarIcon("%s (Already completed)", task)
+			printer.InfoBar(printer.ColoredString("{{blue:%s}} %s"), printer.SuccessIcon, task)
 			continue
 		}
 		// run task
-		printer.InfoBar("Executing: %s", task)
+		printer.InfoBarIcon("%s", task)
 		err = task.Execute()
 		if err != nil {
 			return err
@@ -40,10 +40,12 @@ func RunTasks(tasks []Task) (err error) {
 		if err != nil {
 			return err
 		}
+
 		if !pass {
 			printer.ErrorBarIcon("%s (Check failed after task was executed)", task)
 			return CheckFailedAfterTaskErr
 		}
+		printer.SuccessBarIcon("%s", task)
 	}
 	return nil
 }
