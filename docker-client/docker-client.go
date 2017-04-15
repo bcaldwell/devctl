@@ -10,7 +10,6 @@ import (
 
 	"os"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
@@ -26,14 +25,10 @@ type Client interface {
 	dockerClient() *client.Client
 
 	// Network methods
-	Network(id string) (network types.NetworkResource, err error)
-	NetworkByName(name string) (network types.NetworkResource, err error)
-	CreateNetwork(name string) (id string, err error)
+	DockerNetwork
 
 	// Image methods
-	PullImage(image string) (err error)
-	IsImagePulled(image string) (status bool, err error)
-	RemoveImage(image string) (err error)
+	DockerImage
 }
 
 type CLI struct {

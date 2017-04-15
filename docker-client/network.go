@@ -2,6 +2,12 @@ package dockerClient
 
 import "github.com/docker/docker/api/types"
 
+type DockerNetwork interface {
+	Network(id string) (network types.NetworkResource, err error)
+	NetworkByName(name string) (network types.NetworkResource, err error)
+	CreateNetwork(name string) (id string, err error)
+}
+
 func (c *CLI) CreateNetwork(name string) (id string, err error) {
 	var network types.NetworkCreateResponse
 	network, err = c.Client.NetworkCreate(c.ctx, name, types.NetworkCreate{})
