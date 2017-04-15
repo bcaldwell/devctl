@@ -25,10 +25,14 @@ type Client interface {
 	StartDocker() error
 	dockerClient() *client.Client
 
-	// Network functions
+	// Network methods
 	Network(id string) (network types.NetworkResource, err error)
 	NetworkByName(name string) (network types.NetworkResource, err error)
 	CreateNetwork(name string) (id string, err error)
+
+	// Image methods
+	PullImage(image string) (err error)
+	IsImagePulled(image string) (status bool, err error)
 }
 
 type CLI struct {

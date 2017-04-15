@@ -24,6 +24,8 @@ func TestNew(t *testing.T) {
 
 func TestCLI_Connect(t *testing.T) {
 	client := New()
+	dockerVersionEnv := os.Getenv("DOCKER_API_VERSION")
+	defer os.Setenv("DOCKER_API_VERSION", dockerVersionEnv)
 	t.Run("Doesnt overwrite docker api env variable", func(t *testing.T) {
 		os.Setenv("DOCKER_API_VERSION", "v0.0.0")
 		client.Connect()
