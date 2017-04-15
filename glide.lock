@@ -1,12 +1,12 @@
-hash: 4446070d26c11b0887c87d617133726d012d314abf4998392c93af53c139a34b
-updated: 2017-04-14T18:56:51.017593179-04:00
+hash: 4445c1f033f2b3ac36b4df42716ce14bde8ecb382ffee8a4244f861b118074d1
+updated: 2017-04-15T16:49:34.755478164-04:00
 imports:
 - name: github.com/Azure/go-ansiterm
   version: fa152c58bc15761d0200cb75fe958b89a9d4888e
   subpackages:
   - winterm
 - name: github.com/benjamincaldwell/go-printer
-  version: cfb92a400db89570f73ec37d3e18bed5b7e9dfab
+  version: 9c53f09e0632b226a72383a532e366b7b53d6f98
 - name: github.com/benjamincaldwell/go-system-detector
   version: 893a24d9154e178f297d094eea39c9c46c4c6766
 - name: github.com/bitly/go-simplejson
