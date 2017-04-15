@@ -33,6 +33,7 @@ type Client interface {
 	// Image methods
 	PullImage(image string) (err error)
 	IsImagePulled(image string) (status bool, err error)
+	RemoveImage(image string) (err error)
 }
 
 type CLI struct {

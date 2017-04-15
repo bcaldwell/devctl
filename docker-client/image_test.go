@@ -1,34 +1,29 @@
 package dockerClient
 
 import (
-	"context"
 	"testing"
-
-	"github.com/docker/docker/client"
 )
 
 func TestCLI_PullImage(t *testing.T) {
-	type fields struct {
-		Client *client.Client
-		ctx    context.Context
-	}
 	type args struct {
 		image string
 	}
 	tests := []struct {
 		name    string
-		fields  fields
 		args    args
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		{
+			name:    "nginx",
+			args:    args{"nginx"},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
+		c := New()
+		c.Connect()
+		c.RemoveImage("nginx")
 		t.Run(tt.name, func(t *testing.T) {
-			c := &CLI{
-				Client: tt.fields.Client,
-				ctx:    tt.fields.ctx,
-			}
 			if err := c.PullImage(tt.args.image); (err != nil) != tt.wantErr {
 				t.Errorf("CLI.PullImage() error = %v, wantErr %v", err, tt.wantErr)
 			}
