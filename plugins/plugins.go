@@ -43,11 +43,6 @@ var List = []Plugin{
 	// &Golang{},
 }
 
-// AddPlugin adds a new plugin
-func AddPlugin(plugin Plugin) {
-	List = append(List, plugin)
-}
-
 // Used calls IsProjectType on each element on the PluginList array and returns a filtered version
 func Used(c *parser.ConfigurationStruct) []Plugin {
 	pluginsUsed := []Plugin{}

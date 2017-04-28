@@ -11,6 +11,11 @@ type DockerImage interface {
 	PullImage(image string) (err error)
 	IsImagePulled(image string) (status bool, err error)
 	RemoveImage(image string) (err error)
+	Images() ([]types.ImageSummary, error)
+}
+
+func (c *CLI) Images() ([]types.ImageSummary, error) {
+	return c.Client.ImageList(c.ctx, types.ImageListOptions{})
 }
 
 func (c *CLI) PullImage(image string) (err error) {

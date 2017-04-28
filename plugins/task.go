@@ -3,7 +3,7 @@ package plugins
 import (
 	"errors"
 
-	"github.com/benjamincaldwell/go-printer"
+	printer "github.com/benjamincaldwell/go-printer"
 )
 
 // Task is the interface used by task runner
@@ -19,34 +19,41 @@ var CheckFailedAfterTaskErr = errors.New("Check failed after tasks was executed"
 // RunTasks runs all tasks. First checks the check. If check returns false the task is executed.
 // The check is checked again after the task is executed.
 func RunTasks(tasks []Task) (err error) {
-	var pass bool
 	for _, task := range tasks {
-		pass, err = task.Check()
-		if err != nil {
-			return err
+		if status := RunTask(task); status != nil {
+			return status
 		}
-		if pass {
-			printer.InfoBar(printer.ColoredString("{{blue:%s}} %s"), printer.SuccessIcon, task)
-			continue
-		}
-		// run task
-		printer.InfoBarIcon("%s", task)
-		err = task.Execute()
-		if err != nil {
-			return err
-		}
-		// check check after task was run
-		pass, err = task.Check()
-		if err != nil {
-			return err
-		}
-
-		if !pass {
-			printer.ErrorBarIcon("%s (Check failed after task was executed)", task)
-			return CheckFailedAfterTaskErr
-		}
-		printer.SuccessBarIcon("%s", task)
 	}
+	return nil
+}
+
+func RunTask(task Task) (err error) {
+	var pass bool
+	pass, err = task.Check()
+	if err != nil {
+		return err
+	}
+	if pass {
+		printer.InfoBar(printer.ColoredString("{{blue:%s}} %s"), printer.SuccessIcon, task)
+		return nil
+	}
+	// run task
+	printer.InfoBarIcon("%s", task)
+	err = task.Execute()
+	if err != nil {
+		return err
+	}
+	// check check after task was run
+	pass, err = task.Check()
+	if err != nil {
+		return err
+	}
+
+	if !pass {
+		printer.ErrorBarIcon("%s (Check failed after task was executed)", task)
+		return CheckFailedAfterTaskErr
+	}
+	printer.SuccessBarIcon("%s", task)
 	return nil
 }
 

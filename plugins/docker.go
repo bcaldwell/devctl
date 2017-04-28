@@ -9,9 +9,6 @@ import (
 	"github.com/benjamincaldwell/devctl/utilities"
 )
 
-type Docker struct {
-}
-
 // install docker task
 type installDocker struct {
 	client dockerClient.Client
@@ -77,17 +74,18 @@ func (c *createNetwork) Execute() error {
 }
 
 // Docker plugin struct
+type Docker struct{}
+
 func (d Docker) String() string {
 	return "Docker setup"
 }
 
 func (d Docker) Setup() {
-
+	client := dockerClient.New()
+	RunTask(&installDocker{client})
 }
 
 func (d Docker) UpTasks(config *parser.ConfigurationStruct) (tasks []Task, err error) {
-	fmt.Printf("%+v\n", config)
-
 	client := dockerClient.New()
 	tasks = []Task{
 		&installDocker{client},
