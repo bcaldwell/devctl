@@ -35,6 +35,5 @@ vendor
 
 \.devctl/
 
-
-#temp. remove soon
-_vendor-20170818164127
+# Undo global rule 
+!*.com
