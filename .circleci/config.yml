@@ -9,13 +9,13 @@ jobs:
 
       - restore_cache:
           keys:
-            - vendor-cache-{{ checksum "Gopkg.lock" }}
+            - vendor-cache
 
       - run: go get -u github.com/golang/dep/cmd/dep
       - run: dep ensure
 
       - save_cache:
-          key: vendor-cache-{{ checksum "Gopkg.lock" }}
+          key: vendor-cache
           paths:
             - vendor/bundle
 
