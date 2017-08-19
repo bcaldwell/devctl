@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.8
+    working_directory: /go/src/github.com/benjamincaldwell/devctl
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - vendor-cache
+
+      - run: go get -u github.com/golang/dep/cmd/dep
+      - run: dep ensure
+
+      - save_cache:
+          key: vendor-cache
+          paths:
+            - vendor
+
+      - setup_remote_docker
+
+      - run: bash scripts/go.test.sh
+      - run: bash <(curl -s https://codecov.io/bash)
