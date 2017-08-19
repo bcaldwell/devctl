@@ -20,6 +20,6 @@ jobs:
       - run: bash <(curl -s https://codecov.io/bash)
 
       - save_cache:
-          key: vendor-cache-{{ checksum "Gopkg.lock" }}
-          paths:
-            - vendor/bundle
+        key: vendor-cache-{{ checksum "Gopkg.lock" }}
+        paths:
+          - vendor/bundle
