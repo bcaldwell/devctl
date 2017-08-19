@@ -14,12 +14,12 @@ jobs:
       - run: go get -u github.com/golang/dep/cmd/dep
       - run: dep ensure
 
-      - setup_remote_docker
-
-      - run: bash scripts/go.test.sh
-      - run: bash <(curl -s https://codecov.io/bash)
-
       - save_cache:
           key: vendor-cache-{{ checksum "Gopkg.lock" }}
           paths:
             - vendor/bundle
+
+      - setup_remote_docker
+
+      - run: bash scripts/go.test.sh
+      - run: bash <(curl -s https://codecov.io/bash)
