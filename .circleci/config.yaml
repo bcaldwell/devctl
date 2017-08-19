@@ -1,0 +1,11 @@
+version: 2
+jobs:
+   build:
+     docker:
+       - image: circleci/golang:1.8
+    working_directory: /go/src/github.com/benjamincaldwell/devctl
+    steps:
+      - checkout
+      # ... steps for building/testing app ...
+      - dep ensure
+      - setup_remote_docker
