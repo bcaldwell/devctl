@@ -7,17 +7,17 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - vendor-cache
+      # - restore_cache:
+      #     keys:
+      #       - vendor-cache
 
-      - run: go get -u github.com/golang/dep/cmd/dep
-      - run: dep ensure
+      # - run: go get -u github.com/golang/dep/cmd/dep
+      # - run: dep ensure
 
-      - save_cache:
-          key: vendor-cache
-          paths:
-            - vendor
+      # - save_cache:
+      #     key: vendor-cache
+      #     paths:
+      #       - vendor
 
       - setup_remote_docker
 
