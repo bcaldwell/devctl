@@ -1,6 +1,6 @@
 package plugins
 
-import docker "github.com/fsouza/go-dockerclient"
+// import docker "github.com/fsouza/go-dockerclient"
 
 // import docker "github.com/fsouza/go-dockerclient"
 
@@ -33,8 +33,9 @@ import docker "github.com/fsouza/go-dockerclient"
 // // }
 
 type Service struct {
-	image       string
-	port        docker.Port
+	image string
+	port  string
+	// port        docker.Port
 	volumes     []string
 	environment []string
 	tag         string
