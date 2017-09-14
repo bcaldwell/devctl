@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"path"
 
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/plugins"
@@ -33,6 +34,10 @@ var devctlCmd = &cobra.Command{
 	// PersistentPreRun: func(cmd *cobra.Command, args []string) {},
 	Run:               devctl,
 	PersistentPostRun: persistentPostRun,
+}
+
+func devctl(cmd *cobra.Command, args []string) {
+	cmd.Help()
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -73,7 +78,7 @@ func init() {
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 
-	cfgFile := os.Getenv("HOME") + "/.devctlconfig"
+	cfgFile := path.Join(os.Getenv("HOME"), ".devctlconfig")
 
 	shell.DryRun = DryRun
 	postCommand.DryRun = DryRun
@@ -94,10 +99,6 @@ func initConfig() {
 			os.Exit(1)
 		}
 	}
-}
-
-func devctl(cmd *cobra.Command, args []string) {
-	cmd.Help()
 }
 
 func persistentPostRun(cmd *cobra.Command, args []string) {

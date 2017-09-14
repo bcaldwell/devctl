@@ -20,7 +20,7 @@ func (c *CLI) Network(id string) (network types.NetworkResource, err error) {
 }
 
 func (c *CLI) NetworkByName(name string) (network types.NetworkResource, err error) {
-	// TODO make this use args
+	// TODO: make this use docker args
 	networks, err := c.Client.NetworkList(c.ctx, types.NetworkListOptions{})
 	if err == nil {
 		for _, network := range networks {

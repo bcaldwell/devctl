@@ -15,20 +15,20 @@ func TestCLI_CreateNetwork(t *testing.T) {
 		name    string
 		c       *CLI
 		args    args
-		wantId  string
+		wantID  string
 		wantErr bool
 	}{
 	// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotId, err := tt.c.CreateNetwork(tt.args.name)
+			gotID, err := tt.c.CreateNetwork(tt.args.name)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CLI.CreateNetwork() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if gotId != tt.wantId {
-				t.Errorf("CLI.CreateNetwork() = %v, want %v", gotId, tt.wantId)
+			if gotID != tt.wantID {
+				t.Errorf("CLI.CreateNetwork() = %v, want %v", gotID, tt.wantID)
 			}
 		})
 	}

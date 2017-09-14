@@ -31,7 +31,7 @@ func init() {
 	devctlCmd.AddCommand(cloneCmd)
 
 	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
-	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "Clone from gitlab url")
+	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "subfolder to clone repo to")
 }
 
 type cloneConfig struct {
@@ -124,6 +124,10 @@ func (cfg *cloneConfig) gitlab() {
 
 func (cfg *cloneConfig) setSourceDir() {
 	sourceDir := parser.GetString("source_dir")
+	if sourceDir == "" {
+		printer.Warning("Source Directory is blank, falling back to $HOME")
+		sourceDir = os.Getenv("HOME")
+	}
 	cfg.SourceDir = path.Join(sourceDir, "src", cfg.Host, cfg.User, tag)
 	os.MkdirAll(cfg.SourceDir, 0755)
 }
@@ -135,14 +139,23 @@ func (cfg *cloneConfig) setUrl() {
 }
 
 func (cfg *cloneConfig) clone() {
-	session := shell.Session()
-	session.SetDir(cfg.SourceDir)
+	source_info, folder_exists := os.Stat(cfg.SourceDir)
 
-	err := session.Command("git", "clone", cfg.Url).PrintOutput()
-	if err != nil {
-		printer.Fail("Failed to clone %s", cfg.Url)
-	} else {
+	if os.IsNotExist(folder_exists) {
+		session := shell.Session()
+		session.SetDir(cfg.SourceDir)
+
+		err := session.Command("git", "clone", cfg.Url).PrintOutput()
+		if err != nil {
+			printer.Fail("Failed to clone %s", cfg.Url)
+			return
+		}
 		printer.Success("Clone was successful")
-		postCommand.ChangeDir(path.Join(cfg.SourceDir, cfg.Repo))
+	} else if source_info.IsDir() {
+		printer.Success("Project already cloned")
+	} else {
+		printer.Warning("Destination is a file")
+		return
 	}
+	postCommand.ChangeDir(path.Join(cfg.SourceDir, cfg.Repo))
 }

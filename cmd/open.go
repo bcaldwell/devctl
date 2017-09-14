@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"strings"
 
 	"github.com/benjamincaldwell/devctl/postCommand"
@@ -14,17 +12,18 @@ import (
 // openCmd represents the open command
 var openCmd = &cobra.Command{
 	Use:   "open",
-	Short: "A brief description of your command",
+	Short: "Open various pages on remote host (github)",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Work your own magic here
-		fmt.Println("open called")
+		repoCmd.Run(cmd, args)
 	},
 }
 
 var repoCmd = &cobra.Command{
-	Use:   "repo",
-	Short: "Open repo webpage in default browser",
+	Use:     "repo",
+	Aliases: []string{"github", "gitlab", "gh"},
+	Short:   "Open repo webpage in default browser",
 	Run: func(cmd *cobra.Command, args []string) {
 		postCommand.RunCommand("open " + gitURL())
 	},

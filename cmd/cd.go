@@ -66,6 +66,11 @@ func cd(cmd *cobra.Command, args []string) {
 
 		files := getFolderList(sourceDir)
 
+		if len(files) < 2 { //source directory is always included
+			printer.Info("No folders in source folder. Use `devctl clone [url]` to get started")
+			return
+		}
+
 		dir = findMatch(query, files)
 		if dir == "" {
 			printer.Info("%s could not be found", query)
