@@ -44,7 +44,7 @@ func devctl(cmd *cobra.Command, args []string) {
 // This is called by main.main(). It only needs to happen once to the devctlCmd.
 func Execute() {
 	if err := devctlCmd.Execute(); err != nil {
-		config := new(parser.ProjectConfig)
+		config := new(parser.ProjectConfigStruct)
 		config.ParseFileDefault()
 
 		pluginsUsed := plugins.Used(config)

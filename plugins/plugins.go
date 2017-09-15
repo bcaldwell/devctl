@@ -16,25 +16,25 @@ type Plugin interface {
 	// Tasks initializes tasks required during the up stage.
 	// The tasks returned by Tasks will be run in order
 	// Note: tasks are not passed ProjectConfig as such need to be initialized with required values
-	UpTasks(*parser.ProjectConfig) (tasks []Task, err error)
+	UpTasks(*parser.ProjectConfigStruct) (tasks []Task, err error)
 
 	// devctl up functions
 	// Check if any tasks need to be run.
 	// Check is also run after Up is finished to ensure function complete successfully
-	// Check(*parser.ProjectConfig) bool
+	// Check(*parser.ProjectConfigStruct) bool
 	// Main runs
-	// Up(*parser.ProjectConfig)
+	// Up(*parser.ProjectConfigStruct)
 
-	// PreInstall(*parser.ProjectConfig)
-	// Install(*parser.ProjectConfig)
-	// PostInstall(*parser.ProjectConfig)
-	PreScript(*parser.ProjectConfig)
-	Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand
-	PostScript(*parser.ProjectConfig)
-	Down(*parser.ProjectConfig)
+	// PreInstall(*parser.ProjectConfigStruct)
+	// Install(*parser.ProjectConfigStruct)
+	// PostInstall(*parser.ProjectConfigStruct)
+	PreScript(*parser.ProjectConfigStruct)
+	Scripts(c *parser.ProjectConfigStruct) map[string]utilities.RunCommand
+	PostScript(*parser.ProjectConfigStruct)
+	Down(*parser.ProjectConfigStruct)
 
 	// Returns true if plugin applies to the current plugin
-	IsProjectType(*parser.ProjectConfig) bool
+	IsProjectType(*parser.ProjectConfigStruct) bool
 }
 
 // List is a list of all available plugins
@@ -44,7 +44,7 @@ var List = []Plugin{
 }
 
 // Used calls IsProjectType on each element on the PluginList array and returns a filtered version
-func Used(c *parser.ProjectConfig) []Plugin {
+func Used(c *parser.ProjectConfigStruct) []Plugin {
 	pluginsUsed := []Plugin{}
 
 	for _, plugin := range List {

@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"os"
 	"testing"
 
 	"github.com/benjamincaldwell/devctl/parser"
@@ -21,17 +19,10 @@ type testStruct struct {
 
 func TestCloneGithub(t *testing.T) {
 
-	config := map[string]string{
-		"github_user": "github_user",
-		"source_dir":  "/",
+	parser.DevctlConfig = &parser.Config{
+		GithubUser: "github_user",
+		SourceDir:  "/",
 	}
-
-	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
-	defer os.Remove(file.Name())
-
-	parser.WriteMapTomlLike(config, file.Name())
-
-	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -71,18 +62,11 @@ func TestCloneGithub(t *testing.T) {
 
 func TestCloneGitlabWithoutURLConfigured(t *testing.T) {
 
-	config := map[string]string{
-		"github_user": "github_user",
-		"source_dir":  "/",
-		"gitlab_user": "gitlab_user",
+	parser.DevctlConfig = &parser.Config{
+		GithubUser: "github_user",
+		SourceDir:  "/",
+		GitlabUser: "gitlab_user",
 	}
-
-	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
-	defer os.Remove(file.Name())
-
-	parser.WriteMapTomlLike(config, file.Name())
-
-	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -123,19 +107,12 @@ func TestCloneGitlabWithoutURLConfigured(t *testing.T) {
 
 func TestCloneGitlabConfigured(t *testing.T) {
 
-	config := map[string]string{
-		"github_user": "github_user",
-		"source_dir":  "/",
-		"gitlab_url":  "gitlab.somwhere.com",
-		"gitlab_user": "gitlab_user",
+	parser.DevctlConfig = &parser.Config{
+		GithubUser: "github_user",
+		SourceDir:  "/",
+		GitlabURL:  "gitlab.somwhere.com",
+		GitlabUser: "gitlab_user",
 	}
-
-	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
-	defer os.Remove(file.Name())
-
-	parser.WriteMapTomlLike(config, file.Name())
-
-	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -176,19 +153,12 @@ func TestCloneGitlabConfigured(t *testing.T) {
 
 func TestCloneFullUrlWithoutGit(t *testing.T) {
 
-	config := map[string]string{
-		"github_user": "github_user",
-		"source_dir":  "/",
-		"gitlab_url":  "gitlab.somwhere.com",
-		"gitlab_user": "gitlab_user",
+	parser.DevctlConfig = &parser.Config{
+		GithubUser: "github_user",
+		SourceDir:  "/",
+		GitlabURL:  "gitlab.somwhere.com",
+		GitlabUser: "gitlab_user",
 	}
-
-	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
-	defer os.Remove(file.Name())
-
-	parser.WriteMapTomlLike(config, file.Name())
-
-	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{
@@ -217,19 +187,12 @@ func TestCloneFullUrlWithoutGit(t *testing.T) {
 
 func TestCloneFullUrl(t *testing.T) {
 
-	config := map[string]string{
-		"github_user": "github_user",
-		"source_dir":  "/",
-		"gitlab_url":  "gitlab.somwhere.com",
-		"gitlab_user": "gitlab_user",
+	parser.DevctlConfig = &parser.Config{
+		GithubUser: "github_user",
+		SourceDir:  "/",
+		GitlabURL:  "gitlab.somwhere.com",
+		GitlabUser: "gitlab_user",
 	}
-
-	file, _ := ioutil.TempFile(os.TempDir(), "devctl_test_temp")
-	defer os.Remove(file.Name())
-
-	parser.WriteMapTomlLike(config, file.Name())
-
-	parser.ParseDevctlConfig(file.Name())
 
 	testStructs := []testStruct{
 		{

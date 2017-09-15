@@ -30,15 +30,15 @@ func (g Golang) Setup() {
 	// instal glide? godeps?
 }
 
-func (g Golang) Check(c *parser.ProjectConfig) bool {
+func (g Golang) Check(c *parser.ProjectConfigStruct) bool {
 	return true
 }
 
-func (g Golang) Up(c *parser.ProjectConfig) {
+func (g Golang) Up(c *parser.ProjectConfigStruct) {
 
 }
 
-func (g Golang) PreInstall(c *parser.ProjectConfig) {
+func (g Golang) PreInstall(c *parser.ProjectConfigStruct) {
 	// sourceDir := parser.GetString("source_dir")
 	sourceDir := ""
 	// set go path
@@ -67,7 +67,7 @@ func (g Golang) PreInstall(c *parser.ProjectConfig) {
 	}
 }
 
-func (g Golang) Install(c *parser.ProjectConfig) {
+func (g Golang) Install(c *parser.ProjectConfigStruct) {
 	printer.Info("getting go dependencies")
 	if _, err := os.Stat("glide.yaml"); err == nil {
 		// glide
@@ -88,13 +88,13 @@ func (g Golang) Install(c *parser.ProjectConfig) {
 	printer.InfoLineBottom()
 }
 
-func (g Golang) PostInstall(c *parser.ProjectConfig) {
+func (g Golang) PostInstall(c *parser.ProjectConfigStruct) {
 }
 
-func (g Golang) PreScript(c *parser.ProjectConfig) {
+func (g Golang) PreScript(c *parser.ProjectConfigStruct) {
 }
 
-func (g Golang) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
+func (g Golang) Scripts(c *parser.ProjectConfigStruct) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
 
@@ -121,12 +121,12 @@ func (g Golang) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand
 	return scripts
 }
 
-func (g Golang) PostScript(c *parser.ProjectConfig) {
+func (g Golang) PostScript(c *parser.ProjectConfigStruct) {
 }
 
-func (g Golang) Down(c *parser.ProjectConfig) {
+func (g Golang) Down(c *parser.ProjectConfigStruct) {
 }
 
-func (g Golang) IsProjectType(c *parser.ProjectConfig) bool {
+func (g Golang) IsProjectType(c *parser.ProjectConfigStruct) bool {
 	return c.Go.Version != ""
 }

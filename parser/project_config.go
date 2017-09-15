@@ -10,11 +10,14 @@ import (
 	"github.com/ghodss/yaml"
 )
 
+// TODO: make this work
+var ProjectConfig *ProjectConfigStruct
+
 type Version struct {
 	Version string
 }
 
-type ProjectConfig struct {
+type ProjectConfigStruct struct {
 	Node              Version
 	Go                Version
 	Python            Version
@@ -33,11 +36,11 @@ type ProjectConfig struct {
 	}
 }
 
-func (c *ProjectConfig) ParseFileDefault() error {
+func (c *ProjectConfigStruct) ParseFileDefault() error {
 	return c.ParseFile("devctl.yaml", "./devctl.yml")
 }
 
-func (c *ProjectConfig) ParseFile(paths ...string) (err error) {
+func (c *ProjectConfigStruct) ParseFile(paths ...string) (err error) {
 	for _, path := range paths {
 		data, err := ioutil.ReadFile(path)
 		if err == nil {
@@ -48,14 +51,14 @@ func (c *ProjectConfig) ParseFile(paths ...string) (err error) {
 	return err
 }
 
-func (c *ProjectConfig) ProjectName() (string, error) {
+func (c *ProjectConfigStruct) ProjectName() (string, error) {
 	return os.Getwd()
 }
 
-func (c *ProjectConfig) ParseJson(data string) {
+func (c *ProjectConfigStruct) ParseJson(data string) {
 	json.Unmarshal([]byte(data), c)
 }
 
-func (c *ProjectConfig) ParseYaml(data string) {
+func (c *ProjectConfigStruct) ParseYaml(data string) {
 	yaml.Unmarshal([]byte(data), c)
 }

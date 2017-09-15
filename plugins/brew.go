@@ -25,11 +25,11 @@ func (b *Brew) Setup() {
 	}
 }
 
-func (b *Brew) PreInstall(c *parser.ProjectConfig) {
+func (b *Brew) PreInstall(c *parser.ProjectConfigStruct) {
 	b.dependencies = append(c.Dependencies.Install, c.Dependencies.Brew.Install...)
 }
 
-func (b *Brew) Install(c *parser.ProjectConfig) {
+func (b *Brew) Install(c *parser.ProjectConfigStruct) {
 	for _, dependency := range b.dependencies {
 		if !checkIfBrewInstalled(dependency) {
 			brewInstall(dependency)
@@ -39,24 +39,24 @@ func (b *Brew) Install(c *parser.ProjectConfig) {
 	}
 }
 
-func (b Brew) PostInstall(c *parser.ProjectConfig) {
+func (b Brew) PostInstall(c *parser.ProjectConfigStruct) {
 }
 
-func (b Brew) PreScript(c *parser.ProjectConfig) {
+func (b Brew) PreScript(c *parser.ProjectConfigStruct) {
 }
 
-func (b Brew) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
+func (b Brew) Scripts(c *parser.ProjectConfigStruct) map[string]utilities.RunCommand {
 	scripts := make(map[string]utilities.RunCommand)
 	return scripts
 }
 
-func (b Brew) PostScript(c *parser.ProjectConfig) {
+func (b Brew) PostScript(c *parser.ProjectConfigStruct) {
 }
 
-func (b Brew) Down(c *parser.ProjectConfig) {
+func (b Brew) Down(c *parser.ProjectConfigStruct) {
 }
 
-func (n Brew) IsProjectType(c *parser.ProjectConfig) bool {
+func (n Brew) IsProjectType(c *parser.ProjectConfigStruct) bool {
 	if len(c.Dependencies.Install) > 0 || len(c.Dependencies.Brew.Install) > 0 {
 		return true
 	}

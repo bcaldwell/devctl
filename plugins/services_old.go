@@ -117,7 +117,7 @@ type Service struct {
 // 	}
 // }
 
-// func (d *Docker) PreInstall(c *parser.ProjectConfig) {
+// func (d *Docker) PreInstall(c *parser.ProjectConfigStruct) {
 // 	var err error
 // 	// make sure docker is running
 // 	startDocker()
@@ -129,7 +129,7 @@ type Service struct {
 // 	}
 // }
 
-// func (d *Docker) Install(c *parser.ProjectConfig) {
+// func (d *Docker) Install(c *parser.ProjectConfigStruct) {
 
 // 	printer.Info("Starting services")
 // 	printer.InfoLineTop()
@@ -185,7 +185,7 @@ type Service struct {
 // 	parser.WriteMapTomlLike(d.environment, ".devctl/env")
 // }
 
-// func (d *Docker) PostInstall(c *parser.ProjectConfig) {
+// func (d *Docker) PostInstall(c *parser.ProjectConfigStruct) {
 // 	printer.Info("Running service health check")
 // 	printer.InfoLineTop()
 
@@ -200,7 +200,7 @@ type Service struct {
 // 	printer.InfoLineBottom()
 // }
 
-// func (d *Docker) PreScript(c *parser.ProjectConfig) {
+// func (d *Docker) PreScript(c *parser.ProjectConfigStruct) {
 // 	printer.Info("Setting up services environment")
 // 	env, err := os.Open(".devctl/env")
 // 	if err != nil {
@@ -233,7 +233,7 @@ type Service struct {
 // 	}
 // }
 
-// func (d *Docker) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
+// func (d *Docker) Scripts(c *parser.ProjectConfigStruct) map[string]utilities.RunCommand {
 // 	scripts := make(map[string]utilities.RunCommand)
 
 // 	scripts["env"] = utilities.RunCommand{
@@ -243,14 +243,14 @@ type Service struct {
 // 	return scripts
 // }
 
-// func (d *Docker) PostScript(c *parser.ProjectConfig) {
+// func (d *Docker) PostScript(c *parser.ProjectConfigStruct) {
 // 	for envName := range d.environment {
 // 		unsetString := fmt.Sprintf("unset %s", envName)
 // 		postCommand.RunCommand(unsetString)
 // 	}
 // }
 
-// func (d *Docker) Down(c *parser.ProjectConfig) {
+// func (d *Docker) Down(c *parser.ProjectConfigStruct) {
 // 	var err error
 // 	endpoint := "unix:///var/run/docker.sock"
 // 	d.client, err = docker.NewClient(endpoint)
@@ -274,7 +274,7 @@ type Service struct {
 // 	printer.InfoLineBottom()
 // }
 
-// func (d *Docker) IsProjectType(c *parser.ProjectConfig) bool {
+// func (d *Docker) IsProjectType(c *parser.ProjectConfigStruct) bool {
 // 	return len(c.Services) > 0
 // }
 

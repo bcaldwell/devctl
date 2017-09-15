@@ -49,7 +49,7 @@ func run(cmd *cobra.Command, args []string) {
 		scriptName = args[0]
 	}
 
-	config := new(parser.ProjectConfig)
+	config := new(parser.ProjectConfigStruct)
 	config.ParseFileDefault()
 
 	pluginsUsed := plugins.Used(config)
@@ -63,7 +63,7 @@ func run(cmd *cobra.Command, args []string) {
 	}
 }
 
-func runScript(script utilities.RunCommand, config *parser.ProjectConfig, pluginsUsed []plugins.Plugin) {
+func runScript(script utilities.RunCommand, config *parser.ProjectConfigStruct, pluginsUsed []plugins.Plugin) {
 	for _, i := range pluginsUsed {
 		i.PreScript(config)
 	}
@@ -95,7 +95,7 @@ func findScript(scriptName string, scripts map[string]utilities.RunCommand) (uti
 	return utilities.RunCommand{}, false
 }
 
-func generateScriptMap(config *parser.ProjectConfig, pluginsUsed []plugins.Plugin) map[string]utilities.RunCommand {
+func generateScriptMap(config *parser.ProjectConfigStruct, pluginsUsed []plugins.Plugin) map[string]utilities.RunCommand {
 	scripts := make(map[string]utilities.RunCommand)
 
 	for _, i := range pluginsUsed {
