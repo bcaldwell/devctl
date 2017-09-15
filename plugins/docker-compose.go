@@ -20,7 +20,7 @@ type DockerCompose struct {
 func (d DockerCompose) Setup() {
 }
 
-func (d *DockerCompose) PreInstall(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) PreInstall(c *parser.ProjectConfig) {
 	// create .devctl folder
 	os.Mkdir(".devctl", 0700)
 
@@ -46,10 +46,10 @@ func (d *DockerCompose) PreInstall(c *parser.ConfigurationStruct) {
 
 }
 
-func (d *DockerCompose) Install(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) Install(c *parser.ProjectConfig) {
 }
 
-func (d *DockerCompose) PostInstall(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) PostInstall(c *parser.ProjectConfig) {
 	printer.Info("Starting docker compose")
 	printer.InfoLineTop()
 	err := shell.Command("docker-compose", "-f", composeFile, "up", "-d").PrintOutput()
@@ -60,21 +60,21 @@ func (d *DockerCompose) PostInstall(c *parser.ConfigurationStruct) {
 	}
 }
 
-func (d *DockerCompose) PreScript(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) PreScript(c *parser.ProjectConfig) {
 }
 
-func (d *DockerCompose) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
+func (d *DockerCompose) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
 	scripts := make(map[string]utilities.RunCommand)
 
 	return scripts
 }
 
-func (d *DockerCompose) PostScript(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) PostScript(c *parser.ProjectConfig) {
 }
 
-func (d *DockerCompose) Down(c *parser.ConfigurationStruct) {
+func (d *DockerCompose) Down(c *parser.ProjectConfig) {
 }
 
-func (d *DockerCompose) IsProjectType(c *parser.ConfigurationStruct) bool {
+func (d *DockerCompose) IsProjectType(c *parser.ProjectConfig) bool {
 	return c.DockerCompose != nil || c.DockerComposeFile != ""
 }

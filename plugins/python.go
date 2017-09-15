@@ -35,7 +35,7 @@ func (p *Python) Setup() {
 	p.pipInstallIfNotInstalled("virtualenv")
 }
 
-func (p *Python) PreInstall(c *parser.ConfigurationStruct) {
+func (p *Python) PreInstall(c *parser.ProjectConfig) {
 	p.dectectSystemBinary()
 	if err := p.pipInstallIfNotInstalled("virtualenv"); err != nil {
 		printer.Fail("Couldn't find or install virtualenv package")
@@ -71,7 +71,7 @@ func (p *Python) PreInstall(c *parser.ConfigurationStruct) {
 
 }
 
-func (n *Python) Install(c *parser.ConfigurationStruct) {
+func (n *Python) Install(c *parser.ProjectConfig) {
 	if _, err := os.Stat("requirements.txt"); os.IsNotExist(err) {
 		printer.Success("not requirements to install")
 	} else {
@@ -80,14 +80,14 @@ func (n *Python) Install(c *parser.ConfigurationStruct) {
 	}
 }
 
-func (n Python) PostInstall(c *parser.ConfigurationStruct) {
+func (n Python) PostInstall(c *parser.ProjectConfig) {
 	postCommand.RunCommand("source " + virtualEnvLocation + "/bin/activate")
 }
 
-func (n Python) PreScript(c *parser.ConfigurationStruct) {
+func (n Python) PreScript(c *parser.ProjectConfig) {
 }
 
-func (n Python) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
+func (n Python) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
 
@@ -98,14 +98,14 @@ func (n Python) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 	return scripts
 }
 
-func (n Python) PostScript(c *parser.ConfigurationStruct) {
+func (n Python) PostScript(c *parser.ProjectConfig) {
 }
 
-func (n Python) Down(c *parser.ConfigurationStruct) {
+func (n Python) Down(c *parser.ProjectConfig) {
 	postCommand.RunCommand("deactivate")
 }
 
-func (n Python) IsProjectType(c *parser.ConfigurationStruct) bool {
+func (n Python) IsProjectType(c *parser.ProjectConfig) bool {
 	if c.Python.Version != "" {
 		return true
 	}

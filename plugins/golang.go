@@ -30,16 +30,17 @@ func (g Golang) Setup() {
 	// instal glide? godeps?
 }
 
-func (g Golang) Check(c *parser.ConfigurationStruct) bool {
+func (g Golang) Check(c *parser.ProjectConfig) bool {
 	return true
 }
 
-func (g Golang) Up(c *parser.ConfigurationStruct) {
+func (g Golang) Up(c *parser.ProjectConfig) {
 
 }
 
-func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
-	sourceDir := parser.GetString("source_dir")
+func (g Golang) PreInstall(c *parser.ProjectConfig) {
+	// sourceDir := parser.GetString("source_dir")
+	sourceDir := ""
 	// set go path
 	printer.Info("adding devctl root to gopath")
 	if gopath, ok := os.LookupEnv("GOPATH"); !ok || utilities.StringInSlice(sourceDir, strings.Split(gopath, ":")) {
@@ -66,7 +67,7 @@ func (g Golang) PreInstall(c *parser.ConfigurationStruct) {
 	}
 }
 
-func (g Golang) Install(c *parser.ConfigurationStruct) {
+func (g Golang) Install(c *parser.ProjectConfig) {
 	printer.Info("getting go dependencies")
 	if _, err := os.Stat("glide.yaml"); err == nil {
 		// glide
@@ -87,13 +88,13 @@ func (g Golang) Install(c *parser.ConfigurationStruct) {
 	printer.InfoLineBottom()
 }
 
-func (g Golang) PostInstall(c *parser.ConfigurationStruct) {
+func (g Golang) PostInstall(c *parser.ProjectConfig) {
 }
 
-func (g Golang) PreScript(c *parser.ConfigurationStruct) {
+func (g Golang) PreScript(c *parser.ProjectConfig) {
 }
 
-func (g Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
+func (g Golang) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
 
@@ -120,12 +121,12 @@ func (g Golang) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunC
 	return scripts
 }
 
-func (g Golang) PostScript(c *parser.ConfigurationStruct) {
+func (g Golang) PostScript(c *parser.ProjectConfig) {
 }
 
-func (g Golang) Down(c *parser.ConfigurationStruct) {
+func (g Golang) Down(c *parser.ProjectConfig) {
 }
 
-func (g Golang) IsProjectType(c *parser.ConfigurationStruct) bool {
+func (g Golang) IsProjectType(c *parser.ProjectConfig) bool {
 	return c.Go.Version != ""
 }

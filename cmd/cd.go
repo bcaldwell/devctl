@@ -54,10 +54,10 @@ func init() {
 
 func cd(cmd *cobra.Command, args []string) {
 	var dir string
-	sourceDir := parser.GetString("source_dir")
+	sourceDir := parser.DevctlConfig.SourceDir
 
 	if len(args) == 0 {
-		user := parser.GetString("github_user")
+		user := parser.DevctlConfig.GithubUser
 		dir = path.Join(sourceDir, "src/github.com", user)
 	} else {
 		query := args[0]
@@ -74,7 +74,7 @@ func cd(cmd *cobra.Command, args []string) {
 		dir = findMatch(query, files)
 		if dir == "" {
 			printer.Info("%s could not be found", query)
-			user := parser.GetString("github_user")
+			user := parser.DevctlConfig.GithubUser
 			dir = path.Join(sourceDir, "github.com", user)
 		}
 	}

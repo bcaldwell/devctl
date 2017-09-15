@@ -99,31 +99,31 @@ func (cfg *cloneConfig) parseFullURL(url string) {
 func (cfg *cloneConfig) github() {
 	cfg.Url = "github.com"
 	cfg.Host = "github.com"
-	user := parser.GetString("github_user")
+	user := parser.DevctlConfig.GithubUser
 	if user != "" {
 		cfg.User = user
 	}
 }
 
 func (cfg *cloneConfig) gitlab() {
-	cfg.Url = parser.GetString("gitlab_url")
-	cfg.Host = parser.GetString("gitlab_url")
+	cfg.Url = parser.DevctlConfig.GitlabURL
+	cfg.Host = parser.DevctlConfig.GitlabURL
 	if cfg.Url == "" {
 		printer.Warning("Gitlab url not provided, falling back to gitlab.com")
 		cfg.Url = "gitlab.com"
 		cfg.Host = "gitlab.com"
 	}
 
-	cfg.User = parser.GetString("gitlab_user")
+	cfg.User = parser.DevctlConfig.GitlabUser
 	if cfg.User == "" {
 		printer.Warning("Gitlab user not specified, falling back to github user")
-		cfg.User = parser.GetString("github_user")
+		cfg.User = parser.DevctlConfig.GithubUser
 	}
 
 }
 
 func (cfg *cloneConfig) setSourceDir() {
-	sourceDir := parser.GetString("source_dir")
+	sourceDir := parser.DevctlConfig.SourceDir
 	if sourceDir == "" {
 		printer.Warning("Source Directory is blank, falling back to $HOME")
 		sourceDir = os.Getenv("HOME")

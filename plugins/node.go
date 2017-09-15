@@ -33,7 +33,7 @@ func (n *Node) Setup() {
 	utilities.ErrorCheck(err, "nvm install")
 }
 
-func (n *Node) PreInstall(c *parser.ConfigurationStruct) {
+func (n *Node) PreInstall(c *parser.ProjectConfig) {
 	printer.Info("setting node version to " + c.Node.Version)
 	n.version = c.Node.Version
 
@@ -54,7 +54,7 @@ func (n *Node) PreInstall(c *parser.ConfigurationStruct) {
 	postCommand.RunCommand("nvm use " + n.version)
 }
 
-func (n *Node) Install(c *parser.ConfigurationStruct) {
+func (n *Node) Install(c *parser.ProjectConfig) {
 	// npm install
 	printer.Info("npm install")
 	printer.InfoLineTop()
@@ -62,14 +62,14 @@ func (n *Node) Install(c *parser.ConfigurationStruct) {
 	printer.InfoLineBottom()
 }
 
-func (n Node) PostInstall(c *parser.ConfigurationStruct) {
+func (n Node) PostInstall(c *parser.ProjectConfig) {
 
 }
 
-func (n Node) PreScript(c *parser.ConfigurationStruct) {
+func (n Node) PreScript(c *parser.ProjectConfig) {
 }
 
-func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCommand {
+func (n Node) Scripts(c *parser.ProjectConfig) map[string]utilities.RunCommand {
 	// return scripts struct array
 	scripts := make(map[string]utilities.RunCommand)
 
@@ -88,13 +88,13 @@ func (n Node) Scripts(c *parser.ConfigurationStruct) map[string]utilities.RunCom
 	return scripts
 }
 
-func (n Node) PostScript(c *parser.ConfigurationStruct) {
+func (n Node) PostScript(c *parser.ProjectConfig) {
 }
 
-func (n Node) Down(c *parser.ConfigurationStruct) {
+func (n Node) Down(c *parser.ProjectConfig) {
 }
 
-func (n Node) IsProjectType(c *parser.ConfigurationStruct) bool {
+func (n Node) IsProjectType(c *parser.ProjectConfig) bool {
 	if c.Node.Version != "" {
 		return true
 	}

@@ -14,7 +14,7 @@ type Version struct {
 	Version string
 }
 
-type ConfigurationStruct struct {
+type ProjectConfig struct {
 	Node              Version
 	Go                Version
 	Python            Version
@@ -33,11 +33,11 @@ type ConfigurationStruct struct {
 	}
 }
 
-func (c *ConfigurationStruct) ParseFileDefault() error {
+func (c *ProjectConfig) ParseFileDefault() error {
 	return c.ParseFile("devctl.yaml", "./devctl.yml")
 }
 
-func (c *ConfigurationStruct) ParseFile(paths ...string) (err error) {
+func (c *ProjectConfig) ParseFile(paths ...string) (err error) {
 	for _, path := range paths {
 		data, err := ioutil.ReadFile(path)
 		if err == nil {
@@ -48,14 +48,14 @@ func (c *ConfigurationStruct) ParseFile(paths ...string) (err error) {
 	return err
 }
 
-func (c *ConfigurationStruct) ProjectName() (string, error) {
+func (c *ProjectConfig) ProjectName() (string, error) {
 	return os.Getwd()
 }
 
-func (c *ConfigurationStruct) ParseJson(data string) {
+func (c *ProjectConfig) ParseJson(data string) {
 	json.Unmarshal([]byte(data), c)
 }
 
-func (c *ConfigurationStruct) ParseYaml(data string) {
+func (c *ProjectConfig) ParseYaml(data string) {
 	yaml.Unmarshal([]byte(data), c)
 }

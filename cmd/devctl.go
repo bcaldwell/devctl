@@ -44,7 +44,7 @@ func devctl(cmd *cobra.Command, args []string) {
 // This is called by main.main(). It only needs to happen once to the devctlCmd.
 func Execute() {
 	if err := devctlCmd.Execute(); err != nil {
-		config := new(parser.ConfigurationStruct)
+		config := new(parser.ProjectConfig)
 		config.ParseFileDefault()
 
 		pluginsUsed := plugins.Used(config)
@@ -85,7 +85,7 @@ func initConfig() {
 
 	printer.Verbose = Verbose
 
-	if err := parser.ParseDevctlConfig(cfgFile); err != nil {
+	if err := parser.ReadInConfig(cfgFile); err != nil {
 		printer.Warning("Warning: devctl config was not found or could not be parsed. %s", err)
 
 		cmdUsed := os.Args[1]

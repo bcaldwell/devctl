@@ -38,7 +38,7 @@ func init() {
 }
 
 func up(cmd *cobra.Command, args []string) {
-	config := new(parser.ConfigurationStruct)
+	config := new(parser.ProjectConfig)
 	config.ParseFileDefault()
 
 	// create .devctl folder

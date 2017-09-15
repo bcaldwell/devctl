@@ -30,7 +30,7 @@ package plugins
 // 	}
 
 // 	for _, test := range tests {
-// 		config := parser.ConfigurationStruct{}
+// 		config := parser.ProjectConfig{}
 // 		config.ParseJson(test.config)
 // 		assert.Equal(t, Used(&config), test.expected, "")
 // 	}

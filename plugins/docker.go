@@ -85,7 +85,7 @@ func (d Docker) Setup() {
 	RunTask(&installDocker{client})
 }
 
-func (d Docker) UpTasks(config *parser.ConfigurationStruct) (tasks []Task, err error) {
+func (d Docker) UpTasks(config *parser.ProjectConfig) (tasks []Task, err error) {
 	client := dockerClient.New()
 	tasks = []Task{
 		&installDocker{client},
@@ -96,29 +96,29 @@ func (d Docker) UpTasks(config *parser.ConfigurationStruct) (tasks []Task, err e
 	return tasks, err
 }
 
-func (d Docker) PreInstall(c *parser.ConfigurationStruct) {
+func (d Docker) PreInstall(c *parser.ProjectConfig) {
 
 }
 
-func (n Docker) Install(c *parser.ConfigurationStruct) {
+func (n Docker) Install(c *parser.ProjectConfig) {
 }
 
-func (n Docker) PostInstall(c *parser.ConfigurationStruct) {
+func (n Docker) PostInstall(c *parser.ProjectConfig) {
 }
 
-func (d Docker) PreScript(c *parser.ConfigurationStruct) {
+func (d Docker) PreScript(c *parser.ProjectConfig) {
 }
 
-func (d Docker) Scripts(c *parser.ConfigurationStruct) (scripts map[string]utilities.RunCommand) {
+func (d Docker) Scripts(c *parser.ProjectConfig) (scripts map[string]utilities.RunCommand) {
 	return scripts
 }
 
-func (d Docker) PostScript(c *parser.ConfigurationStruct) {
+func (d Docker) PostScript(c *parser.ProjectConfig) {
 }
 
-func (d Docker) Down(c *parser.ConfigurationStruct) {
+func (d Docker) Down(c *parser.ProjectConfig) {
 }
 
-func (n Docker) IsProjectType(c *parser.ConfigurationStruct) bool {
+func (n Docker) IsProjectType(c *parser.ProjectConfig) bool {
 	return true
 }
