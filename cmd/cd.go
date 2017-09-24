@@ -52,6 +52,7 @@ func init() {
 
 }
 
+// todo: downcase
 func cd(cmd *cobra.Command, args []string) {
 	var dir string
 	sourceDir := parser.DevctlConfig.SourceDir
@@ -142,13 +143,14 @@ func createDirTranslation(files []folder, length int) map[string]string {
 
 	for _, i := range files {
 		parts := strings.Split(i.Path(), "/")
-		translation[strings.Join(parts[len(parts)-length:], "/")] = i.Path()
+		translation[strings.ToLower(strings.Join(parts[len(parts)-length:], "/"))] = i.Path()
 	}
 
 	return translation
 }
 
 func findMatch(query string, files []folder) string {
+	query = strings.ToLower(query)
 
 	for i := 1; i <= 3; i++ {
 		translation := createDirTranslation(files, i)
