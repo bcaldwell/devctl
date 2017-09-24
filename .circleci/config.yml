@@ -24,7 +24,7 @@ jobs:
       - run: bash scripts/go.test.sh
       - run: bash <(curl -s https://codecov.io/bash)
 
-  deplay:
+  deploy:
     docker:
       - image: circleci/golang:1.8
     working_directory: /go/src/github.com/benjamincaldwell/devctl
@@ -35,3 +35,12 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               bash scripts/release.sh
             fi
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires: 
+            - build
