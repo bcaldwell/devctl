@@ -23,3 +23,15 @@ jobs:
 
       - run: bash scripts/go.test.sh
       - run: bash <(curl -s https://codecov.io/bash)
+
+  deplay:
+    docker:
+      - image: circleci/golang:1.8
+    working_directory: /go/src/github.com/benjamincaldwell/devctl
+    steps:
+      - deploy:
+          name: Release Master branch
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              bash scripts/release.sh
+            fi

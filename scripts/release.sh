@@ -25,7 +25,7 @@ then
   python scripts/update_website_version.py
 
   echo "Pushing to Github"
-  ghr -t $GITHUB_TOKEN -u devctl -r devctl $BUILD_VERSION dist/release/
+  ghr -t $GITHUB_TOKEN -u benjamincaldwell -r devctl $BUILD_VERSION dist/release/
 
 
   cd "$HOME/devctl.github.io"
