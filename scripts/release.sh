@@ -15,7 +15,7 @@ then
   gox -ldflags "-X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}" -parallel=2 -osarch="${BUILDS}" -output "dist/devctl_{{.OS}}_{{.Arch}}_bin"
 
   # Pushing new version and sha to website
-  pip install pyyaml
+  pip install pyyaml --user
   git clone git@github.com:devctl/devctl.github.io.git "$HOME/devctl.github.io"
   
   git config --global user.email "caldwellbenjamin8@gmail.com" 
