@@ -29,6 +29,7 @@ jobs:
       - image: circleci/golang:1.8
     working_directory: /go/src/github.com/benjamincaldwell/devctl
     steps:
+      - checkout
       - deploy:
           name: Release Master branch
           command: |
