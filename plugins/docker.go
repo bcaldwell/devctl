@@ -85,14 +85,16 @@ func (d Docker) Setup() {
 	RunTask(&installDocker{client})
 }
 
-func (d Docker) UpTasks(config *parser.ProjectConfigStruct) (tasks []Task, err error) {
+func (d Docker) UpTasks(config *parser.ProjectConfigStruct) (tasks [][]Task, err error) {
 	client := dockerClient.New()
-	tasks = []Task{
+	stage1 := []Task{
 		&installDocker{client},
 		&startDocker{client},
 		&createNetwork{client, "traefik-devctl"},
 		&createNetwork{client, "project-name"},
 	}
+	tasks = append(tasks, stage1)
+
 	return tasks, err
 }
 

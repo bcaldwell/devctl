@@ -13,10 +13,15 @@ type Plugin interface {
 	// Runs on devctl install or upgrade
 	Setup()
 
+	// Up stages:
+	// 1: docker setup, start docker,networks,container ect.
+	// 2: plugin logic: setup, install dependencies
+	// 3: exit tasks
+
 	// Tasks initializes tasks required during the up stage.
 	// The tasks returned by Tasks will be run in order
 	// Note: tasks are not passed ProjectConfig as such need to be initialized with required values
-	UpTasks(*parser.ProjectConfigStruct) (tasks []Task, err error)
+	UpTasks(*parser.ProjectConfigStruct) (tasks [][]Task, err error)
 
 	// devctl up functions
 	// Check if any tasks need to be run.
@@ -25,9 +30,9 @@ type Plugin interface {
 	// Main runs
 	// Up(*parser.ProjectConfigStruct)
 
-	// PreInstall(*parser.ProjectConfigStruct)
-	// Install(*parser.ProjectConfigStruct)
-	// PostInstall(*parser.ProjectConfigStruct)
+	PreInstall(*parser.ProjectConfigStruct)
+	Install(*parser.ProjectConfigStruct)
+	PostInstall(*parser.ProjectConfigStruct)
 	PreScript(*parser.ProjectConfigStruct)
 	Scripts(c *parser.ProjectConfigStruct) map[string]utilities.RunCommand
 	PostScript(*parser.ProjectConfigStruct)

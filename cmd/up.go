@@ -48,30 +48,49 @@ func up(cmd *cobra.Command, args []string) {
 
 	pluginCount := len(pluginsUsed)
 
-	for i, plugin := range pluginsUsed {
-		// get tasks
-		tasks, err := plugin.UpTasks(config)
+	var tasks [][][]plugins.Task
+	var maxStage = 0
 
-		// run pre checks
-		check, err := plugins.RunChecks(tasks)
-		if err != nil {
-			printer.ErrorBar("%s", err)
+	for _, plugin := range pluginsUsed {
+		pluginTasks, err := plugin.UpTasks(config)
+		if err == nil {
+			tasks = append(tasks, pluginTasks)
+			stages := len(pluginTasks)
+			if stages > maxStage {
+				maxStage = stages
+			}
+		} else {
+			printer.ErrorBar("%i", err)
 		}
+	}
 
-		// log completed check
-		if check {
-			printer.Success("%d/%d %s (Already completed)", i+1, pluginCount, plugin)
-			continue
-		}
+	for i := 0; i < maxStage; i++ {
+		printer.Info("Stage %d", i+1)
+		for j, pluginTasks := range tasks {
+			plugin := pluginsUsed[j]
+			stageTasks := pluginTasks[i]
 
-		// Run task if necessary
-		printer.InfoLineTextTop("%d/%d %s", i+1, pluginCount, plugin)
-		err = plugins.RunTasks(tasks)
-		printer.InfoLineBottom()
+			// run pre checks
+			check, err := plugins.RunChecks(stageTasks)
+			if err != nil {
+				printer.ErrorBar("%s", err)
+			}
 
-		// Run post checks
-		if err == plugins.CheckFailedAfterTaskErr {
-			os.Exit(1)
+			// log completed check
+			if check {
+				printer.Success("%d/%d %s (Already completed)", j+1, pluginCount, plugin)
+				continue
+			}
+
+			// Run task if necessary
+			printer.InfoLineTextTop("%d/%d %s", j+1, pluginCount, plugin)
+			err = plugins.RunTasks(stageTasks)
+			printer.InfoLineBottom()
+
+			// Run post checks
+			if err == plugins.CheckFailedAfterTaskErr {
+				os.Exit(1)
+			}
 		}
 	}
 }

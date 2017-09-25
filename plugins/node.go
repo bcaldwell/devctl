@@ -33,6 +33,15 @@ func (n *Node) Setup() {
 	utilities.ErrorCheck(err, "nvm install")
 }
 
+func UpTasks(*parser.ProjectConfigStruct) (tasks [][]Task, err error) {
+	// client := dockerClient.New()
+	stage1 := []Task{
+	// &startContainer{client, "node:4.0"},
+	}
+	tasks = append(tasks, stage1)
+	return tasks, err
+}
+
 func (n *Node) PreInstall(c *parser.ProjectConfigStruct) {
 	printer.Info("setting node version to " + c.Node.Version)
 	n.version = c.Node.Version

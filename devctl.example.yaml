@@ -1,6 +1,13 @@
 ---
 node:
+  # docker tag/version to use with default image
   version: 4
+  # override default image and version specified ^
+  image: node:5
+  # local instead of docker
+  docker: false
+
+---
 
 ruby:
   version: 2
