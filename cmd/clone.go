@@ -139,9 +139,10 @@ func (cfg *cloneConfig) setUrl() {
 }
 
 func (cfg *cloneConfig) clone() {
-	source_info, folder_exists := os.Stat(cfg.SourceDir)
+	sourceDir := path.Join(cfg.SourceDir, cfg.Repo)
+	sourceInfo, folderExists := os.Stat(sourceDir)
 
-	if os.IsNotExist(folder_exists) {
+	if os.IsNotExist(folderExists) {
 		session := shell.Session()
 		session.SetDir(cfg.SourceDir)
 
@@ -151,7 +152,7 @@ func (cfg *cloneConfig) clone() {
 			return
 		}
 		printer.Success("Clone was successful")
-	} else if source_info.IsDir() {
+	} else if sourceInfo.IsDir() {
 		printer.Success("Project already cloned")
 	} else {
 		printer.Warning("Destination is a file")

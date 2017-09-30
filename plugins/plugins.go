@@ -45,6 +45,7 @@ type Plugin interface {
 // List is a list of all available plugins
 var List = []Plugin{
 	&Docker{},
+	&Node{},
 	// &Golang{},
 }
 

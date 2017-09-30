@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/benjamincaldwell/devctl/docker-client"
 	"github.com/benjamincaldwell/devctl/parser"
 	"github.com/benjamincaldwell/devctl/postCommand"
 	"github.com/benjamincaldwell/devctl/shell"
@@ -17,7 +18,11 @@ type Node struct {
 	version string
 }
 
-func (n *Node) Setup() {
+func (n Node) String() string {
+	return "Node setup"
+}
+
+func (n Node) Setup() {
 	isNvmInstalled := nvmInstalled()
 	if isNvmInstalled {
 		printer.Success("nvm already installed")
@@ -33,10 +38,10 @@ func (n *Node) Setup() {
 	utilities.ErrorCheck(err, "nvm install")
 }
 
-func UpTasks(*parser.ProjectConfigStruct) (tasks [][]Task, err error) {
-	// client := dockerClient.New()
+func (n Node) UpTasks(*parser.ProjectConfigStruct) (tasks [][]Task, err error) {
+	client := dockerClient.New()
 	stage1 := []Task{
-	// &startContainer{client, "node:4.0"},
+		&startContainerTask{client: client, image: "node:8"},
 	}
 	tasks = append(tasks, stage1)
 	return tasks, err
@@ -104,6 +109,7 @@ func (n Node) Down(c *parser.ProjectConfigStruct) {
 }
 
 func (n Node) IsProjectType(c *parser.ProjectConfigStruct) bool {
+	return true
 	if c.Node.Version != "" {
 		return true
 	}
