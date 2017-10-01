@@ -49,7 +49,7 @@ func TestCLI_Network(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotNetwork, err := tt.c.Network(tt.args.id)
+			gotNetwork, err := tt.c.NetworkByID(tt.args.id)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CLI.Network() error = %v, wantErr %v", err, tt.wantErr)
 				return

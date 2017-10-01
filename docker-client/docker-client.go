@@ -29,16 +29,19 @@ type Client interface {
 
 	// Image methods
 	DockerImage
+
+	// Container methods
+	DockerContainer
 }
 
 type CLI struct {
 	Client *client.Client
-	ctx    context.Context
+	Ctx    context.Context
 }
 
 func New() Client {
 	return &CLI{
-		ctx: context.Background(),
+		Ctx: context.Background(),
 	}
 }
 
@@ -60,7 +63,7 @@ func (c *CLI) IsDockerRunning() bool {
 	if c.Client == nil {
 		return false
 	}
-	_, err := c.Client.Ping(c.ctx)
+	_, err := c.Client.Ping(c.Ctx)
 	return err == nil
 }
 

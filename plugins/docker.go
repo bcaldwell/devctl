@@ -11,7 +11,6 @@ import (
 
 // install docker task
 type installDocker struct {
-	client dockerClient.Client
 }
 
 func (i *installDocker) String() string {
@@ -29,7 +28,6 @@ func (i *installDocker) Execute() error {
 
 // Start docker task
 type startDocker struct {
-	client dockerClient.Client
 }
 
 func (s *startDocker) String() string {
@@ -37,21 +35,20 @@ func (s *startDocker) String() string {
 }
 
 func (s *startDocker) Check() (bool, error) {
-	err := s.client.Connect()
+	err := dockerClient.Connect()
 	if err != nil {
 		return false, err
 	}
-	return s.client.IsDockerRunning(), nil
+	return dockerClient.IsDockerRunning(), nil
 }
 
 func (s *startDocker) Execute() error {
-	return s.client.StartDocker()
+	return dockerClient.StartDocker()
 }
 
 // Docker network tasks
 type createNetwork struct {
-	client dockerClient.Client
-	name   string
+	name string
 }
 
 func (c *createNetwork) String() string {
@@ -59,7 +56,7 @@ func (c *createNetwork) String() string {
 }
 
 func (c *createNetwork) Check() (bool, error) {
-	network, err := c.client.NetworkByName(c.name)
+	network, err := dockerClient.NetworkByName(c.name)
 	if err != nil {
 		return false, err
 	} else if network.ID != "" {
@@ -69,7 +66,7 @@ func (c *createNetwork) Check() (bool, error) {
 }
 
 func (c *createNetwork) Execute() error {
-	_, err := c.client.CreateNetwork(c.name)
+	_, err := dockerClient.CreateNetwork(c.name)
 	return err
 }
 
@@ -81,17 +78,15 @@ func (d Docker) String() string {
 }
 
 func (d Docker) Setup() {
-	client := dockerClient.New()
-	RunTask(&installDocker{client})
+	RunTask(&installDocker{})
 }
 
 func (d Docker) UpTasks(config *parser.ProjectConfigStruct) (tasks [][]Task, err error) {
-	client := dockerClient.New()
 	stage1 := []Task{
-		&installDocker{client},
-		&startDocker{client},
-		&createNetwork{client, "traefik-devctl"},
-		&createNetwork{client, "project-name"},
+		&installDocker{},
+		&startDocker{},
+		&createNetwork{"traefik-devctl"},
+		&createNetwork{"project-name"},
 	}
 	tasks = append(tasks, stage1)
 
