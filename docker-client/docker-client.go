@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/benjamincaldwell/devctl/shell"
-	"github.com/benjamincaldwell/go-system-detector"
+	"github.com/bcaldwell/devctl/shell"
+	"github.com/bcaldwell/go-system-detector"
 
 	"os"
 

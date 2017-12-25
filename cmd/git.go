@@ -3,9 +3,9 @@ package cmd
 import (
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/postCommand"
-	"github.com/benjamincaldwell/devctl/shell"
-	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/bcaldwell/devctl/postCommand"
+	"github.com/bcaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
 )
 

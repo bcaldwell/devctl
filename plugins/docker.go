@@ -3,10 +3,10 @@ package plugins
 import (
 	"fmt"
 
-	"github.com/benjamincaldwell/devctl/docker-client"
-	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/shell"
-	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/bcaldwell/devctl/docker-client"
+	"github.com/bcaldwell/devctl/parser"
+	"github.com/bcaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/utilities"
 )
 
 // install docker task

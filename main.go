@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/benjamincaldwell/devctl/cmd"
+import "github.com/bcaldwell/devctl/cmd"
 
 // Version sets command version
 var Version = "dev"

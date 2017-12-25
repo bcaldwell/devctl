@@ -22,11 +22,11 @@
 
 
 [[constraint]]
-  name = "github.com/benjamincaldwell/go-printer"
+  name = "github.com/bcaldwell/go-printer"
   version = "0.1.3"
 
 [[constraint]]
-  name = "github.com/benjamincaldwell/go-system-detector"
+  name = "github.com/bcaldwell/go-system-detector"
 
 [[constraint]]
   name = "github.com/bitly/go-simplejson"

@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/shell"
 	"github.com/stretchr/testify/assert"
 )
 

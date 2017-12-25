@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/benjamincaldwell/devctl/shell"
-	"github.com/benjamincaldwell/devctl/shell/shell_mock"
+	"github.com/bcaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/shell/shell_mock"
 	"github.com/stretchr/testify/assert"
 )
 

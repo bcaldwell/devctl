@@ -28,7 +28,7 @@ devctl() {
   case "$1" in
     load-dev)
       local devctl_path
-      devctl_path="$(devctl cd github.com/benjamincaldwell/devctl && pwd)"
+      devctl_path="$(devctl cd github.com/bcaldwell/devctl && pwd)"
       # shellcheck disable=SC1090
       source "${devctl_path}/devctl.sh"
       _devctl_echo_info "Loaded dev devctl"
@@ -117,7 +117,7 @@ _devctl_install_version() {
     local system_name=$(_devctl_system_detector)
     local tar_file_name="/tmp/devctl.tar.gz"
     wget "https://github.com/devctl/devctl/releases/download/v${1}/devctl_${system_name}.tar.gz" -O "${tar_file_name}"
-    
+
     local remote_hash=$(wget -qO- "${website}/dl/sha/${system_name}" | grep "${1}:" | perl -e 'if (<> =~ /$1:([a-fA-F\d]{64})/g) {print "$1"} else {print <>}')
     if _devctl_verify_hash "${tar_file_name}" "${remote_hash}"
     then

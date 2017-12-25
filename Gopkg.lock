@@ -14,14 +14,14 @@
   version = "v1.0.3"
 
 [[projects]]
-  name = "github.com/benjamincaldwell/go-printer"
+  name = "github.com/bcaldwell/go-printer"
   packages = ["."]
   revision = "9c53f09e0632b226a72383a532e366b7b53d6f98"
   version = "v0.1.3"
 
 [[projects]]
   branch = "master"
-  name = "github.com/benjamincaldwell/go-system-detector"
+  name = "github.com/bcaldwell/go-system-detector"
   packages = ["."]
   revision = "893a24d9154e178f297d094eea39c9c46c4c6766"
 
@@ -148,6 +148,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1af72cf703042130647e9ac67bbf725b6ce034a95f2f767356e18bed166771e8"
+  inputs-digest = "dbba2bf379a76ca81222d2c4552552f204583af6ccd6df25ab20b7a8d13f7686"
   solver-name = "gps-cdcl"
   solver-version = 1

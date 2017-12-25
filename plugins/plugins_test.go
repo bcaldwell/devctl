@@ -3,7 +3,7 @@ package plugins
 // import (
 // 	"testing"
 
-// 	"github.com/benjamincaldwell/devctl/parser"
+// 	"github.com/bcaldwell/devctl/parser"
 // 	"github.com/stretchr/testify/assert"
 // )
 

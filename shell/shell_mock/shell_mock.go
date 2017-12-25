@@ -3,7 +3,7 @@ package shellMock
 import (
 	"strings"
 
-	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/shell"
 )
 
 // list of commands that go run

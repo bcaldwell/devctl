@@ -1,7 +1,7 @@
 package plugins
 
 import (
-	"github.com/benjamincaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/shell"
 )
 
 func isDockerRunning() bool {

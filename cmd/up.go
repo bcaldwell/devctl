@@ -3,9 +3,9 @@ package cmd
 import (
 	"os"
 
-	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/plugins"
-	printer "github.com/benjamincaldwell/go-printer"
+	"github.com/bcaldwell/devctl/parser"
+	"github.com/bcaldwell/devctl/plugins"
+	printer "github.com/bcaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
 

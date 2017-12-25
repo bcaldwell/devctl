@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/benjamincaldwell/devctl/parser"
+	"github.com/bcaldwell/devctl/parser"
 )
 
 type User struct {

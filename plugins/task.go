@@ -3,7 +3,7 @@ package plugins
 import (
 	"errors"
 
-	printer "github.com/benjamincaldwell/go-printer"
+	printer "github.com/bcaldwell/go-printer"
 )
 
 // Task is the interface used by task runner

@@ -1,8 +1,8 @@
 package plugins
 
 import (
-	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/bcaldwell/devctl/parser"
+	"github.com/bcaldwell/devctl/utilities"
 )
 
 // Plugin interfaceUse

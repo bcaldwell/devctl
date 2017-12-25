@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/benjamincaldwell/devctl/utilities"
+	"github.com/bcaldwell/devctl/utilities"
 
 	"github.com/ghodss/yaml"
 )

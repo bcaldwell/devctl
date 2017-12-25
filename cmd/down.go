@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/benjamincaldwell/devctl/parser"
-	"github.com/benjamincaldwell/devctl/plugins"
+	"github.com/bcaldwell/devctl/parser"
+	"github.com/bcaldwell/devctl/plugins"
 	"github.com/spf13/cobra"
 )
 

@@ -3,7 +3,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:1.8
-    working_directory: /go/src/github.com/benjamincaldwell/devctl
+    working_directory: /go/src/github.com/bcaldwell/devctl
     steps:
       - checkout
 
@@ -27,7 +27,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/golang:1.8
-    working_directory: /go/src/github.com/benjamincaldwell/devctl
+    working_directory: /go/src/github.com/bcaldwell/devctl
     steps:
       - checkout
       - deploy:
@@ -44,5 +44,5 @@ workflows:
       - test
       - run: sudo apt-get update && sudo apt-get install -y python-pip
       - deploy:
-          requires: 
+          requires:
             - test
