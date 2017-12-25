@@ -30,6 +30,7 @@ jobs:
     working_directory: /go/src/github.com/bcaldwell/devctl
     steps:
       - checkout
+      - run: sudo apt-get update && sudo apt-get install -y python-pip
       - deploy:
           name: Release Master branch
           command: |
@@ -42,7 +43,7 @@ workflows:
   test_and_deploy:
     jobs:
       - test
-      - run: sudo apt-get update && sudo apt-get install -y python-pip
       - deploy:
           requires:
             - test
+
