@@ -57,7 +57,7 @@ var createPRCmd = &cobra.Command{
 	},
 }
 
-var PRsCmd = &cobra.Command{
+var pRsCmd = &cobra.Command{
 	Use:   "prs",
 	Short: "Open projects pull requests page",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -87,5 +87,5 @@ func init() {
 	openCmd.AddCommand(issueCmd)
 	openCmd.AddCommand(issuesCmd)
 	openCmd.AddCommand(createPRCmd)
-	openCmd.AddCommand(PRsCmd)
+	openCmd.AddCommand(pRsCmd)
 }

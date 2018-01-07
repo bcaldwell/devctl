@@ -32,7 +32,7 @@ func TestCloneGithub(t *testing.T) {
 				Repo:      "test",
 				User:      "github_user",
 				Host:      "github.com",
-				Url:       "git@github.com:github_user/test",
+				URL:       "git@github.com:github_user/test",
 				SourceDir: "/src/github.com/github_user",
 			},
 		},
@@ -43,7 +43,7 @@ func TestCloneGithub(t *testing.T) {
 				Repo:      "test",
 				User:      "username",
 				Host:      "github.com",
-				Url:       "git@github.com:username/test",
+				URL:       "git@github.com:username/test",
 				SourceDir: "/src/github.com/username",
 			},
 		},
@@ -53,7 +53,7 @@ func TestCloneGithub(t *testing.T) {
 		i.config.github()
 		i.config.parseArgs(i.args)
 		i.config.setSourceDir()
-		i.config.setUrl()
+		i.config.setURL()
 
 		checkStruct(t, &i)
 	}
@@ -76,7 +76,7 @@ func TestCloneGitlabWithoutURLConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "gitlab_user",
 				Host:      "gitlab.com",
-				Url:       "git@gitlab.com:gitlab_user/test",
+				URL:       "git@gitlab.com:gitlab_user/test",
 				SourceDir: "/src/gitlab.com/gitlab_user",
 			},
 		},
@@ -87,7 +87,7 @@ func TestCloneGitlabWithoutURLConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "username",
 				Host:      "gitlab.com",
-				Url:       "git@gitlab.com:username/test",
+				URL:       "git@gitlab.com:username/test",
 				SourceDir: "/src/gitlab.com/username",
 			},
 		},
@@ -98,7 +98,7 @@ func TestCloneGitlabWithoutURLConfigured(t *testing.T) {
 		i.config.gitlab()
 		i.config.parseArgs(i.args)
 		i.config.setSourceDir()
-		i.config.setUrl()
+		i.config.setURL()
 
 		checkStruct(t, &i)
 	}
@@ -122,7 +122,7 @@ func TestCloneGitlabConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "gitlab_user",
 				Host:      "gitlab.somwhere.com",
-				Url:       "git@gitlab.somwhere.com:gitlab_user/test",
+				URL:       "git@gitlab.somwhere.com:gitlab_user/test",
 				SourceDir: "/src/gitlab.somwhere.com/gitlab_user",
 			},
 		},
@@ -133,7 +133,7 @@ func TestCloneGitlabConfigured(t *testing.T) {
 				Repo:      "test",
 				User:      "username",
 				Host:      "gitlab.somwhere.com",
-				Url:       "git@gitlab.somwhere.com:username/test",
+				URL:       "git@gitlab.somwhere.com:username/test",
 				SourceDir: "/src/gitlab.somwhere.com/username",
 			},
 		},
@@ -144,14 +144,14 @@ func TestCloneGitlabConfigured(t *testing.T) {
 		i.config.gitlab()
 		i.config.parseArgs(i.args)
 		i.config.setSourceDir()
-		i.config.setUrl()
+		i.config.setURL()
 
 		checkStruct(t, &i)
 	}
 
 }
 
-func TestCloneFullUrlWithoutGit(t *testing.T) {
+func TestCloneFullURLWithoutGit(t *testing.T) {
 
 	parser.DevctlConfig = &parser.Config{
 		GithubUser: "github_user",
@@ -168,7 +168,7 @@ func TestCloneFullUrlWithoutGit(t *testing.T) {
 				Repo:      "project1",
 				User:      "user1",
 				Host:      "github.com",
-				Url:       "https://github.com/user1/project1",
+				URL:       "https://github.com/user1/project1",
 				SourceDir: "/src/github.com/user1",
 			},
 		},
@@ -185,7 +185,7 @@ func TestCloneFullUrlWithoutGit(t *testing.T) {
 
 }
 
-func TestCloneFullUrl(t *testing.T) {
+func TestCloneFullURL(t *testing.T) {
 
 	parser.DevctlConfig = &parser.Config{
 		GithubUser: "github_user",
@@ -202,7 +202,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project1",
 				User:      "user1",
 				Host:      "github.com",
-				Url:       "https://github.com/user1/project1.git",
+				URL:       "https://github.com/user1/project1.git",
 				SourceDir: "/src/github.com/user1",
 			},
 		},
@@ -213,7 +213,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project1",
 				User:      "user1",
 				Host:      "github.com",
-				Url:       "git@github.com:user1/project1.git",
+				URL:       "git@github.com:user1/project1.git",
 				SourceDir: "/src/github.com/user1",
 			},
 		},
@@ -224,7 +224,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project3",
 				User:      "user2",
 				Host:      "gitlab.somewhere.com",
-				Url:       "git@gitlab.somewhere.com:user2/project3.git",
+				URL:       "git@gitlab.somewhere.com:user2/project3.git",
 				SourceDir: "/src/gitlab.somewhere.com/user2",
 			},
 		},
@@ -235,7 +235,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project",
 				User:      "user3",
 				Host:      "gitlab.somewhere.com",
-				Url:       "http://gitlab.somewhere.com/user3/project.git",
+				URL:       "http://gitlab.somewhere.com/user3/project.git",
 				SourceDir: "/src/gitlab.somewhere.com/user3",
 			},
 		},
@@ -246,7 +246,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project1",
 				User:      "user1",
 				Host:      "github.com",
-				Url:       "git@github.com:user1/project1.git",
+				URL:       "git@github.com:user1/project1.git",
 				SourceDir: "/src/github.com/user1",
 			},
 		},
@@ -257,7 +257,7 @@ func TestCloneFullUrl(t *testing.T) {
 				Repo:      "project1",
 				User:      "user1",
 				Host:      "github.com",
-				Url:       "git@github.com:user1/project1.git",
+				URL:       "git@github.com:user1/project1.git",
 				SourceDir: "/src/github.com/user1",
 			},
 		},
@@ -279,7 +279,7 @@ func TestCloneFullUrl(t *testing.T) {
 
 // 	viper.SetDefault("github_user", "github_user")
 // 	viper.SetDefault("source_dir", "/")
-// 	viper.SetDefault("gitlab_url", "gitlab.somwhere.com")
+// 	viper.SetDefault("gitlab_uRL", "gitlab.somwhere.com")
 // 	viper.SetDefault("gitlab_user", "gitlab_user")
 
 // 	testStructs := []testStruct{
@@ -290,7 +290,7 @@ func TestCloneFullUrl(t *testing.T) {
 // 				Repo:      "test",
 // 				User:      "gitlab_user",
 // 				Host:      "gitlab.somwhere.com",
-// 				Url:       "gitlab.somwhere.com",
+// 				URL:       "gitlab.somwhere.com",
 // 				SourceDir: "/src/gitlab.somwhere.com/gitlab_user",
 // 			},
 // 		},
@@ -311,7 +311,7 @@ func TestCloneFullUrl(t *testing.T) {
 
 // 	viper.SetDefault("github_user", "github_user")
 // 	viper.SetDefault("source_dir", "/")
-// 	// viper.SetDefault("gitlab_url", "")
+// 	// viper.SetDefault("gitlab_uRL", "")
 // 	// viper.SetDefault("gitlab_user", "")
 
 // 	testStructs := []testStruct{
@@ -322,7 +322,7 @@ func TestCloneFullUrl(t *testing.T) {
 // 				Repo:      "test",
 // 				User:      "github_user",
 // 				Host:      "github.com",
-// 				Url:       "github.com",
+// 				URL:       "github.com",
 // 				SourceDir: "",
 // 			},
 // 		},
@@ -333,7 +333,7 @@ func TestCloneFullUrl(t *testing.T) {
 // 				Repo:      "test",
 // 				User:      "username",
 // 				Host:      "github.com",
-// 				Url:       "github.com",
+// 				URL:       "github.com",
 // 				SourceDir: "",
 // 			},
 // 		},
