@@ -1,10 +1,13 @@
 package cmd
 
 import (
+	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 
 	"github.com/bcaldwell/devctl/postCommand"
+	printer "github.com/bcaldwell/go-printer"
 
 	"github.com/bcaldwell/devctl/plugins"
 	"github.com/bcaldwell/devctl/utilities"
@@ -31,6 +34,8 @@ func init() {
 }
 
 func setup(cmd *cobra.Command, args []string) {
+	printer.InfoLineTop()
+	// create devctl.sh file in devctl home folder (HOME/.devctl)
 	data, err := Asset("devctl.sh")
 	utilities.Check(err, "Fetching devctl.sh file contents")
 
@@ -42,11 +47,28 @@ func setup(cmd *cobra.Command, args []string) {
 	_, err = f.Write(data)
 	utilities.Check(err, "Writing contents to "+fileName)
 
-	// TODO: source file
+	profileFile := detectProfile()
+	profileFile = path.Join(os.Getenv("HOME"), profileFile)
+
+	devctlSourceString := fmt.Sprintf("[ -f %s ] && \\. %s # This loads devctl shell super powers", fileName, fileName)
+
+	fileData, err := ioutil.ReadFile(profileFile)
+	if utilities.HandleError(err) {
+		return
+	}
+	writeString := utilities.UniqueStringMerge(string(fileData), devctlSourceString)
+	err = ioutil.WriteFile(profileFile, []byte(writeString), 0644)
 
 	postCommand.RunCommand("source " + fileName)
+
+	printer.InfoBar(printer.ColoredString("{{green:%s}} Setup shell functions"), printer.SuccessIcon)
 
 	for _, i := range plugins.List {
 		i.Setup()
 	}
+	printer.InfoLineBottom()
+}
+
+func detectProfile() string {
+	return ".zshrc"
 }

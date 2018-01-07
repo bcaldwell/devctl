@@ -85,7 +85,7 @@ func initConfig() {
 	devctlHomeFolder = path.Join(userHomeDir(), ".devctl")
 	_, folderExists := os.Stat(devctlHomeFolder)
 	if os.IsNotExist(folderExists) {
-		err := os.MkdirAll(devctlHomeFolder, os.ModePerm)
+		err := os.MkdirAll(devctlHomeFolder, 0644)
 		utilities.Check(err, "Creating folder "+devctlHomeFolder)
 	}
 

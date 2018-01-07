@@ -25,7 +25,7 @@ func (n Node) String() string {
 func (n Node) Setup() {
 	isNvmInstalled := nvmInstalled()
 	if isNvmInstalled {
-		printer.Success("nvm already installed")
+		printer.InfoBar(printer.ColoredString("{{blue:%s}} nvm already installed"), printer.SuccessIcon)
 		return
 	}
 	resp, err := http.Get("https://raw.githubusercontent.com/creationix/nvm/v0.31.3/install.sh")
@@ -33,7 +33,7 @@ func (n Node) Setup() {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 
-	printer.Info("Installing nvm")
+	printer.InfoBar("Installing nvm")
 	err = shell.Command("bash").SetInput(string(body)).Run()
 	utilities.ErrorCheck(err, "nvm install")
 }

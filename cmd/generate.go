@@ -48,10 +48,10 @@ var gitignoreCmd = &cobra.Command{
 		// get list of gitignore
 		printer.Info("Fetching gitignore list from github")
 		resp, err := http.Get("http://api.github.com/gitignore/templates")
-		defer resp.Body.Close()
 		if utilities.HandleError(err) {
 			return
 		}
+		defer resp.Body.Close()
 		availableTemplates := new([]string)
 		err = json.NewDecoder(resp.Body).Decode(availableTemplates)
 		if utilities.HandleError(err) {
@@ -82,10 +82,10 @@ var gitignoreCmd = &cobra.Command{
 			printer.Info("Fetching template for " + templateLanguage)
 
 			resp, err := http.Get("http://api.github.com/gitignore/templates/" + templateLanguage)
-			defer resp.Body.Close()
 			if utilities.HandleError(err) {
 				return
 			}
+			defer resp.Body.Close()
 
 			gitignore := new(Gitignore)
 			err = json.NewDecoder(resp.Body).Decode(gitignore)
@@ -106,11 +106,14 @@ var gitignoreCmd = &cobra.Command{
 
 			var fileData []byte
 			fileData, err = ioutil.ReadFile(fileName)
-			if utilities.HandleError(err) {
+			if utilities.HandleError(err, "Reading "+fileName) {
 				return
 			}
 			writeString := utilities.UniqueStringMerge(string(fileData), *(gitignore.Source))
 			err = ioutil.WriteFile(fileName, []byte(writeString), 0644)
+			if utilities.HandleError(err, "Appending source string to "+fileName) {
+				return
+			}
 		}
 	},
 }

@@ -21,7 +21,7 @@ jobs:
 
       - setup_remote_docker
       - run: sudo apt install ruby
-      - run: sudo gem install ci-scripts
+      - run: sudo gem install ci-scripts bundler
 
       - run: ci-scripts go/test
       - run: bash <(curl -s https://codecov.io/bash)
