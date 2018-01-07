@@ -20,7 +20,7 @@ jobs:
       #       - vendor
 
       - setup_remote_docker
-      - gem install ci-scripts
+      - run: gem install ci-scripts
 
       - run: ci-scripts go/test
       - run: bash <(curl -s https://codecov.io/bash)
