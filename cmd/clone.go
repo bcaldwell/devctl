@@ -30,7 +30,7 @@ var tag string
 func init() {
 	devctlCmd.AddCommand(cloneCmd)
 
-	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab url")
+	cloneCmd.Flags().BoolVarP(&gitlab, "gitlab", "l", false, "Clone from gitlab URL")
 	cloneCmd.Flags().StringVarP(&tag, "tag", "t", "", "subfolder to clone repo to")
 }
 
@@ -38,7 +38,7 @@ type cloneConfig struct {
 	Repo      string
 	User      string
 	Host      string
-	Url       string
+	URL       string
 	SourceDir string
 	command   *cobra.Command
 }
@@ -58,7 +58,7 @@ func clone(cmd *cobra.Command, args []string) {
 	cfg.parseArgs(args)
 
 	cfg.setSourceDir()
-	cfg.setUrl()
+	cfg.setURL()
 	// validate(cfg)
 	cfg.clone()
 }
@@ -86,18 +86,18 @@ func isFullURL(s string) bool {
 	return false
 }
 
-func (cfg *cloneConfig) parseFullURL(url string) {
+func (cfg *cloneConfig) parseFullURL(URL string) {
 	r, _ := regexp.Compile(`^(?:git@|https?:\/\/(?:.*?@)?)([^\/:]*)(?:\/|:)(.*?)\/(.*?)(?:.git)?$`)
-	res := r.FindAllStringSubmatch(url, -1)
+	res := r.FindAllStringSubmatch(URL, -1)
 
 	cfg.Host = res[0][1]
 	cfg.User = res[0][2]
 	cfg.Repo = res[0][3]
-	cfg.Url = url
+	cfg.URL = URL
 }
 
 func (cfg *cloneConfig) github() {
-	cfg.Url = "github.com"
+	cfg.URL = "github.com"
 	cfg.Host = "github.com"
 	user := parser.DevctlConfig.GithubUser
 	if user != "" {
@@ -106,11 +106,11 @@ func (cfg *cloneConfig) github() {
 }
 
 func (cfg *cloneConfig) gitlab() {
-	cfg.Url = parser.DevctlConfig.GitlabURL
+	cfg.URL = parser.DevctlConfig.GitlabURL
 	cfg.Host = parser.DevctlConfig.GitlabURL
-	if cfg.Url == "" {
-		printer.Warning("Gitlab url not provided, falling back to gitlab.com")
-		cfg.Url = "gitlab.com"
+	if cfg.URL == "" {
+		printer.Warning("Gitlab URL not provided, falling back to gitlab.com")
+		cfg.URL = "gitlab.com"
 		cfg.Host = "gitlab.com"
 	}
 
@@ -132,9 +132,9 @@ func (cfg *cloneConfig) setSourceDir() {
 	os.MkdirAll(cfg.SourceDir, 0755)
 }
 
-func (cfg *cloneConfig) setUrl() {
-	if !isFullURL(cfg.Url) {
-		cfg.Url = fmt.Sprintf("git@%s:%s/%s", cfg.Url, cfg.User, cfg.Repo)
+func (cfg *cloneConfig) setURL() {
+	if !isFullURL(cfg.URL) {
+		cfg.URL = fmt.Sprintf("git@%s:%s/%s", cfg.URL, cfg.User, cfg.Repo)
 	}
 }
 
@@ -146,9 +146,9 @@ func (cfg *cloneConfig) clone() {
 		session := shell.Session()
 		session.SetDir(cfg.SourceDir)
 
-		err := session.Command("git", "clone", cfg.Url).PrintOutput()
+		err := session.Command("git", "clone", cfg.URL).PrintOutput()
 		if err != nil {
-			printer.Fail("Failed to clone %s", cfg.Url)
+			printer.Fail("Failed to clone %s", cfg.URL)
 			return
 		}
 		printer.Success("Clone was successful")

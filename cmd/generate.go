@@ -87,7 +87,7 @@ var gitignoreCmd = &cobra.Command{
 			}
 			defer resp.Body.Close()
 
-			gitignore := new(Gitignore)
+			gitignore := new(gitignore)
 			err = json.NewDecoder(resp.Body).Decode(gitignore)
 			if utilities.HandleError(err) {
 				return
@@ -123,7 +123,7 @@ func init() {
 	generateCmd.AddCommand(gitignoreCmd)
 }
 
-type Gitignore struct {
+type gitignore struct {
 	Name   *string `json:"name,omitempty"`
 	Source *string `json:"source,omitempty"`
 }

@@ -18,10 +18,16 @@ var cfgFile string
 
 var cmdWhitelist = [2]string{"update", "setup"}
 
+// Version is the devctl version. Default is dev.
 var Version string
+
+// BuildDate is the date this version is built. No default.
 var BuildDate string
 
+// Verbose sets verbose printing mode.
 var Verbose bool
+
+// DryRun set the dryrun flag. Disables distructive actions.
 var DryRun bool
 
 var devctlHomeFolder string
