@@ -36,3 +36,4 @@ _testmain.go
 # Undo global rule
 !*.com
 coverage.txt
+/dist
