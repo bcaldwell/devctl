@@ -33,5 +33,6 @@ _testmain.go
 
 \.devctl/
 
-# Undo global rule 
+# Undo global rule
 !*.com
+coverage.txt

@@ -29,16 +29,28 @@ jobs:
   deploy:
     docker:
       - image: circleci/golang:1.8
+    environment:
+      - GO_BUILD_OUTPUT: /go/src/github.com/bcaldwell/devctl/deploy
+      - GO_BUILD_LDFLAGS: -X main.Version=${BUILD_VERSION} -X main.BuildDate=${BUILD_DATE}
+      - SHA_FOLDER: /go/src/github.com/bcaldwell/devctl/deploy
+      - SHA_VERSION: ""
     working_directory: /go/src/github.com/bcaldwell/devctl
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt-get install -y python-pip
       - deploy:
-          name: Release Master branch
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              bash scripts/release.sh
-            fi
+        - run: export BUILD_DATE=`date +%Y-%m-%d:%H:%M:%S`
+        - run: export BUILD_VERSION=`git log -1 --pretty=%B | tr " " "\n" | grep -Ei 'v[0-9]+(\.[0-9]+)*'`
+        - run: export SHA_VERSION=$BUILD_VERSION
+
+        - run: go generate ./...
+        - run: ci-scripts go/build
+        - run: ci-scripts files/sha_firebase
+
+          # name: Release Master branch
+          # command: |
+          #   if [ "${CIRCLE_BRANCH}" == "master" ]; then
+          #     bash scripts/release.sh
+          #   fi
 
 workflows:
   version: 2
