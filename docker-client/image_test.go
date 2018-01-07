@@ -14,17 +14,17 @@ func TestCLI_PullImage(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "nginx",
-			args:    args{"nginx"},
+			name:    "alpine",
+			args:    args{"alpine"},
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		c := New()
 		c.Connect()
-		c.RemoveImage("nginx")
+		c.RemoveImage("alpine")
 		t.Run(tt.name, func(t *testing.T) {
-			if err := c.PullImage(tt.args.image); (err != nil) != tt.wantErr {
+			if err := c.PullImage(tt.args.image, false); (err != nil) != tt.wantErr {
 				t.Errorf("CLI.PullImage() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -57,7 +57,7 @@ func TestCLI_IsImagePulled(t *testing.T) {
 	for _, tt := range tests {
 		c := New()
 		c.Connect()
-		c.PullImage("nginx")
+		c.PullImage("nginx", false)
 		t.Run(tt.name, func(t *testing.T) {
 			gotStatus, err := c.IsImagePulled(tt.args.image)
 			if (err != nil) != tt.wantErr {

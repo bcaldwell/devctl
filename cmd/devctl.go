@@ -3,11 +3,13 @@ package cmd
 import (
 	"os"
 	"path"
+	"runtime"
 
 	"github.com/bcaldwell/devctl/parser"
 	"github.com/bcaldwell/devctl/plugins"
 	"github.com/bcaldwell/devctl/postCommand"
 	"github.com/bcaldwell/devctl/shell"
+	"github.com/bcaldwell/devctl/utilities"
 	"github.com/bcaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
@@ -21,6 +23,8 @@ var BuildDate string
 
 var Verbose bool
 var DryRun bool
+
+var devctlHomeFolder string
 
 // devctlCmd represents the base command when called without any subcommands
 var devctlCmd = &cobra.Command{
@@ -78,7 +82,14 @@ func init() {
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 
-	cfgFile := path.Join(os.Getenv("HOME"), ".devctlconfig")
+	devctlHomeFolder = path.Join(userHomeDir(), ".devctl")
+	_, folderExists := os.Stat(devctlHomeFolder)
+	if os.IsNotExist(folderExists) {
+		err := os.MkdirAll(devctlHomeFolder, os.ModePerm)
+		utilities.Check(err, "Creating folder "+devctlHomeFolder)
+	}
+
+	cfgFile := path.Join(devctlHomeFolder, "config.yml")
 
 	shell.DryRun = DryRun
 	postCommand.DryRun = DryRun
@@ -103,4 +114,15 @@ func initConfig() {
 
 func persistentPostRun(cmd *cobra.Command, args []string) {
 	postCommand.Write()
+}
+
+func userHomeDir() string {
+	if runtime.GOOS == "windows" {
+		home := os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
+		if home == "" {
+			home = os.Getenv("USERPROFILE")
+		}
+		return home
+	}
+	return os.Getenv("HOME")
 }

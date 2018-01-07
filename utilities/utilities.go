@@ -37,7 +37,7 @@ func ErrorCheck(err error, message string) {
 	}
 }
 
-func Hand(err error, message string) bool {
+func Check(err error, message string) bool {
 	if err != nil {
 		printer.Fail("%s failed with %s", message, err)
 		return true

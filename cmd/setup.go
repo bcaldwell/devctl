@@ -1,9 +1,17 @@
 package cmd
 
 import (
+	"os"
+	"path"
+
+	"github.com/bcaldwell/devctl/postCommand"
+
 	"github.com/bcaldwell/devctl/plugins"
+	"github.com/bcaldwell/devctl/utilities"
 	"github.com/spf13/cobra"
 )
+
+//go:generate go-bindata -prefix "../" -o bindata.go -pkg cmd ../devctl.sh
 
 // setupCmd represents the setup command
 var setupCmd = &cobra.Command{
@@ -20,21 +28,24 @@ to quickly create a Cobra application.`,
 
 func init() {
 	devctlCmd.AddCommand(setupCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// setupCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// setupCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
 }
 
 func setup(cmd *cobra.Command, args []string) {
-	// TODO: Work your own magic here
+	data, err := Asset("devctl.sh")
+	utilities.Check(err, "Fetching devctl.sh file contents")
+
+	fileName := path.Join(devctlHomeFolder, "devctl.sh")
+	utilities.Check(err, "Creating file "+fileName)
+	f, err := os.Create(fileName)
+	defer f.Close()
+
+	_, err = f.Write(data)
+	utilities.Check(err, "Writing contents to "+fileName)
+
+	// TODO: source file
+
+	postCommand.RunCommand("source " + fileName)
+
 	for _, i := range plugins.List {
 		i.Setup()
 	}
