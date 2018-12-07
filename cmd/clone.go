@@ -128,7 +128,7 @@ func (cfg *cloneConfig) setSourceDir() {
 		printer.Warning("Source Directory is blank, falling back to $HOME")
 		sourceDir = os.Getenv("HOME")
 	}
-	cfg.SourceDir = path.Join(sourceDir, "src", cfg.Host, cfg.User, tag)
+	cfg.SourceDir = path.Join(sourceDir, cfg.Host, cfg.User, tag)
 	os.MkdirAll(cfg.SourceDir, 0755)
 }
 

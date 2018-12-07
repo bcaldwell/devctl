@@ -59,11 +59,9 @@ func cd(cmd *cobra.Command, args []string) {
 
 	if len(args) == 0 {
 		user := parser.DevctlConfig.GithubUser
-		dir = path.Join(sourceDir, "src/github.com", user)
+		dir = path.Join(sourceDir, "github.com", user)
 	} else {
 		query := args[0]
-
-		sourceDir = path.Join(sourceDir, "src")
 
 		files := getFolderList(sourceDir)
 

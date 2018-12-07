@@ -95,14 +95,17 @@ func initConfig() {
 		utilities.Check(err, "Creating folder "+devctlHomeFolder)
 	}
 
-	cfgFile := path.Join(devctlHomeFolder, "config.yml")
+	cfgFile := []string{
+		path.Join(devctlHomeFolder, "config.yml"),
+		path.Join(devctlHomeFolder, "config"),
+	}
 
 	shell.DryRun = DryRun
 	postCommand.DryRun = DryRun
 
 	printer.Verbose = Verbose
 
-	if err := parser.ReadInConfig(cfgFile); err != nil {
+	if err := parser.ReadInConfig(cfgFile...); err != nil {
 		printer.Warning("Warning: devctl config was not found or could not be parsed. %s", err)
 
 		cmdUsed := os.Args[1]
