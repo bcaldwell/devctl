@@ -9,7 +9,6 @@ import (
 	"github.com/bcaldwell/devctl/plugins"
 	"github.com/bcaldwell/devctl/postCommand"
 	"github.com/bcaldwell/devctl/shell"
-	"github.com/bcaldwell/devctl/utilities"
 	"github.com/bcaldwell/go-printer"
 	"github.com/spf13/cobra"
 )
@@ -89,15 +88,17 @@ func init() {
 func initConfig() {
 
 	devctlHomeFolder = path.Join(userHomeDir(), ".devctl")
-	_, folderExists := os.Stat(devctlHomeFolder)
-	if os.IsNotExist(folderExists) {
-		err := os.MkdirAll(devctlHomeFolder, 0644)
-		utilities.Check(err, "Creating folder "+devctlHomeFolder)
-	}
+	// _, folderExists := os.Stat(devctlHomeFolder)
+	// if os.IsNotExist(folderExists) {
+	// 	err := os.MkdirAll(devctlHomeFolder, 0644)
+	// 	utilities.Check(err, "Creating folder "+devctlHomeFolder)
+	// }
 
 	cfgFile := []string{
 		path.Join(devctlHomeFolder, "config.yml"),
 		path.Join(devctlHomeFolder, "config"),
+		path.Join(userHomeDir(), ".devctl"),
+		path.Join(".devctl"),
 	}
 
 	shell.DryRun = DryRun

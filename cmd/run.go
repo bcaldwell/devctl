@@ -8,7 +8,7 @@ import (
 	"github.com/bcaldwell/devctl/postCommand"
 	"github.com/bcaldwell/devctl/utilities"
 	"github.com/bcaldwell/go-printer"
-	"github.com/renstrom/fuzzysearch/fuzzy"
+	"github.com/lithammer/fuzzysearch/fuzzy"
 	"github.com/spf13/cobra"
 )
 
