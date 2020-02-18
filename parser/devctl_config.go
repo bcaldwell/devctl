@@ -2,6 +2,7 @@ package parser
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/ghodss/yaml"
 )
@@ -19,8 +20,10 @@ func ReadInConfig(paths ...string) (err error) {
 	DevctlConfig = new(Config)
 	for _, path := range paths {
 		data, err := ioutil.ReadFile(path)
+		data_s := os.ExpandEnv(string(data))
+
 		if err == nil {
-			err = yaml.Unmarshal(data, DevctlConfig)
+			err = yaml.Unmarshal([]byte(data_s), DevctlConfig)
 			return err
 		}
 	}
